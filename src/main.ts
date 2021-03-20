@@ -5,8 +5,6 @@ import bodyParser from 'body-parser';
 
 import { useDB } from '@db';
 
-import getHome from '@get/home';
-
 import postSignup from '@post/signup';
 import postLogin from '@post/login';
 import postAddHeader from '@post/addHeader';
@@ -40,7 +38,7 @@ async function createServer() {
    }
 
    /* App GET: */ {
-      app.get('/home', getHome);
+      // app.get('/home', getHome);
    }
    /* App POST: */ {
       app.post('/signup', postSignup);
