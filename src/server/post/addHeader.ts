@@ -7,14 +7,7 @@ import {
 } from '@helpers/functions';
 import { AddHeaderBody, AddHeaderResponse } from '@type';
 import { nanoid } from 'nanoid';
-
-const ERROR = {
-   nameNeeded: 'Başlık ismi gerekiyor.',
-   headerExists: 'Bu başlık zaten var.',
-   authError: 'Kullanıcı kimliği hatası.',
-   couldntFindUser: 'Kullanıcı bulunamadı.',
-   errorOnAddingHeader: 'Başlık oluşturmada bir hata oluştu.',
-};
+import { Msg } from '@messages';
 
 export default defineAsyncHandler(async (req, res) => {
    const { name }: AddHeaderBody = req.body;
@@ -46,9 +39,9 @@ export default defineAsyncHandler(async (req, res) => {
             name,
          } as AddHeaderResponse);
       } else {
-         responseError(res, ERROR.headerExists);
+         responseError(res, Msg.add_header.error.headerExists);
       }
    } else {
-      responseError(res, ERROR.nameNeeded);
+      responseError(res, Msg.add_header.error.nameNeeded);
    }
 });

@@ -5,12 +5,7 @@ import {
    trimLength,
 } from '@helpers/functions';
 import { LoginBody, LoginResponse } from '@type';
-
-const ERROR = {
-   pleaseInputUsernameAndPasswordCorrectly:
-      'Lütfen kullanıcı adı ve şifreyi doğru girin',
-   errorOccuredWhileLoggingIn: 'Giriş yapma kısmında bir hata oluştu.',
-};
+import { Msg } from '@messages';
 
 export default defineAsyncHandler(async (req, res) => {
    const { username, password }: LoginBody = req.body;
@@ -28,7 +23,7 @@ export default defineAsyncHandler(async (req, res) => {
          if (!user) {
             responseError(
                res,
-               ERROR.pleaseInputUsernameAndPasswordCorrectly,
+               Msg.login.error.pleaseInputUsernameAndPasswordCorrectly,
                404
             );
             return;
@@ -39,9 +34,15 @@ export default defineAsyncHandler(async (req, res) => {
             auth_id: user.auth_id,
          });
       } else {
-         responseError(res, ERROR.pleaseInputUsernameAndPasswordCorrectly);
+         responseError(
+            res,
+            Msg.login.error.pleaseInputUsernameAndPasswordCorrectly
+         );
       }
    } else {
-      responseError(res, ERROR.pleaseInputUsernameAndPasswordCorrectly);
+      responseError(
+         res,
+         Msg.login.error.pleaseInputUsernameAndPasswordCorrectly
+      );
    }
 });

@@ -1,7 +1,6 @@
 import { useDB } from '@db';
 import { defineMiddleware, responseError } from '@helpers/functions';
-
-const msg = 'Kullanıcı kimliği hatası.';
+import { Msg } from '@messages';
 
 export default defineMiddleware(async (req, res, next) => {
    const db = await useDB();
@@ -13,9 +12,9 @@ export default defineMiddleware(async (req, res, next) => {
       if (user) {
          next();
       } else {
-         responseError(res, msg);
+         responseError(res, Msg.auth.error);
       }
    } else {
-      responseError(res, msg);
+      responseError(res, Msg.auth.error);
    }
 });

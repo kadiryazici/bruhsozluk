@@ -18,6 +18,7 @@
          "@middleware/*": ["./src/server/middleware/*"],
          "@db": ["./src/db.ts"],
          "@type": ["./src/types.d.ts"],
+         "@messages": ["./src/server/messages/index.ts"],
          "/*": ["./*"]
       }
    },

@@ -9,23 +9,14 @@ import { nanoid } from 'nanoid';
 import { useDB } from '@db';
 
 import type { SignupBody } from '@type';
-
-const ERROR = {
-   errorMessage: 'Lütfen kutucukları doğru doldurun',
-   errorUserAlreadyExists: 'Kullanıcı zaten bulunuyor',
-   errorOccuredWhileCreatingNewUser: 'Kullanıcı oluştururken bir hata oluştu',
-};
-
-const SUCCESS = {
-   userCreatedSuccessfully: 'Kullanıcı başarıyla oluşturuldu.',
-};
+import { Msg } from '@messages';
 
 export default defineAsyncHandler(async (req, res) => {
    const { username, password }: SignupBody = req.body;
    if (username && password) {
       // IF
       if (trimLength(username) < 1 || password.length < 1) {
-         responseError(res, ERROR.errorMessage);
+         responseError(res, Msg.signup.error.errorMessage);
          return;
       } else {
          // ELSE
@@ -39,7 +30,7 @@ export default defineAsyncHandler(async (req, res) => {
 
          if (user) {
             // IF
-            responseError(res, ERROR.errorUserAlreadyExists);
+            responseError(res, Msg.signup.error.errorUserAlreadyExists);
          } else {
             // ELSE
             try {
@@ -55,14 +46,17 @@ export default defineAsyncHandler(async (req, res) => {
                   })
                   .write();
 
-               responseSuccess(res, SUCCESS.userCreatedSuccessfully);
+               responseSuccess(res, Msg.signup.success.userCreatedSuccessfully);
             } catch {
-               responseError(res, ERROR.errorOccuredWhileCreatingNewUser);
+               responseError(
+                  res,
+                  Msg.signup.error.errorOccuredWhileCreatingNewUser
+               );
             }
          }
          return;
       }
    } else {
-      responseError(res, ERROR.errorMessage);
+      responseError(res, Msg.signup.error.errorMessage);
    }
 });

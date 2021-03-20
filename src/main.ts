@@ -15,6 +15,8 @@ import middlewareAuth from '@middleware/authRequired';
 
 import { responseError } from '@helpers/functions';
 
+import { Msg } from '@messages';
+
 async function createServer() {
    /* DB SETUP: */ {
       const db = await useDB();
@@ -27,8 +29,7 @@ async function createServer() {
    const app = new App({
       // sunucu temelli bir hata olduğunda, bu hatayı ben devralıyorum.
       onError: (err, req, res) => {
-         const msg = 'İstek gerçekleştirilirken öngörülemeyen bir hata oluştu.';
-         responseError(res, msg);
+         responseError(res, Msg.app.error.msg);
       },
    });
 
