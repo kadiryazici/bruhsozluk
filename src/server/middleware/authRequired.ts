@@ -12,9 +12,9 @@ export default defineMiddleware(async (req, res, next) => {
       if (user) {
          next();
       } else {
-         responseError(res, Msg.auth.error);
+         responseError(res, Msg.auth.error.msg);
       }
    } else {
-      responseError(res, Msg.auth.error);
+      responseError(res, Msg.auth.error.msg);
    }
 });

@@ -6,7 +6,9 @@ export const Msg = {
    },
 
    auth: {
-      error: 'Kullanıcı kimliği hatası.',
+      error: {
+         msg: 'Kullanıcı kimliği hatası.',
+      },
    },
 
    add_header: {
