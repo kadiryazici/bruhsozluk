@@ -1,0 +1,24 @@
+{
+   "name": "bruhsozluk",
+   "version": "1.0.0",
+   "description": "eksi sozluk klonu tarzimsi biseyimsi oylemsi",
+   "scripts": {
+      "dev": "ts-node-dev --respawn -r tsconfig-paths/register ./src/main.ts",
+      "start": "ts-node -r tsconfig-paths/register ./src/main.ts"
+   },
+   "author": "kadiryazici",
+   "license": "MIT",
+   "dependencies": {
+      "@tinyhttp/app": "^1.2.17",
+      "@tinyhttp/cors": "^1.2.0",
+      "@tinyhttp/logger": "^1.2.1",
+      "@types/body-parser": "^1.19.0",
+      "@types/lowdb": "1.0.9",
+      "@types/node": "^14.14.35",
+      "body-parser": "^1.19.0",
+      "lowdb": "^1.0.0",
+      "nanoid": "^3.1.22",
+      "tsconfig-paths": "^3.9.0",
+      "typescript": "^4.2.3"
+   }
+}

@@ -1,0 +1,24 @@
+{
+   "compilerOptions": {
+      "baseUrl": ".",
+      "strict": true,
+      "esModuleInterop": true,
+      "isolatedModules": true,
+      "downlevelIteration": true,
+      "target": "ES2020",
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "resolveJsonModule": true,
+      "paths": {
+         "@helpers/*": ["./src/helpers/*"],
+         "@get/*": ["./src/server/get/*"],
+         "@post/*": ["./src/server/post/*"],
+         "@put/*": ["./src/server/put/*"],
+         "@delete/*": ["./src/server/delete/*"],
+         "@db": ["./src/db.ts"],
+         "@type": ["./src/types.d.ts"],
+         "/*": ["./*"]
+      }
+   },
+   "include": ["src/**/*"]
+}
