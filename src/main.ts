@@ -11,6 +11,10 @@ import postSignup from '@post/signup';
 import postLogin from '@post/login';
 import postAddHeader from '@post/addHeader';
 
+import middlewareAuth from '@middleware/authRequired';
+
+import { responseError } from '@helpers/functions';
+
 async function createServer() {
    /* DB SETUP: */ {
       const db = await useDB();
@@ -20,7 +24,13 @@ async function createServer() {
       });
    }
 
-   const app = new App();
+   const app = new App({
+      // sunucu temelli bir hata olduğunda, bu hatayı ben devralıyorum.
+      onError: (err, req, res) => {
+         const msg = 'İstek gerçekleştirilirken öngörülemeyen bir hata oluştu.';
+         responseError(res, msg);
+      },
+   });
 
    /* App USE: */ {
       app.use(cors());
@@ -34,7 +44,7 @@ async function createServer() {
    /* App POST: */ {
       app.post('/signup', postSignup);
       app.post('/login', postLogin);
-      app.post('/add_header', postAddHeader);
+      app.post('/add_header', middlewareAuth, postAddHeader);
    }
 
    /* App LISTEN: */ {

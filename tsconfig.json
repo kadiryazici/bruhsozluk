@@ -15,6 +15,7 @@
          "@post/*": ["./src/server/post/*"],
          "@put/*": ["./src/server/put/*"],
          "@delete/*": ["./src/server/delete/*"],
+         "@middleware/*": ["./src/server/middleware/*"],
          "@db": ["./src/db.ts"],
          "@type": ["./src/types.d.ts"],
          "/*": ["./*"]

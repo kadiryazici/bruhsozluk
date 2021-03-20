@@ -11,22 +11,24 @@ import { useDB } from '@db';
 import type { SignupBody } from '@type';
 
 const ERROR = {
-   errorMessage: 'Please fill inputs correctly',
-   errorUserAlreadyExists: 'User already exists',
-   errorOccuredWhileCreatingNewUser: 'An error occured while creating new user',
+   errorMessage: 'Lütfen kutucukları doğru doldurun',
+   errorUserAlreadyExists: 'Kullanıcı zaten bulunuyor',
+   errorOccuredWhileCreatingNewUser: 'Kullanıcı oluştururken bir hata oluştu',
 };
 
 const SUCCESS = {
-   userCreatedSuccessfully: 'User has been created successfully',
+   userCreatedSuccessfully: 'Kullanıcı başarıyla oluşturuldu.',
 };
 
 export default defineAsyncHandler(async (req, res) => {
    const { username, password }: SignupBody = req.body;
    if (username && password) {
+      // IF
       if (trimLength(username) < 1 || password.length < 1) {
          responseError(res, ERROR.errorMessage);
          return;
       } else {
+         // ELSE
          const db = await useDB();
          const user = db
             .get('users')
@@ -36,8 +38,10 @@ export default defineAsyncHandler(async (req, res) => {
             .value();
 
          if (user) {
+            // IF
             responseError(res, ERROR.errorUserAlreadyExists);
          } else {
+            // ELSE
             try {
                // get user, if not exists this will return undefined
                await db

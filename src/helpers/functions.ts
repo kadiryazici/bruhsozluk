@@ -1,9 +1,20 @@
-import type { SyncHandler, AsyncHandler, Response } from '@tinyhttp/app';
+import type {
+   SyncHandler,
+   AsyncHandler,
+   Response,
+   Request,
+   NextFunction,
+} from '@tinyhttp/app';
 
 export function defineSyncHandler(fn: SyncHandler): SyncHandler {
    return fn;
 }
 export function defineAsyncHandler(fn: AsyncHandler): AsyncHandler {
+   return fn;
+}
+export function defineMiddleware(
+   fn: (req: Request, res: Response, next: NextFunction) => void
+) {
    return fn;
 }
 
@@ -74,5 +85,6 @@ export function sanitizeHeaderName(name: string) {
    sanitized = sanitized.replace(/\`/g, "'");
 
    // düzeltilmiş başlık çıktısı
-   return sanitized;
+   // nolur nolmaz diye trim
+   return sanitized.trim();
 }

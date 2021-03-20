@@ -8,12 +8,12 @@ import { LoginBody, LoginResponse } from '@type';
 
 const ERROR = {
    pleaseInputUsernameAndPasswordCorrectly:
-      'Please input username and password correctly',
+      'Lütfen kullanıcı adı ve şifreyi doğru girin',
+   errorOccuredWhileLoggingIn: 'Giriş yapma kısmında bir hata oluştu.',
 };
 
 export default defineAsyncHandler(async (req, res) => {
    const { username, password }: LoginBody = req.body;
-
    if (username && password) {
       if (trimLength(username) > 0 && trimLength(password) > 0) {
          const db = await useDB();

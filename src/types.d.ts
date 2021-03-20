@@ -8,6 +8,7 @@ interface Database {
 export interface Header {
    entries: Entry[];
    id: string;
+   name: string;
 }
 
 export interface Entry {
@@ -19,7 +20,7 @@ export interface Entry {
 
 export interface LeftContentItem {
    id: string;
-   header: string;
+   header_name: string;
    total_entry: number;
 }
 
