@@ -8,8 +8,9 @@ import { useDB } from '@db';
 import postSignup from '@post/signup';
 import postLogin from '@post/login';
 import postAddHeader from '@post/addHeader';
+import postAddEntry from '@post/addEntry';
 
-import middlewareAuth from '@middleware/authRequired';
+import middlewareAuthRequired from '@middleware/authRequired';
 
 import { responseError } from '@helpers/functions';
 
@@ -43,7 +44,8 @@ async function createServer() {
    /* App POST: */ {
       app.post('/signup', postSignup);
       app.post('/login', postLogin);
-      app.post('/add_header', middlewareAuth, postAddHeader);
+      app.post('/add_header', middlewareAuthRequired, postAddHeader);
+      app.post('/add_entry', middlewareAuthRequired, postAddEntry);
    }
 
    /* App LISTEN: */ {

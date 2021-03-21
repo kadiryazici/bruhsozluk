@@ -14,9 +14,9 @@ export interface Header {
 export interface Entry {
    id: string;
    body: string;
-   date: string;
-   user_id: string;
-   liked_by: string[];
+   date: number;
+   username: string;
+   like_count: number;
 }
 
 export interface LeftContentItem {
@@ -52,4 +52,9 @@ export interface AddHeaderBody {
 }
 export interface AddHeaderResponse {
    id: string;
+}
+
+export interface AddEntryBody {
+   body: string;
+   header_id: string;
 }

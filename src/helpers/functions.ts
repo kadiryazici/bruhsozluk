@@ -93,17 +93,55 @@ export function sanitizeHeaderName(name: string) {
 
 export function sanitizeUserName(username: string) {
    const supportedLetters =
-      '1234567890' + 'abcçdefgğhıijklmnoöprsjtuüvyz' + 'qwx' + ' ';
+      '1234567890' + 'abcçdefgğhıijklmnoöprsşjtuüvyz' + 'qwx' + ' ';
    let usernameArray = [...username.toLocaleLowerCase('tr-TR')];
    usernameArray = usernameArray.map(letter => {
       if (supportedLetters.includes(letter)) return letter;
       else return '';
    });
-
    username = usernameArray.join('').trim();
-   return removeMultipleSpaces(username);
+
+   username = removeMultipleSpaces(username);
+   username = replaceTurkishLetters(username);
+   return username;
 }
 
 export function removeMultipleSpaces(str: string): string {
    return str.replace(/  +/g, ' ');
+}
+
+export function replaceTurkishLetters(str: string): string {
+   const trToEn = [
+      ['ı', 'i'],
+      ['ğ', 'g'],
+      ['ü', 'u'],
+      ['ş', 's'],
+      ['ö', 'o'],
+      ['ç', 'c'],
+   ];
+   for (let [tr, en] of trToEn) {
+      const regex = RegExp(`\\${tr}`, 'g');
+      str = str.replace(regex, en);
+   }
+   return str;
+}
+
+export function removeMultipleTabs(str: string) {
+   return str.replace(/\t\t+/g, '\t');
+}
+
+export function tabsToSpace(str: string) {
+   return str.replace(/\t/, ' ');
+}
+
+export function reduceLinebreaksMoreThanThree(str: string) {
+   return str.replace(/\n\n\n+/, '\n\n');
+}
+
+export function sanitizeEntryBody(str: string) {
+   str = removeMultipleSpaces(str);
+   str = removeMultipleTabs(str);
+   str = reduceLinebreaksMoreThanThree(str);
+   str = str.trim();
+   return str;
 }
