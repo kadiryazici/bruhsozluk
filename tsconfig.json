@@ -19,6 +19,7 @@
          "@db": ["./src/db.ts"],
          "@type": ["./src/types.d.ts"],
          "@messages": ["./src/server/messages/index.ts"],
+         "@config": ["./src/server/config/index.ts"],
          "/*": ["./*"]
       }
    },

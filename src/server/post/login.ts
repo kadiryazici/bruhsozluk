@@ -9,9 +9,14 @@ import { Msg } from '@messages';
 
 export default defineAsyncHandler(async (req, res) => {
    const { username, password }: LoginBody = req.body;
+
    if (username && password) {
-      if (trimLength(username) > 0 && trimLength(password) > 0) {
+      const trimmedUsernameLength = trimLength(username);
+      const trimmedPasswordLength = trimLength(password);
+
+      if (trimmedUsernameLength > 0 && trimmedPasswordLength > 0) {
          const db = await useDB();
+
          const user = db
             .get('users')
             .find({

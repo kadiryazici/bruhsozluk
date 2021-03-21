@@ -16,6 +16,7 @@ export interface Entry {
    body: string;
    date: string;
    user_id: string;
+   liked_by: string[];
 }
 
 export interface LeftContentItem {

@@ -44,7 +44,7 @@ export function sanitizeHeaderName(name: string) {
 
    const upperCase = `QWERTYUIOPĞÜASDFGHJKLŞİZXCVBNMÖÇ`;
    const lowerCase = 'qwertyuıopğüasdfghjklşizxcvbnmöç';
-   const specialCharacters = "'%.$#` ";
+   const specialCharacters = "'%.$#-_` ";
    const supportedCharacters = specialCharacters + lowerCase + upperCase;
 
    // şu karakterlerden kurtutalım
@@ -86,5 +86,22 @@ export function sanitizeHeaderName(name: string) {
 
    // düzeltilmiş başlık çıktısı
    // nolur nolmaz diye trim
-   return sanitized.trim();
+   return sanitized.trim().toLocaleLowerCase('tr-TR');
+}
+
+export function sanitizeUserName(username: string) {
+   const supportedLetters =
+      '1234567890' + 'abcçdefgğhıijklmnoöprsjtuüvyz' + 'qwx' + ' ';
+   let usernameArray = [...username.toLocaleLowerCase('tr-TR')];
+   usernameArray = usernameArray.map(letter => {
+      if (supportedLetters.includes(letter)) return letter;
+      else return '';
+   });
+
+   username = usernameArray.join('').trim();
+   return removeMultipleSpaces(username);
+}
+
+export function removeMultipleSpaces(str: string): string {
+   return str.replace(/  +/g, ' ');
 }

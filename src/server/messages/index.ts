@@ -32,6 +32,12 @@ export const Msg = {
          errorUserAlreadyExists: 'Kullanıcı zaten bulunuyor.',
          errorOccuredWhileCreatingNewUser:
             'Kullanıcı oluştururken bir hata oluştu.',
+         usernameShouldBeBetween3and20:
+            'Kullanıcı adının uzunluğu 3 ila 20 karakter arasında olmalı.',
+         passwordShouldBeBetween6and25:
+            'Şifrenin uzunluğu 6 ila 20 karakter arasında olmalı.',
+         username3_20AndPassword6_25:
+            'KUllanıcı adı 3 ila 20, şifre 6 ila 25 karakter uzunluğunda olmalı.',
       },
       success: {
          userCreatedSuccessfully: 'Kullanıcı başarıyla oluşturuldu.',

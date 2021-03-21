@@ -2,4 +2,7 @@
 
 ## Gerekenler
 
-ts-node ya da ts-node-dev
+> start için npm install @ts-node <br> ya da <br>
+> dev için npm install @ts-node-dev
+
+[Kanal](https://www.youtube.com/channel/UC4Nz-FbzzUnovD3tkpqn9Lw)
