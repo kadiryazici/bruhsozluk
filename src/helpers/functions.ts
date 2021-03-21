@@ -44,8 +44,10 @@ export function sanitizeHeaderName(name: string) {
 
    const upperCase = `QWERTYUIOPĞÜASDFGHJKLŞİZXCVBNMÖÇ`;
    const lowerCase = 'qwertyuıopğüasdfghjklşizxcvbnmöç';
+   const numbers = '0123456789';
    const specialCharacters = "'%.$#-_` ";
-   const supportedCharacters = specialCharacters + lowerCase + upperCase;
+   const supportedCharacters =
+      numbers + specialCharacters + lowerCase + upperCase;
 
    // şu karakterlerden kurtutalım
    sanitized = sanitized
