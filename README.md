@@ -2,7 +2,16 @@
 
 ## Gerekenler
 
-> start için npm install @ts-node <br> ya da <br>
-> dev için npm install @ts-node-dev
+Dev server için `@ts-node-dev` kütüphanesini yüklemelisiniz.
+
+> npm install @ts-node | yarn add @ts-node-dev
+
+> yarn dev | npm run dev
+
+Start server için `@ts-node` kütüphanesini yüklemelisiniz.
+
+> npm install @ts-node | yarn add @ts-node <br>
+
+> yarn start | npm run start
 
 [Kanal](https://www.youtube.com/channel/UC4Nz-FbzzUnovD3tkpqn9Lw)
