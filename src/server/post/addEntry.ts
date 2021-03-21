@@ -1,17 +1,17 @@
-import { Config } from '@config';
 import { useDB } from '@db';
 import {
    defineSyncHandler,
    responseError,
    sanitizeEntryBody,
 } from '@helpers/functions';
+import { Msg } from '@messages';
 import { AddEntryBody, Entry } from '@type';
 import { nanoid } from 'nanoid';
 
 // /addentry
 export default defineSyncHandler((req, res) => {
    const { body, header_id }: AddEntryBody = req.body;
-   const { error } = Config.add_entry;
+   const { error } = Msg.add_entry;
    const { authorization } = req.headers;
 
    if (body && header_id) {

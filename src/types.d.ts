@@ -58,3 +58,7 @@ export interface AddEntryBody {
    body: string;
    header_id: string;
 }
+
+export interface DeleteHeaderParams {
+   header_id: string;
+}

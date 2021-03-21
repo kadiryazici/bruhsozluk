@@ -4,17 +4,17 @@ import { logger } from '@tinyhttp/logger';
 import bodyParser from 'body-parser';
 
 import { useDB } from '@db';
+import { responseError } from '@helpers/functions';
+import { Msg } from '@messages';
+
+import middlewareAuthRequired from '@middleware/authRequired';
 
 import postSignup from '@post/signup';
 import postLogin from '@post/login';
 import postAddHeader from '@post/addHeader';
 import postAddEntry from '@post/addEntry';
 
-import middlewareAuthRequired from '@middleware/authRequired';
-
-import { responseError } from '@helpers/functions';
-
-import { Msg } from '@messages';
+import deleteHeader from '@delete/deleteHeader';
 
 async function createServer() {
    /* DB SETUP: */ {
@@ -46,6 +46,14 @@ async function createServer() {
       app.post('/login', postLogin);
       app.post('/add_header', middlewareAuthRequired, postAddHeader);
       app.post('/add_entry', middlewareAuthRequired, postAddEntry);
+   }
+
+   /* App DELETE: */ {
+      app.delete(
+         '/delete_header/:header_id',
+         middlewareAuthRequired,
+         deleteHeader
+      );
    }
 
    /* App LISTEN: */ {
