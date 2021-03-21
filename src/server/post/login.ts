@@ -1,13 +1,13 @@
 import { useDB } from '@db';
 import {
-   defineAsyncHandler,
+   defineSyncHandler,
    responseError,
    trimLength,
 } from '@helpers/functions';
 import { LoginBody, LoginResponse } from '@type';
 import { Msg } from '@messages';
 
-export default defineAsyncHandler(async (req, res) => {
+export default defineSyncHandler((req, res) => {
    const { username, password }: LoginBody = req.body;
 
    if (username && password) {
@@ -15,7 +15,7 @@ export default defineAsyncHandler(async (req, res) => {
       const trimmedPasswordLength = trimLength(password);
 
       if (trimmedUsernameLength > 0 && trimmedPasswordLength > 0) {
-         const db = await useDB();
+         const db = useDB();
 
          const user = db
             .get('users')

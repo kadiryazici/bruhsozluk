@@ -17,11 +17,11 @@ import { Msg } from '@messages';
 
 async function createServer() {
    /* DB SETUP: */ {
-      const db = await useDB();
+      const db = useDB();
       db.defaults({
          users: [],
          headers: [],
-      });
+      }).write();
    }
 
    const app = new App({

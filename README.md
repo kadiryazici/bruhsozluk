@@ -2,16 +2,18 @@
 
 ## Gerekenler
 
-Dev server için `@ts-node-dev` kütüphanesini yüklemelisiniz.
+Kurulum
 
-> npm install @ts-node | yarn add @ts-node-dev
+> npm install | yarn
 
-> yarn dev | npm run dev
+Dev server(Geliştirme sunucusu) için :
 
-Start server için `@ts-node` kütüphanesini yüklemelisiniz.
+> npm run dev | yarn dev <br>
 
-> npm install @ts-node | yarn add @ts-node <br>
+Production server (Bitmiş sunucu) için:
 
-> yarn start | npm run start
+> npm run build | yarn build <br>
+> sonra <br>
+> npm run start | yarn start
 
 [Kanal](https://www.youtube.com/channel/UC4Nz-FbzzUnovD3tkpqn9Lw)

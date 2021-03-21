@@ -1,6 +1,6 @@
 import { useDB } from '@db';
 import {
-   defineAsyncHandler,
+   defineSyncHandler,
    responseError,
    sanitizeHeaderName,
    trimLength,
@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid';
 import { Msg } from '@messages';
 import { Config } from '@config';
 
-export default defineAsyncHandler(async (req, res) => {
+export default defineSyncHandler((req, res) => {
    const { name }: AddHeaderBody = req.body;
 
    const { headerMax, headerMin } = Config.add_header;
@@ -19,7 +19,7 @@ export default defineAsyncHandler(async (req, res) => {
       const sanitizedName = sanitizeHeaderName(name);
       const trimmedHeaderLength = trimLength(sanitizedName);
       if (trimmedHeaderLength >= headerMin) {
-         const db = await useDB();
+         const db = useDB();
 
          const header = db
             .get('headers')
@@ -32,8 +32,7 @@ export default defineAsyncHandler(async (req, res) => {
             const id = nanoid();
             const name = sanitizedName.slice(0, headerMax);
 
-            await db
-               .get('headers')
+            db.get('headers')
                .push({
                   entries: [],
                   id,

@@ -1,5 +1,5 @@
 import {
-   defineAsyncHandler,
+   defineSyncHandler,
    trimLength,
    responseError,
    responseSuccess,
@@ -14,7 +14,7 @@ import { Msg } from '@messages';
 import { Config } from '@config';
 import { Response } from '@tinyhttp/app';
 
-export default defineAsyncHandler(async (req, res) => {
+export default defineSyncHandler((req, res) => {
    let { username, password }: SignupBody = req.body;
    username = sanitizeUserName(username);
 
@@ -23,7 +23,7 @@ export default defineAsyncHandler(async (req, res) => {
          return;
       } else {
          // ELSE
-         const db = await useDB();
+         const db = useDB();
          const user = db
             .get('users')
             .find({
@@ -38,8 +38,7 @@ export default defineAsyncHandler(async (req, res) => {
             // ELSE
             try {
                // get user, if not exists this will return undefined
-               await db
-                  .get('users')
+               db.get('users')
                   .push({
                      id: nanoid(),
                      auth_id: nanoid(),

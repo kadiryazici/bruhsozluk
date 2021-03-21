@@ -1,13 +1,13 @@
 import lowdb from 'lowdb';
-import FileAsync from 'lowdb/adapters/FileAsync';
+import FileSync from 'lowdb/adapters/FileSync';
 import path from 'path';
 import { Database } from '@type';
 
-const adapter = new FileAsync<Database>(
+const adapter = new FileSync<Database>(
    path.resolve(__dirname, './database.json')
 );
 const db = lowdb(adapter);
 
-export async function useDB() {
-   return await db;
+export function useDB() {
+   return db;
 }
