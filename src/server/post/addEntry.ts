@@ -35,7 +35,7 @@ export default defineSyncHandler((req, res) => {
                body,
                date: Date.now(),
                id: nanoid(),
-               like_count: 0,
+               liked_by: [],
                username,
             } as Entry;
 

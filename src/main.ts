@@ -16,12 +16,15 @@ import postAddEntry from '@post/addEntry';
 
 import deleteHeader from '@delete/deleteHeader';
 
+import getHeader from '@get/getHeader';
+
 async function createServer() {
    /* DB SETUP: */ {
       const db = useDB();
       db.defaults({
          users: [],
          headers: [],
+         leftContent: [],
       }).write();
    }
 
@@ -39,7 +42,7 @@ async function createServer() {
    }
 
    /* App GET: */ {
-      // app.get('/home', getHome);
+      app.get('/header/:header_id', getHeader);
    }
    /* App POST: */ {
       app.post('/signup', postSignup);

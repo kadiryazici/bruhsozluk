@@ -3,6 +3,7 @@ type LeftContent = LeftContentItem[];
 interface Database {
    users: User[];
    headers: Header[];
+   leftContent: LeftContent;
 }
 
 export interface Header {
@@ -16,12 +17,12 @@ export interface Entry {
    body: string;
    date: number;
    username: string;
-   like_count: number;
+   liked_by: string[];
 }
 
 export interface LeftContentItem {
    id: string;
-   header_name: string;
+   name: string;
    total_entry: number;
 }
 
@@ -62,3 +63,10 @@ export interface AddEntryBody {
 export interface DeleteHeaderParams {
    header_id: string;
 }
+
+export interface getHeaderResponsePage {
+   currentPage: number;
+   totalPage: number;
+   totalResults: number;
+}
+export type getHeaderResponse = Header & getHeaderResponsePage;

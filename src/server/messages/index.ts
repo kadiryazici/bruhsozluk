@@ -1,7 +1,7 @@
 export const Msg = {
    app: {
       error: {
-         msg: 'İstek gerçekleştirilirken öngörülemeyen bir hata oluştu.',
+         msg: 'Böyle bir adres bulunmuyor ya da öngörülemeyen bir hata oluştu.',
       },
    },
 
@@ -66,6 +66,13 @@ export const Msg = {
       },
       success: {
          userCreatedSuccessfully: 'Kullanıcı başarıyla oluşturuldu.',
+      },
+   },
+
+   get_header: {
+      error: {
+         wrongHeaderID: `Başlık ID'si eşleşmiyor`,
+         neededParams: 'Gerekli parametreler eksik.',
       },
    },
 };
