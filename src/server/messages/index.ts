@@ -75,4 +75,12 @@ export const Msg = {
          neededParams: 'Gerekli parametreler eksik.',
       },
    },
+
+   get_entry: {
+      error: {
+         missingParameters: 'Gerekli parametreler eksik.',
+         headerIdDoesNotMatch: `Başlık ID'si eşleşmiyor.`,
+         entryIdDoesNotMatch: `Entry ID'si eşleşmiyor.`,
+      },
+   },
 };
