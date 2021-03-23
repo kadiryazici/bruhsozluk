@@ -8,6 +8,7 @@ import { responseError } from '@helpers/functions';
 import { Msg } from '@messages';
 
 import middlewareAuthRequired from '@middleware/authRequired';
+import middlewareauthRequiredAdmin from '@middleware/authRequiredAdmin';
 
 import postSignup from '@post/signup';
 import postLogin from '@post/login';
@@ -56,7 +57,7 @@ async function createServer() {
    /* App DELETE: */ {
       app.delete(
          '/delete_header/:header_id',
-         middlewareAuthRequired,
+         middlewareauthRequiredAdmin,
          deleteHeader
       );
    }

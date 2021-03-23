@@ -9,7 +9,7 @@ export default defineMiddleware(async (req, res, next) => {
    if (authorization) {
       const user = db.get('users').find({ auth_id: authorization }).value();
 
-      if (user) {
+      if (user.isAdmin) {
          next();
       } else {
          responseError(res, Msg.auth.error.msg);

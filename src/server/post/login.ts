@@ -36,6 +36,7 @@ export default defineSyncHandler((req, res) => {
 
          res.status(200).json(<LoginResponse>{
             username: user.username,
+            isAdmin: user.isAdmin,
             auth_id: user.auth_id,
          });
       } else {

@@ -32,6 +32,7 @@ export interface User {
    username: string;
    password: string;
    entries: UserEntryStore[];
+   isAdmin: boolean;
 }
 export interface UserEntryStore {
    header_id: string;
@@ -46,6 +47,7 @@ export type LoginBody = SignupBody;
 export interface LoginResponse {
    auth_id: string;
    username: string;
+   isAdmin: boolean;
 }
 
 export interface AddHeaderBody {

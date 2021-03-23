@@ -8,7 +8,7 @@ import { Msg } from '@messages';
 import { AddEntryBody, Entry } from '@type';
 import { nanoid } from 'nanoid';
 
-// /addentry
+// AUTH REQUIRED
 export default defineSyncHandler((req, res) => {
    const { body, header_id }: AddEntryBody = req.body;
    const { error } = Msg.add_entry;
@@ -20,16 +20,13 @@ export default defineSyncHandler((req, res) => {
 
       if (header.value()) {
          const entryBody = sanitizeEntryBody(body);
-         const entryBodyLength = entryBody.length;
 
          if (entryBody.length > 0) {
-            const username = db
-               .get('users')
-               .find({
-                  auth_id: authorization,
-               })
-               .get('username')
-               .value();
+            const user = db.get('users').find({
+               auth_id: authorization,
+            });
+
+            const username = user.get('username').value();
 
             let data = {
                body,

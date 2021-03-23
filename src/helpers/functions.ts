@@ -51,11 +51,11 @@ export function sanitizeHeaderName(name: string) {
 
    // şu karakterlerden kurtutalım
    sanitized = sanitized
-      .replace(/  +/g, '')
-      .replace(/\n/g, '')
-      .replace(/\t/g, '')
-      .replace(/\f/g, '')
-      .replace(/\v/g, '');
+      .replace(/  +/g, ' ')
+      .replace(/\n/g, ' ')
+      .replace(/\t/g, ' ')
+      .replace(/\f/g, ' ')
+      .replace(/\v/g, ' ');
 
    // string'i önce diziye çeviriyorum sonra .map ile döngüleyip karakter destekleniyorsa geri döndürüyorum.
    // deskteklenmeyen karakterleri siliyoruz
