@@ -94,4 +94,13 @@ export const Msg = {
          entryIdDoesNotMatch: `Entry ID'si eşleşmiyor.`,
       },
    },
+
+   get_verification: {
+      error: {
+         msg: 'Yanlış kullanıcı kimliği.',
+      },
+      success: {
+         msg: 'Doğru kullanıcı kimliği.',
+      },
+   },
 };

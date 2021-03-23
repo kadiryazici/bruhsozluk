@@ -20,6 +20,7 @@ import deleteEntry from '@delete/deleteEntry';
 
 import getHeader from '@get/getHeader';
 import getEntry from '@get/getEntry';
+import getVerification from '@get/getVerification';
 
 async function createServer() {
    /* DB SETUP: */ {
@@ -47,6 +48,7 @@ async function createServer() {
    /* App GET: */ {
       app.get('/header/:header_id', getHeader);
       app.get('/entry/:header_id/:entry_id', getEntry);
+      app.get('/verify', getVerification);
    }
    /* App POST: */ {
       app.post('/signup', postSignup);
