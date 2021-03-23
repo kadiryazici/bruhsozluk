@@ -38,6 +38,15 @@ export default defineSyncHandler((req, res) => {
 
             header.get('entries').push(data).write();
 
+            // add entry to user's profile
+            user
+               .get('entries')
+               .push({
+                  entry_id: data.id,
+                  header_id: header.get('id').value(),
+               })
+               .write();
+
             res.status(200).json(data);
          } else {
             responseError(res, error.bodyShouldHaveAtLeastOneLetter);
