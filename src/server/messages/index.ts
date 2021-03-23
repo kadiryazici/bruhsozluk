@@ -43,6 +43,17 @@ export const Msg = {
       },
    },
 
+   delete_entry: {
+      error: {
+         wrongHeaderId: `Hatalı başlık ID'si.`,
+         wrongEntryID: `Hatalı entry ID'si.`,
+         missingParameters: 'Bazı parametreler eksik.',
+      },
+      success: {
+         msg: 'Entry başarıyla silindi. ',
+      },
+   },
+
    login: {
       error: {
          pleaseInputUsernameAndPasswordCorrectly:

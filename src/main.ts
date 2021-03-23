@@ -16,6 +16,7 @@ import postAddHeader from '@post/addHeader';
 import postAddEntry from '@post/addEntry';
 
 import deleteHeader from '@delete/deleteHeader';
+import deleteEntry from '@delete/deleteEntry';
 
 import getHeader from '@get/getHeader';
 import getEntry from '@get/getEntry';
@@ -59,6 +60,12 @@ async function createServer() {
          '/delete_header/:header_id',
          middlewareauthRequiredAdmin,
          deleteHeader
+      );
+
+      app.delete(
+         '/delete_entry/:header_id/:entry_id',
+         middlewareAuthRequired,
+         deleteEntry
       );
    }
 

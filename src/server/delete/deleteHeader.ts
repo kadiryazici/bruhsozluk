@@ -23,11 +23,16 @@ export default defineSyncHandler((req, res) => {
             .value();
 
          if (header) {
+            const header_id = header.id;
+
             db.get('headers')
                .remove({
                   id: header_id,
                })
                .write();
+
+            // loop throught all users and delete entries that belongs to deleted header.
+            deleteHeaderEntriesFromUsers(header_id);
 
             responseSuccess(res, success.msg);
          } else {
@@ -40,3 +45,17 @@ export default defineSyncHandler((req, res) => {
       responseError(res, error.missingParameters);
    }
 });
+
+function deleteHeaderEntriesFromUsers(header_id: string) {
+   const db = useDB();
+   db.get('users')
+      .forEach(user => {
+         const user_id = user.id;
+         db.get('users')
+            .find({ id: user_id })
+            .get('entries')
+            .remove({ header_id: header_id })
+            .write();
+      })
+      .write();
+}
