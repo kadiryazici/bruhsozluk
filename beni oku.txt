@@ -1,0 +1,2 @@
+bu dosyayı indirdiyseniz ve gerekli npm paketlerini indirmediyseniz src klasörünün bulunduğu konumda ( klasörün içinde değil ) 
+terminalden "yarn" komutunu ya da "npm install" komutunu çalıştırın ondan sonra "yarn dev" ya da "npm run dev" diyerek uygulamayı başlatın. 

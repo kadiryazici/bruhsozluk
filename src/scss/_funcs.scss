@@ -1,0 +1,6 @@
+// TOP of PAGE
+@use "./vars";
+
+@function padding($level: 1) {
+   @return $level * vars.$paddingLevel;
+}

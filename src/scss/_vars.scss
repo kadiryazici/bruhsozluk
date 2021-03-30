@@ -1,0 +1,12 @@
+@use "./colors";
+
+$radius: 10px;
+$paddingLevel: 5px;
+$logoFontSize: 18px;
+
+$shadowDarkDown: 0px 2px 4px 0px rgba(colors.$black, 0.5);
+
+$entryBodyFontSize: 16px;
+$entryFooterFontSize: 11px;
+
+$headerFontSize: 18px;
