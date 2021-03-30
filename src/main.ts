@@ -14,6 +14,7 @@ import postSignup from '@post/signup';
 import postLogin from '@post/login';
 import postAddHeader from '@post/addHeader';
 import postAddEntry from '@post/addEntry';
+import postSearchHeader from '@post/searchHeader';
 
 import deleteHeader from '@delete/deleteHeader';
 import deleteEntry from '@delete/deleteEntry';
@@ -55,6 +56,7 @@ async function createServer() {
       app.post('/login', postLogin);
       app.post('/add_header', middlewareAuthRequired, postAddHeader);
       app.post('/add_entry', middlewareAuthRequired, postAddEntry);
+      app.post('/search', postSearchHeader);
    }
 
    /* App DELETE: */ {

@@ -1,8 +1,10 @@
 ## **Youtube Vue3 dersleri için basit ekşi sözlük klonu**
 
-## Gerekenler
+### Arayüz "branch"ı
 
-Kurulum
+[WEB BRANCH](https://github.com/kadiryazici/bruhsozluk/tree/web)
+
+## Kurulum
 
 > npm install (ya da) yarn
 
