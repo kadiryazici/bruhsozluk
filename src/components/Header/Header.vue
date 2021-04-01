@@ -95,6 +95,7 @@ import Entry from '/src/components/Entry/Entry.vue';
                animation: zoomIn 0.2s;
                max-height: 250px;
                overflow-y: auto;
+               overscroll-behavior-y: contain;
 
                .item {
                   padding: funcs.padding(1) funcs.padding(1.5);

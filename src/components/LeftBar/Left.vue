@@ -45,6 +45,7 @@ ref: icons = ['person', 'refresh', 'search', 'add_circle_outline'];
       background-color: colors.$primary;
       // border-radius: vars.$radius;
       overflow: auto;
+      overscroll-behavior-y: contain;
 
       .top-menu {
          width: 100%;
