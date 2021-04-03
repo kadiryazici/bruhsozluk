@@ -2,19 +2,20 @@ import { useDB } from '@db';
 import { minuteToMiliseconds } from '@helpers/functions';
 import chalk from 'chalk';
 
-let timeout: null | ReturnType<typeof setTimeout> = null;
-
 export interface Job {
    perMinute: number;
    handler: () => void | Promise<void>;
    id: string;
 }
 
-export function defineJob(job: Job): Job {
-   return job;
-}
+let timeout: null | ReturnType<typeof setTimeout> = null;
+// const jobs: Job[] = [];
 
-const jobs: Job[] = [];
+type JobMap = Map<
+   string,
+   { handler: Job['handler']; perMinute: Job['perMinute'] }
+>;
+const jobsMap: JobMap = new Map();
 
 /**
  *
@@ -29,26 +30,25 @@ export function createJob(job: Job) {
    if (!lastTimeStore) {
       db.set(`storedDates.${id}`, 0).write();
    }
-   jobs.push({
-      handler,
+   jobsMap.set(id, {
       perMinute,
-      id,
+      handler,
    });
 }
 
 export function startJobHandler() {
    timeout = globalThis.setTimeout(async () => {
       const db = useDB();
-      for (const job of jobs) {
-         const dbHeaderDate = db.get('storedDates').get(job.id);
+      for (const [jobID, jobData] of jobsMap) {
+         const dbHeaderDate = db.get('storedDates').get(jobID);
          const lastTimeWorked = dbHeaderDate.value() as number;
          if (
             Date.now() - lastTimeWorked >=
-            minuteToMiliseconds(job.perMinute)
+            minuteToMiliseconds(jobData.perMinute)
          ) {
-            db.set(`storedDates.${job.id}`, Date.now()).write();
-            await job.handler();
-            JobRunMessage(job.id);
+            db.set(`storedDates.${jobID}`, Date.now()).write();
+            await jobData.handler();
+            JobRunMessage(jobID);
          }
       }
       startJobHandler();
@@ -64,4 +64,8 @@ export function stopJobHandler() {
 export function JobRunMessage(job_name: string) {
    const text = `${chalk.magenta('JOB:')} ${chalk.green(job_name)} has run`;
    console.log(text);
+}
+
+export function defineJob(job: Job): Job {
+   return job;
 }
