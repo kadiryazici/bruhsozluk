@@ -30,7 +30,7 @@ export function createJob(job: Job) {
    }
    jobs.push({
       handler,
-      perMinute: minuteToMiliseconds(perMinute),
+      perMinute,
       id,
    });
 }
@@ -44,7 +44,10 @@ export function startJobHandler() {
          console.log({
             condition: Date.now() - lastTimeWorked >= job.perMinute,
          });
-         if (Date.now() - lastTimeWorked >= job.perMinute) {
+         if (
+            Date.now() - lastTimeWorked >=
+            minuteToMiliseconds(job.perMinute)
+         ) {
             db.set(`storedDates.${job.id}`, Date.now()).write();
             await job.handler();
          }
