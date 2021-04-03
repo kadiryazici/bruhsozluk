@@ -22,15 +22,16 @@ import deleteEntry from '@delete/deleteEntry';
 import getHeader from '@get/getHeader';
 import getEntry from '@get/getEntry';
 import getVerification from '@get/getVerification';
+import { Config } from '@config';
+
+// JOBS
+import { createJob, startJobHandler } from '@jobs/index';
+import updateHome from '@jobs/updateHome';
 
 async function createServer() {
    /* DB SETUP: */ {
       const db = useDB();
-      db.defaults({
-         users: [],
-         headers: [],
-         leftContent: [],
-      }).write();
+      db.defaults(Config.db_defaults).write();
    }
 
    const app = new App({
@@ -77,6 +78,11 @@ async function createServer() {
       app.listen(3000, () => {
          console.log('server is on: 3000');
       });
+   }
+
+   /*Register JOBS: */ {
+      createJob(updateHome);
+      startJobHandler();
    }
 }
 createServer();

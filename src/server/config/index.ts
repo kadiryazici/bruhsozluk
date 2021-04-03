@@ -9,4 +9,11 @@ export const Config = {
       headerMax: 50,
       headerMin: 1,
    },
+   db_defaults: {
+      homeData: [],
+      storedDates: {},
+      users: [],
+      headers: [],
+      leftContent: [],
+   },
 };

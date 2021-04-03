@@ -145,3 +145,7 @@ export function sanitizeEntryBody(str: string) {
    str = str.trim();
    return str;
 }
+
+export function minuteToMiliseconds(minute: number) {
+   return minute * 60 * 1000;
+}

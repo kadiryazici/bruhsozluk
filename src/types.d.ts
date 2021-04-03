@@ -1,6 +1,8 @@
 type LeftContent = LeftContentItem[];
 
 interface Database {
+   homeEntryHeadersData: HomeHeaderEntryResponse[];
+   storedDates: {};
    users: User[];
    headers: Header[];
    leftContent: LeftContent;
@@ -10,6 +12,12 @@ export interface Header {
    entries: Entry[];
    id: string;
    name: string;
+}
+
+export interface HomeHeaderEntryResponse {
+   header_id: string;
+   header_name: string;
+   entry: Entry;
 }
 
 export interface Entry {
