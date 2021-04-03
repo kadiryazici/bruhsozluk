@@ -4,22 +4,27 @@ import { Entry } from '@type';
 
 export default defineJob({
    id: 'updateHome',
-   perMinute: 0.05,
+   perMinute: 30, // run every 30 minutes
    handler: updateHomeHandler,
 });
 
 function updateHomeHandler() {
    const db = useDB();
 
-   // tüm başlıkları karıştır,
+   // shuffle all headers and pick first 5 one,
    const headers = db.get('headers').shuffle().slice(0, 5).value();
 
-   // rastgele seçilmiş entrylerin en çok beğenilenini al
-   const entriesShuffledHeader = headers.map(value => {
-      const object = { id: value.id, name: value.name, entries: [] as Entry[] };
+   // get most liked entry from header.
+   const entriesShuffledHeader = headers.map(header => {
+      const object = {
+         id: header.id,
+         name: header.name,
+         entries: [] as Entry[],
+      };
 
-      if (object.entries.length > 0) {
-         const sorted = object.entries.sort(
+      //if there is entry
+      if (header.entries.length > 0) {
+         const sorted = header.entries.sort(
             (a, b) => b.liked_by.length - a.liked_by.length
          );
          object.entries = [sorted[0]];
