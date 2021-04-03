@@ -4,7 +4,7 @@ import { Entry } from '@type';
 
 export default defineJob({
    id: 'updateHome',
-   perMinute: 30,
+   perMinute: 0.05,
    handler: updateHomeHandler,
 });
 
@@ -24,10 +24,11 @@ function updateHomeHandler() {
          );
          object.entries = [sorted[0]];
       }
+      return object;
    });
 
    // 0 tane entrysi olan başlıkları sil
-   const filteredHeaders = headers.filter(header => {
+   const filteredHeaders = entriesShuffledHeader.filter(header => {
       return header.entries.length > 0;
    });
    db.set('homeData', filteredHeaders);
