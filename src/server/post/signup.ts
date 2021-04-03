@@ -46,6 +46,7 @@ export default defineSyncHandler((req, res) => {
                      password,
                      entries: [],
                      isAdmin: false,
+                     likes: [],
                   })
                   .write();
 

@@ -10,8 +10,8 @@ export const Config = {
       headerMin: 1,
    },
    db_defaults: {
+      jobDateStore: {},
       homeData: [],
-      storedDates: {},
       users: [],
       headers: [],
       leftContent: [],

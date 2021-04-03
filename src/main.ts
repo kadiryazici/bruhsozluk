@@ -9,13 +9,15 @@ import { Msg } from '@messages';
 import { Config } from '@config';
 
 import middlewareAuthRequired from '@middleware/authRequired';
-import middlewareauthRequiredAdmin from '@middleware/authRequiredAdmin';
+import middlewareAuthRequiredAdmin from '@middleware/authRequiredAdmin';
 
 import postSignup from '@post/signup';
 import postLogin from '@post/login';
 import postAddHeader from '@post/addHeader';
 import postAddEntry from '@post/addEntry';
 import postSearchHeader from '@post/searchHeader';
+import postLikeEntry from '@post/likeEntry';
+import postUnlikeEntry from '@post/unlikeEntry';
 
 import deleteHeader from '@delete/deleteHeader';
 import deleteEntry from '@delete/deleteEntry';
@@ -23,6 +25,7 @@ import deleteEntry from '@delete/deleteEntry';
 import getHeader from '@get/getHeader';
 import getEntry from '@get/getEntry';
 import getVerification from '@get/getVerification';
+import getHome from '@get/getHome';
 
 import { createJob, startJobHandler } from '@jobs/index';
 import jobUpdateHome from '@jobs/updateHome';
@@ -50,19 +53,23 @@ async function createServer() {
       app.get('/header/:header_id', getHeader);
       app.get('/entry/:header_id/:entry_id', getEntry);
       app.get('/verify', getVerification);
+      app.get('/home', getHome);
    }
+
    /* App POST: */ {
       app.post('/signup', postSignup);
       app.post('/login', postLogin);
       app.post('/add_header', middlewareAuthRequired, postAddHeader);
       app.post('/add_entry', middlewareAuthRequired, postAddEntry);
       app.post('/search', postSearchHeader);
+      app.post('/like', middlewareAuthRequired, postLikeEntry);
+      app.post('/unlike', middlewareAuthRequired, postUnlikeEntry);
    }
 
    /* App DELETE: */ {
       app.delete(
          '/delete_header/:header_id',
-         middlewareauthRequiredAdmin,
+         middlewareAuthRequiredAdmin,
          deleteHeader
       );
 

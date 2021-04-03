@@ -2,6 +2,8 @@ import { useDB } from '@db';
 import { minuteToMiliseconds } from '@helpers/functions';
 import chalk from 'chalk';
 
+const DATE_DB_STORE_NAME = 'jobDateStore';
+
 export interface Job {
    perMinute: number;
    handler: () => void | Promise<void>;
@@ -9,7 +11,6 @@ export interface Job {
 }
 
 let timeout: null | ReturnType<typeof setTimeout> = null;
-// const jobs: Job[] = [];
 
 type JobMap = Map<
    string,
@@ -26,9 +27,9 @@ const jobsMap: JobMap = new Map();
 export function createJob(job: Job) {
    const { handler, perMinute, id } = job;
    const db = useDB();
-   const lastTimeStore = db.get(`storedDates.${id}`).value();
+   const lastTimeStore = db.get(`${DATE_DB_STORE_NAME}.${id}`).value();
    if (!lastTimeStore) {
-      db.set(`storedDates.${id}`, 0).write();
+      db.set(`${DATE_DB_STORE_NAME}.${id}`, 0).write();
    }
    jobsMap.set(id, {
       perMinute,
@@ -40,13 +41,13 @@ export function startJobHandler() {
    timeout = globalThis.setTimeout(async () => {
       const db = useDB();
       for (const [jobID, jobData] of jobsMap) {
-         const dbHeaderDate = db.get('storedDates').get(jobID);
+         const dbHeaderDate = db.get(DATE_DB_STORE_NAME).get(jobID);
          const lastTimeWorked = dbHeaderDate.value() as number;
          if (
             Date.now() - lastTimeWorked >=
             minuteToMiliseconds(jobData.perMinute)
          ) {
-            db.set(`storedDates.${jobID}`, Date.now()).write();
+            db.set(`${DATE_DB_STORE_NAME}.${jobID}`, Date.now()).write();
             await jobData.handler();
             JobRunMessage(jobID);
          }

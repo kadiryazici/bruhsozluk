@@ -4,7 +4,7 @@ import { Entry } from '@type';
 
 export default defineJob({
    id: 'updateHome',
-   perMinute: 30, // run every 30 minutes
+   perMinute: 25, // run every 25 minutes
    handler: updateHomeHandler,
 });
 
@@ -24,17 +24,17 @@ function updateHomeHandler() {
 
       //if there is entry
       if (header.entries.length > 0) {
-         const sorted = header.entries.sort(
+         const sortedEntries = [...header.entries].sort(
             (a, b) => b.liked_by.length - a.liked_by.length
          );
-         object.entries = [sorted[0]];
+         object.entries = [sortedEntries[0]];
       }
       return object;
    });
 
-   // 0 tane entrysi olan başlıkları sil
+   // remove headers that has 0 entry.
    const filteredHeaders = entriesShuffledHeader.filter(header => {
       return header.entries.length > 0;
    });
-   db.set('homeData', filteredHeaders);
+   db.set('homeData', filteredHeaders).write();
 }

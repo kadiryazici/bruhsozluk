@@ -54,7 +54,13 @@ function deleteHeaderEntriesFromUsers(header_id: string) {
          db.get('users')
             .find({ id: user_id })
             .get('entries')
-            .remove({ header_id: header_id })
+            .remove({ header_id })
+            .write();
+
+         db.get('users')
+            .find({ id: user_id })
+            .get('likes')
+            .remove({ header_id })
             .write();
       })
       .write();

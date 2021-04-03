@@ -36,6 +36,12 @@ export default defineSyncHandler((req, res) => {
                   .remove({ entry_id, header_id })
                   .write();
 
+               db.get('users')
+                  .find({ username: entryValue.username })
+                  .get('likes')
+                  .remove({ entry_id, header_id })
+                  .write();
+
                responseSuccess(res, Msg.delete_entry.success.msg);
             } else {
                responseError(res, Msg.auth.error.msg);

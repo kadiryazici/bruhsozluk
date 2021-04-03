@@ -1,8 +1,8 @@
 type LeftContent = LeftContentItem[];
 
 interface Database {
-   homeEntryHeadersData: HomeHeaderEntryResponse[];
-   storedDates: {};
+   homeData: Header[];
+   jobDateStore: {};
    users: User[];
    headers: Header[];
    leftContent: LeftContent;
@@ -12,12 +12,6 @@ export interface Header {
    entries: Entry[];
    id: string;
    name: string;
-}
-
-export interface HomeHeaderEntryResponse {
-   header_id: string;
-   header_name: string;
-   entry: Entry;
 }
 
 export interface Entry {
@@ -40,6 +34,7 @@ export interface User {
    username: string;
    password: string;
    entries: UserEntryStore[];
+   likes: UserLikesStore[];
    isAdmin: boolean;
 }
 export interface UserEntryStore {
@@ -80,3 +75,6 @@ export interface getHeaderResponsePage {
    totalResults: number;
 }
 export type getHeaderResponse = Header & getHeaderResponsePage;
+
+export interface PostLikeBody extends UserEntryStore {}
+export interface UserLikesStore extends UserEntryStore {}

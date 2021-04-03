@@ -97,10 +97,29 @@ export const Msg = {
 
    get_verification: {
       error: {
-         msg: 'Yanlış kullanıcı kimliği.',
+         msg: 'Yanlış kullanıcı kimliği ya da bir hata oluştu.',
       },
       success: {
          msg: 'Doğru kullanıcı kimliği.',
+      },
+   },
+
+   post_likeEntry: {
+      error: {
+         msg:
+            'Ya hata oldu ya eksik bilgi verdin ya da tekrar beğenmeye çalışıyorsun.',
+      },
+      success: {
+         msg: 'Ayy Şimdi bunu beğendim mi ben?',
+      },
+   },
+
+   post_unlikeEntry: {
+      error: {
+         msg: 'Ya hata oldu ya eksik bilgi verdin ya da zaten bunu beğenmedin.',
+      },
+      success: {
+         msg: 'Hıh sevmemiştim zaten!',
       },
    },
 };
