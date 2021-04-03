@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { useDB } from '@db';
 import { responseError } from '@helpers/functions';
 import { Msg } from '@messages';
+import { Config } from '@config';
 
 import middlewareAuthRequired from '@middleware/authRequired';
 import middlewareauthRequiredAdmin from '@middleware/authRequiredAdmin';
@@ -22,11 +23,9 @@ import deleteEntry from '@delete/deleteEntry';
 import getHeader from '@get/getHeader';
 import getEntry from '@get/getEntry';
 import getVerification from '@get/getVerification';
-import { Config } from '@config';
 
-// JOBS
 import { createJob, startJobHandler } from '@jobs/index';
-import updateHome from '@jobs/updateHome';
+import jobUpdateHome from '@jobs/updateHome';
 
 async function createServer() {
    /* DB SETUP: */ {
@@ -81,7 +80,7 @@ async function createServer() {
    }
 
    /*Register JOBS: */ {
-      createJob(updateHome);
+      createJob(jobUpdateHome);
       startJobHandler();
    }
 }

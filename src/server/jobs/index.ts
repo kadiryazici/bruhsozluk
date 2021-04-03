@@ -1,5 +1,6 @@
 import { useDB } from '@db';
 import { minuteToMiliseconds } from '@helpers/functions';
+import chalk from 'chalk';
 
 let timeout: null | ReturnType<typeof setTimeout> = null;
 
@@ -41,15 +42,13 @@ export function startJobHandler() {
       for (const job of jobs) {
          const dbHeaderDate = db.get('storedDates').get(job.id);
          const lastTimeWorked = dbHeaderDate.value() as number;
-         console.log({
-            condition: Date.now() - lastTimeWorked >= job.perMinute,
-         });
          if (
             Date.now() - lastTimeWorked >=
             minuteToMiliseconds(job.perMinute)
          ) {
             db.set(`storedDates.${job.id}`, Date.now()).write();
             await job.handler();
+            JobRunMessage(job.id);
          }
       }
       startJobHandler();
@@ -60,4 +59,9 @@ export function stopJobHandler() {
    if (timeout) {
       clearTimeout(timeout);
    }
+}
+
+export function JobRunMessage(job_name: string) {
+   const text = `${chalk.magenta('JOB:')} ${chalk.green(job_name)} has run`;
+   console.log(text);
 }
