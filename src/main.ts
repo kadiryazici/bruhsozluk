@@ -26,6 +26,8 @@ import getHeader from '@get/getHeader';
 import getEntry from '@get/getEntry';
 import getVerification from '@get/getVerification';
 import getHome from '@get/getHome';
+import getUser from '@get/getUser';
+import getLikedEntriesByUser from '@get/getLikedEntriesByUser';
 
 import { createJob, startJobHandler } from '@jobs/index';
 import jobUpdateHome from '@jobs/updateHome';
@@ -53,6 +55,8 @@ async function createServer() {
       app.get('/header/:header_id', getHeader);
       app.get('/entry/:header_id/:entry_id', getEntry);
       app.get('/verify', getVerification);
+      app.get('/user/:userName', getUser);
+      app.get('/user/:userName/likes', getLikedEntriesByUser);
       app.get('/home', getHome);
    }
 

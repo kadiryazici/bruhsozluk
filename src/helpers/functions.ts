@@ -57,6 +57,8 @@ export function sanitizeHeaderName(name: string) {
       .replace(/\f/g, ' ')
       .replace(/\v/g, ' ');
 
+   sanitized = replaceHyphensToSpaces(sanitized);
+
    // string'i önce diziye çeviriyorum sonra .map ile döngüleyip karakter destekleniyorsa geri döndürüyorum.
    // deskteklenmeyen karakterleri siliyoruz
    // girdi: *?-?qw$ çıktı: qw$
@@ -94,6 +96,9 @@ export function sanitizeHeaderName(name: string) {
 export function sanitizeUserName(username: string) {
    const supportedLetters =
       '1234567890' + 'abcçdefgğhıijklmnoöprsşjtuüvyz' + 'qwx' + ' ';
+
+   username = replaceHyphensToSpaces(username);
+
    let usernameArray = [...username.toLocaleLowerCase('tr-TR')];
    usernameArray = usernameArray.map(letter => {
       if (supportedLetters.includes(letter)) return letter;
@@ -108,6 +113,13 @@ export function sanitizeUserName(username: string) {
 
 export function removeMultipleSpaces(str: string): string {
    return str.replace(/  +/g, ' ');
+}
+
+/**
+ * @description Replaces Hyphens(-) to Spaces(  ).
+ */
+export function replaceHyphensToSpaces(str: string): string {
+   return str.replace('-', ' ');
 }
 
 export function replaceTurkishLetters(str: string): string {

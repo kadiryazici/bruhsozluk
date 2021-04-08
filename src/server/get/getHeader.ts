@@ -33,7 +33,6 @@ export default defineSyncHandler((req, res) => {
                totalPage: Math.ceil(header.entries.length / 10),
                totalResults: header.entries.length,
             };
-            console.log({ entryStart, entryEnd });
             header.entries = header.entries.slice(entryStart, entryEnd);
 
             res.status(200).json({

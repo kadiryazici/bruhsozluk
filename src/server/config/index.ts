@@ -9,6 +9,9 @@ export const Config = {
       headerMax: 50,
       headerMin: 1,
    },
+   get_user: {
+      pageEntryCount: 10, // her sayfa için kaç entry olacak.
+   },
    db_defaults: {
       jobDateStore: {},
       homeData: [],

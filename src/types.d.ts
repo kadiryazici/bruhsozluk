@@ -37,9 +37,32 @@ export interface User {
    likes: UserLikesStore[];
    isAdmin: boolean;
 }
+
+export interface GetUserResponse extends PageResponse {
+   id: User['id'];
+   username: User['username'];
+   entries: GetUserResponseEntries[];
+   isAdmin: User['isAdmin'];
+}
+
+export interface GetUserResponseEntries {
+   header_name: Header['name'];
+   header_id: Header['id'];
+   entry: Entry; // bu dizi olmayacak
+}
+
+export interface GetLikesResponse extends GetUserResponse {}
+export interface GetLikedEntriesByUserEntries extends GetUserResponseEntries {}
+
+export interface GetUserResponseEntries {
+   header_name: Header['name'];
+   header_id: Header['id'];
+   entry: Entry; // bu dizi olmayacak
+}
+
 export interface UserEntryStore {
-   header_id: string;
-   entry_id: string;
+   header_id: Header['id'];
+   entry_id: Entry['id'];
 }
 
 export interface SignupBody {
@@ -69,11 +92,18 @@ export interface DeleteHeaderParams {
    header_id: string;
 }
 
+export interface PageResponse {
+   currentPage: number;
+   totalPage: number;
+   totalResults: number;
+}
+
 export interface getHeaderResponsePage {
    currentPage: number;
    totalPage: number;
    totalResults: number;
 }
+
 export type getHeaderResponse = Header & getHeaderResponsePage;
 
 export interface PostLikeBody extends UserEntryStore {}
