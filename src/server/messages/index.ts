@@ -122,4 +122,22 @@ export const Msg = {
          msg: 'Hıh sevmemiştim zaten!',
       },
    },
+
+   get_liked_entries_by_user: {
+      error: {
+         missingParams: 'Bazı parametreler eksik.',
+         userNotFound: `Böyle bir kullanıcı bulamadık.`,
+      },
+   },
+
+   post_verify_header: {
+      error: {
+         cannotCreate: 'Bu başlığı açamayız.',
+         alreadyExists: 'Bu başlık zaten var.',
+         missingParameters: 'Bazı parametreler eksik',
+      },
+      success: {
+         msg: 'Bu başlık açılabilir.',
+      },
+   },
 };

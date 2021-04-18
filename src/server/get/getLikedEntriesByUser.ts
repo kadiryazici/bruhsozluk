@@ -10,6 +10,8 @@ import { Config } from '@config';
 /*
 AUTH NOT REQUIRED
 /user/{ user_name }/?page=1
+ user_name should be seperated by "-" not " ". 
+"bruh sozluk" should be "bruh-sozluk"
 */
 export default defineSyncHandler((req, res) => {
    if (req.params && req.params.userName) {
@@ -81,12 +83,15 @@ export default defineSyncHandler((req, res) => {
             });
          } else {
             // KULLANICI BULUNAMADI
-            responseError(res, Msg.get_header.error.wrongHeaderID); // yanlış username?
+            responseError(
+               res,
+               Msg.get_liked_entries_by_user.error.userNotFound
+            ); // yanlış username?
          }
       } else {
-         responseError(res, Msg.get_header.error.neededParams);
+         responseError(res, Msg.get_liked_entries_by_user.error.missingParams);
       }
    } else {
-      responseError(res, Msg.get_header.error.neededParams);
+      responseError(res, Msg.get_liked_entries_by_user.error.missingParams);
    }
 });

@@ -18,6 +18,7 @@ import postAddEntry from '@post/addEntry';
 import postSearchHeader from '@post/searchHeader';
 import postLikeEntry from '@post/likeEntry';
 import postUnlikeEntry from '@post/unlikeEntry';
+import postVerifyHeader from '@post/verifyHeader';
 
 import deleteHeader from '@delete/deleteHeader';
 import deleteEntry from '@delete/deleteEntry';
@@ -63,11 +64,12 @@ async function createServer() {
    /* App POST: */ {
       app.post('/signup', postSignup);
       app.post('/login', postLogin);
+      app.post('/search', postSearchHeader);
       app.post('/add_header', middlewareAuthRequired, postAddHeader);
       app.post('/add_entry', middlewareAuthRequired, postAddEntry);
-      app.post('/search', postSearchHeader);
       app.post('/like', middlewareAuthRequired, postLikeEntry);
       app.post('/unlike', middlewareAuthRequired, postUnlikeEntry);
+      app.post('/verify_header', middlewareAuthRequired, postVerifyHeader);
    }
 
    /* App DELETE: */ {
