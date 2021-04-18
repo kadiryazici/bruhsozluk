@@ -17,8 +17,7 @@ export default defineSyncHandler((req, res) => {
 
    if (name) {
       const sanitizedName = sanitizeHeaderName(name);
-      const trimmedHeaderLength = trimLength(sanitizedName);
-      if (trimmedHeaderLength >= headerMin) {
+      if (sanitizedName.length >= headerMin) {
          const db = useDB();
 
          const header = db
