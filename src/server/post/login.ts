@@ -8,11 +8,13 @@ import { LoginBody, LoginResponse } from '@type';
 import { Msg } from '@messages';
 
 export default defineSyncHandler((req, res) => {
-   const { username, password }: LoginBody = req.body;
+   let { username, password }: LoginBody = req.body;
 
    if (username && password) {
       const trimmedUsernameLength = trimLength(username);
       const trimmedPasswordLength = trimLength(password);
+
+      username = username.trim();
 
       if (trimmedUsernameLength > 0 && trimmedPasswordLength > 0) {
          const db = useDB();
