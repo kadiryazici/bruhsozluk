@@ -1,5 +1,10 @@
 <script lang="ts" setup>
 import VInput from '/src/components/Input/Input.vue';
+import { reactive, ref } from 'vue';
+const input = reactive({
+   username: '',
+   password: '',
+});
 
 ref: username = '';
 ref: password = '';
@@ -12,20 +17,28 @@ ref: error = true;
       <div class="login-body">
          <label class="_label">kullanıcı adı</label>
          <VInput
-            :error="error"
-            errorMessage="bu yanlış olabilir"
             v-model="username"
+            v-model:error="error"
+            errorMessage="bu yanlış olabilir"
+            :type="'text'"
          />
 
          <label class="_label">şifre</label>
          <VInput
-            :error="error"
+            v-model:error="error"
             errorMessage="bu da yanlış olabilir bilemiycem"
             v-model="password"
+            :type="'password'"
          />
       </div>
       <div class="login-footer">
-         <VButton :text-color="'primary'" :color="'turq'"> yolla </VButton>
+         <VButton
+            @click="error = !error"
+            :text-color="'primary'"
+            :color="'turq'"
+         >
+            yolla
+         </VButton>
       </div>
    </div>
 </template>

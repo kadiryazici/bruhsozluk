@@ -30,7 +30,7 @@ ref: liked = false;
       </div>
       <div class="entry-footer">
          <div class="entry-info">
-            <span class="writer">kadiryazici</span>
+            <a href="#" class="link writer">kadiryazici</a>
             <span role="time" class="date">// 24.13.2015</span>
          </div>
          <div class="icon-section">

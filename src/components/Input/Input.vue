@@ -2,13 +2,15 @@
 import { defineProps, defineEmit } from 'vue';
 
 const props = defineProps<{
-   error?: boolean;
-   errorMessage?: string;
+   errorMessage: string;
    modelValue: string;
+   type: 'text' | 'password';
+   error: boolean;
 }>();
 
 const emit = defineEmit({
    'update:modelValue': (value: string) => true,
+   'update:error': (value: boolean) => true,
 });
 
 function onInput(e: Event) {
@@ -16,14 +18,19 @@ function onInput(e: Event) {
       emit('update:modelValue', e.currentTarget.value);
    }
 }
+
+function onChange() {
+   emit('update:error', false);
+}
 </script>
 <template>
    <div class="input-wrapper">
       <input
-         class="_input"
-         :value="props.modelValue"
          @input="onInput"
-         type="text"
+         @change="onChange"
+         :value="props.modelValue"
+         class="_input"
+         :type="type"
       />
       <div :class="{ hidden: !error }" class="input-error">
          {{ props.errorMessage }}

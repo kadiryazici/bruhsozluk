@@ -1,7 +1,34 @@
 <script lang="ts" setup>
-import LeftHeader from '/src/components/LeftBar/Header.vue';
-ref: icons = ['person', 'refresh', 'search', 'add_circle_outline'];
+import { reactive } from '@vue/reactivity';
+import LeftHeader from './HeaderItem.vue';
+import { useModalStore } from '/src/store/modalStore';
+const modalStore = useModalStore();
+
+const icons = reactive([
+   {
+      title: 'Profil',
+      name: 'person',
+      isLink: true,
+      href: '/baslik',
+   },
+   {
+      title: 'Ara',
+      name: 'search',
+      isLink: false,
+      click: handleSearchClick,
+   },
+   {
+      title: 'Yenile',
+      isLink: false,
+      name: 'refresh',
+   },
+]);
+
+function handleSearchClick() {
+   modalStore.likesModal = true;
+}
 </script>
+
 <template>
    <aside id="left-content-wrapper">
       <div id="left-content">
@@ -11,16 +38,31 @@ ref: icons = ['person', 'refresh', 'search', 'add_circle_outline'];
             </router-link>
 
             <div class="icons">
-               <icon
-                  class="icon button hover:turq"
-                  role="button"
-                  :tabindex="0"
-                  :title="icon"
-                  :aria-label="icon"
-                  v-for="icon in icons"
-                  :name="icon"
-                  @click="$log(icon)"
-               />
+               <template :key="icon" v-for="icon in icons">
+                  <template v-if="icon.isLink && icon.href">
+                     <RouterLink class="button" :to="icon.href">
+                        <icon
+                           class="icon button hover:turq"
+                           role="button"
+                           :tabindex="0"
+                           :title="icon.title"
+                           :aria-label="icon.title"
+                           :name="icon.name"
+                           @click="icon.click"
+                        />
+                     </RouterLink>
+                  </template>
+                  <icon
+                     class="icon button hover:turq"
+                     role="button"
+                     :tabindex="0"
+                     :title="icon.title"
+                     :aria-label="icon.title"
+                     :name="icon.name"
+                     @click="icon.click"
+                     v-else
+                  />
+               </template>
             </div>
          </div>
 
@@ -30,6 +72,8 @@ ref: icons = ['person', 'refresh', 'search', 'add_circle_outline'];
       </div>
    </aside>
 </template>
+
+<script setup></script>
 
 <style lang="scss" scoped>
 #left-content-wrapper {

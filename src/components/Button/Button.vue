@@ -12,6 +12,7 @@
             'text-primary': props.textColor === 'primary',
          },
       ]"
+      ı
       class="button _button"
    >
       <slot />
@@ -24,7 +25,7 @@ export type TextColors = 'turq' | 'ruby' | 'primary' | 'secondary';
 </script>
 
 <script lang="ts" setup>
-import { defineProps, onMounted } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps<{
    color?: Colors;
