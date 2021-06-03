@@ -2,11 +2,9 @@ import { cors } from '@tinyhttp/cors';
 import { logger } from '@tinyhttp/logger';
 import bodyParser from 'body-parser';
 
-import { app, Delete, Get, Listen, Post, Use } from '@app';
+import { Delete, Get, Listen, Post, Use } from '@app';
 
 import { useDB } from '@db';
-import { responseError } from '@helpers/functions';
-import { Msg } from '@messages';
 import { Config } from '@config';
 
 import middlewareAuthRequired from '@middleware/authRequired';
