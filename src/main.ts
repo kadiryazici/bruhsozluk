@@ -1,7 +1,8 @@
-import { App } from '@tinyhttp/app';
 import { cors } from '@tinyhttp/cors';
 import { logger } from '@tinyhttp/logger';
 import bodyParser from 'body-parser';
+
+import { app, Delete, Get, Listen, Post, Use } from '@app';
 
 import { useDB } from '@db';
 import { responseError } from '@helpers/functions';
@@ -39,47 +40,40 @@ async function createServer() {
       db.defaults(Config.db_defaults).write();
    }
 
-   const app = new App({
-      // sunucu temelli bir hata olduğunda, bu hatayı ben devralıyorum.
-      onError: (err, req, res) => {
-         responseError(res, Msg.app.error.msg);
-      },
-   });
-
    /* App USE: */ {
-      app.use(cors());
-      app.use(bodyParser.json());
-      app.use(logger());
+      Use(cors());
+      Use(bodyParser.json());
+      Use(logger());
    }
 
    /* App GET: */ {
-      app.get('/header/:header_id', getHeader);
-      app.get('/entry/:header_id/:entry_id', getEntry);
-      app.get('/verify', getVerification);
-      app.get('/user/:userName', getUser);
-      app.get('/user/:userName/likes', getLikedEntriesByUser);
-      app.get('/home', getHome);
+      Get('/header/:header_id', getHeader);
+      Get('/entry/:header_id/:entry_id', getEntry);
+      Get('/verify', getVerification);
+      Get('/user/:userName', getUser);
+      Get('/user/:userName/likes', getLikedEntriesByUser);
+      Get('/home', getHome);
    }
 
    /* App POST: */ {
-      app.post('/signup', postSignup);
-      app.post('/login', postLogin);
-      app.post('/search', postSearchHeader);
-      app.post('/add_header', middlewareAuthRequired, postAddHeader);
-      app.post('/add_entry', middlewareAuthRequired, postAddEntry);
-      app.post('/like', middlewareAuthRequired, postLikeEntry);
-      app.post('/unlike', middlewareAuthRequired, postUnlikeEntry);
-      app.post('/verify_header', middlewareAuthRequired, postVerifyHeader);
+      Post('/signup', postSignup);
+      Post('/login', postLogin);
+      Post('/search', postSearchHeader);
+      Post('/add_header', middlewareAuthRequired, postAddHeader);
+      Post('/add_entry', middlewareAuthRequired, postAddEntry);
+      Post('/like', middlewareAuthRequired, postLikeEntry);
+      Post('/unlike', middlewareAuthRequired, postUnlikeEntry);
+      Post('/verify_header', middlewareAuthRequired, postVerifyHeader);
    }
 
    /* App DELETE: */ {
-      app.delete(
+      Delete(
          '/delete_header/:header_id',
          middlewareAuthRequiredAdmin,
          deleteHeader
       );
 
-      app.delete(
+      Delete(
          '/delete_entry/:header_id/:entry_id',
          middlewareAuthRequired,
          deleteEntry
@@ -87,8 +81,8 @@ async function createServer() {
    }
 
    /* App LISTEN: */ {
-      app.listen(3000, () => {
-         console.log('server is on: 3000');
+      Listen(Config.app.port, () => {
+         console.log(`server is on: ${Config.app.port}`);
       });
    }
 

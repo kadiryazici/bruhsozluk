@@ -2,8 +2,7 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    responseError,
-   sanitizeHeaderName,
-   trimLength,
+   sanitizeHeaderName
 } from '@helpers/functions';
 import { AddHeaderBody, AddHeaderResponse } from '@type';
 import { nanoid } from 'nanoid';
@@ -23,7 +22,7 @@ export default defineSyncHandler((req, res) => {
          const header = db
             .get('headers')
             .find({
-               name: sanitizedName,
+               name: sanitizedName
             })
             .value();
 
@@ -35,7 +34,7 @@ export default defineSyncHandler((req, res) => {
                .push({
                   entries: [],
                   id,
-                  name,
+                  name
                })
                .write();
 

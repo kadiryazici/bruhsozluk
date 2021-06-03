@@ -12,6 +12,7 @@
       "outDir": "./dist/",
       "rootDir": "./src/",
       "paths": {
+         "@app": ["src/server/app.ts"],
          "@helpers/*": ["src/helpers/*"],
          "@get/*": ["src/server/get/*"],
          "@post/*": ["src/server/post/*"],
