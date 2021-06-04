@@ -2,11 +2,14 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    responseError,
-   trimLength,
+   trimLength
 } from '@helpers/functions';
 import { LoginBody, LoginResponse } from '@type';
 import { Msg } from '@messages';
 
+// No Auth Required
+// Post: /login
+// Body: LoginBody in @types
 export default defineSyncHandler((req, res) => {
    let { username, password }: LoginBody = req.body;
 
@@ -23,7 +26,7 @@ export default defineSyncHandler((req, res) => {
             .get('users')
             .find({
                username,
-               password,
+               password
             })
             .value();
 
@@ -39,7 +42,7 @@ export default defineSyncHandler((req, res) => {
          res.status(200).json(<LoginResponse>{
             username: user.username,
             isAdmin: user.isAdmin,
-            auth_id: user.auth_id,
+            auth_id: user.auth_id
          });
       } else {
          responseError(

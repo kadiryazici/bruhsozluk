@@ -10,6 +10,9 @@ interface SearchResponse {
    id: string;
 }
 
+// No Auth
+// Post: /search
+// Body: SearchBody in this file.
 export default defineSyncHandler((req, res) => {
    if (req.body && req.body.query) {
       const db = useDB();
@@ -18,7 +21,7 @@ export default defineSyncHandler((req, res) => {
          .map(header => {
             return {
                id: header.id,
-               name: header.name,
+               name: header.name
             };
          })
          .value();

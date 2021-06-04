@@ -1,15 +1,18 @@
 import { useDB } from '@db';
 import {
-   defineSyncHandler,
+   defineAsyncHandler,
    responseError,
-   sanitizeEntryBody,
+   sanitizeEntryBody
 } from '@helpers/functions';
 import { Msg } from '@messages';
 import { AddEntryBody, Entry } from '@type';
 import { nanoid } from 'nanoid';
+import { addHeader2Left } from '@server/leftContent';
 
 // AUTH REQUIRED
-export default defineSyncHandler((req, res) => {
+// Post add_entry
+// Body: AddEntryBody in @types
+export default defineAsyncHandler(async (req, res) => {
    const { body, header_id }: AddEntryBody = req.body;
    const { error } = Msg.add_entry;
    const { authorization } = req.headers;
@@ -23,17 +26,17 @@ export default defineSyncHandler((req, res) => {
 
          if (entryBody.length > 0) {
             const user = db.get('users').find({
-               auth_id: authorization,
+               auth_id: authorization
             });
 
             const username = user.get('username').value();
 
-            let data = {
+            const data = {
                body,
                date: Date.now(),
                id: nanoid(),
                liked_by: [],
-               username,
+               username
             } as Entry;
 
             header.get('entries').push(data).write();
@@ -43,9 +46,12 @@ export default defineSyncHandler((req, res) => {
                .get('entries')
                .push({
                   entry_id: data.id,
-                  header_id: header.get('id').value(),
+                  header_id: header.get('id').value()
                })
                .write();
+
+            // add current header to left content, because it is the last one b*tch.
+            await addHeader2Left(header.value().id);
 
             res.status(200).json(data);
          } else {

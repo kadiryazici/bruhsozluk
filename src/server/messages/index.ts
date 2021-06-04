@@ -139,4 +139,11 @@ export class Msg {
          msg: 'Bu başlık açılabilir.'
       }
    };
+
+   static left_content = {
+      error: {
+         headerNotFound: 'Başlık Bulunamadı.'
+      },
+      success: 'Başlık başarılı bir şekilde sol kısma eklendi.'
+   };
 }

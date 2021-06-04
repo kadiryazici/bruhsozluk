@@ -2,9 +2,10 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    responseError,
-   responseSuccess,
+   responseSuccess
 } from '@helpers/functions';
 import { Msg } from '@messages';
+import { removeHeaderFromLeft } from '@server/leftContent';
 
 // /delete_header/{ header_id }
 export default defineSyncHandler((req, res) => {
@@ -18,7 +19,7 @@ export default defineSyncHandler((req, res) => {
          const header = db
             .get('headers')
             .find({
-               id: header_id,
+               id: header_id
             })
             .value();
 
@@ -27,7 +28,7 @@ export default defineSyncHandler((req, res) => {
 
             db.get('headers')
                .remove({
-                  id: header_id,
+                  id: header_id
                })
                .write();
 
@@ -64,4 +65,6 @@ function deleteHeaderEntriesFromUsers(header_id: string) {
             .write();
       })
       .write();
+
+   removeHeaderFromLeft(header_id);
 }

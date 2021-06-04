@@ -9,6 +9,9 @@ import { nanoid } from 'nanoid';
 import { Msg } from '@messages';
 import { Config } from '@config';
 
+// Auth required
+// Post /add_header
+// Body: AddHeaderBody in @types
 export default defineSyncHandler((req, res) => {
    const { name }: AddHeaderBody = req.body;
 

@@ -3,7 +3,7 @@ import type {
    AsyncHandler,
    Response,
    Request,
-   NextFunction,
+   NextFunction
 } from '@tinyhttp/app';
 
 export function defineSyncHandler(fn: SyncHandler): SyncHandler {
@@ -25,7 +25,7 @@ export function trimLength(value: string) {
 export function responseError(res: Response, msg: string, status = 400) {
    res.status(status).json({
       type: status === 404 ? 'not found' : 'error',
-      msg,
+      msg
    });
    return;
 }
@@ -33,7 +33,7 @@ export function responseError(res: Response, msg: string, status = 400) {
 export function responseSuccess(res: Response, msg: string) {
    res.status(200).json({
       type: 'success',
-      msg,
+      msg
    });
    return;
 }
@@ -129,7 +129,7 @@ export function replaceTurkishLetters(str: string): string {
       ['ü', 'u'],
       ['ş', 's'],
       ['ö', 'o'],
-      ['ç', 'c'],
+      ['ç', 'c']
    ];
    for (let [tr, en] of trToEn) {
       const regex = RegExp(`\\${tr}`, 'g');
