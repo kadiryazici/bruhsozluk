@@ -5,6 +5,8 @@ import router from '/src/router/router';
 import Icon from '/src/components/Icon/Icon.vue';
 import VButton from '/src/components/Button/Button.vue';
 
+import 'modal-component-vue3/css/style.css';
+
 const app = createApp(App);
 
 app.config.globalProperties.$log = console.log;

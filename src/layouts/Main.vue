@@ -1,7 +1,6 @@
 <script lang="ts" setup></script>
 
 <template>
-   <!-- <main id="app"> -->
    <div class="left">
       <slot name="left" />
    </div>
@@ -10,7 +9,6 @@
          <slot name="content" />
       </div>
    </div>
-   <!-- </main> -->
 </template>
 
 <style lang="scss" scoped>

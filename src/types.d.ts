@@ -1,11 +1,13 @@
 import { RouterLink, RouterView } from 'vue-router';
-import VIF from '/src/components/UtilityComponents/v-if.vue';
+import Icon from '/src/components/Icon/Icon.vue';
+import VButton from '/src/components/Button/Button.vue';
 
-declare global {
-   interface __VLS_GlobalComponents {
+declare module 'vue' {
+   interface GlobalComponents {
       RouterLink: typeof RouterLink;
       RouterView: typeof RouterView;
-      VIF: typeof VIF;
+      VButton: typeof VButton;
+      Icon: typeof Icon;
    }
 }
 

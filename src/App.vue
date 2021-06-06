@@ -9,9 +9,9 @@
    </Main>
 
    <!-- MODALS WILL BE HERE -->
-   <ModalWrapper v-model:visible="modalStore.likesModal">
+   <Modal v-model:visible="modalStore.visibility.likesModal">
       <ModalLikes />
-   </ModalWrapper>
+   </Modal>
 </template>
 
 <script lang="ts" setup>
@@ -20,16 +20,17 @@ import { watchEffect } from 'vue';
 
 import Main from '/src/layouts/Main.vue';
 import Left from '/src/components/LeftBar/Left.vue';
+import { Modal } from 'modal-component-vue3';
 
-import ModalWrapper from '/src/components/ModalWrapper/index.vue';
 import ModalLikes from '/src/components/Modals/Likes/index.vue';
 
-import { useModalStore, useModalStoreGetters } from './store/modalStore';
+import { useModalStore, useModalStoreGetters } from '/src/stores/modalStore';
 
 const route = useRoute();
+
+// MODAL CHECK
 const modalStore = useModalStore();
 const { isThereOpenModal } = useModalStoreGetters();
-// MODAL CHECK
 
 watchEffect(() => {
    if (isThereOpenModal.value) {
@@ -45,11 +46,13 @@ html,
 body,
 #app {
    width: 100%;
-   height: 100%;
+   min-height: 100%;
+   background-color: colors.$primary;
+}
+#app {
    display: flex;
    flex-flow: row nowrap;
    align-items: stretch;
-   background-color: colors.$primary;
 }
 
 // body {
@@ -72,26 +75,30 @@ a.button {
    border: none;
    background-color: inherit;
    transition: 0.25s all;
+   outline: none;
 
-   &.hover\:turq:hover *,
-   &.hover\:turq:hover {
-      color: colors.$turq !important;
-   }
+   &:not(.no-hover) {
+      &.hover\:turq:hover *,
+      &.hover\:turq:hover {
+         color: colors.$turq !important;
+      }
 
-   &:active,
-   &:focus {
-      transform: scale(0.9);
-      outline: none;
+      &:active,
+      &:focus {
+         transform: scale(0.9);
+         outline: none;
+      }
    }
 }
 
 * {
    scrollbar-width: thin;
-   scrollbar-color: colors.$scrollbarThumb, colors.$scrollbarBackground;
+   scrollbar-color: colors.$scrollbarThumb transparent;
 
    &::-webkit-scrollbar {
       width: 2px;
-      background-color: colors.$scrollbarBackground;
+      height: 2px;
+      background-color: transparent;
    }
 
    &::-webkit-scrollbar-thumb {

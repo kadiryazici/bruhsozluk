@@ -3,7 +3,7 @@
 <template>
    <div class="left-header-wrapper">
       <div class="body">bruh sözlüğün fevkalade bir site olması ama iyi</div>
-      <div class="count">25</div>
+      <div class="count">{{ Math.floor(Math.random() * 120) }}</div>
    </div>
 </template>
 

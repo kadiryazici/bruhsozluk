@@ -1,16 +1,11 @@
 <template>
    <button
       :class="[
+         props.color,
+         `text-${props.textColor}`,
          {
-            turq: props.color === 'turq',
-            ruby: props.color === 'ruby',
-         },
-         {
-            'text-ruby': props.textColor === 'ruby',
-            'text-secondary': props.textColor === 'secondary',
-            'text-turq': props.textColor === 'turq',
-            'text-primary': props.textColor === 'primary',
-         },
+            'no-hover': noHover
+         }
       ]"
       ı
       class="button _button"
@@ -20,28 +15,38 @@
 </template>
 
 <script lang="ts">
-export type Colors = 'turq' | 'ruby';
-export type TextColors = 'turq' | 'ruby' | 'primary' | 'secondary';
+export type Colors = 'turq' | 'ruby' | 'primary' | 'secondary' | 'tertiary';
 </script>
 
 <script lang="ts" setup>
 import { defineProps } from 'vue';
 
-const props = defineProps<{
-   color?: Colors;
-   textColor: TextColors;
-}>();
+const props =
+   defineProps<{
+      color?: Colors;
+      square?: boolean;
+      textColor: Colors;
+      noHover?: boolean;
+   }>();
 </script>
 
 <style lang="scss" scoped>
-$wrapperWidth: 400px;
 ._button {
    border-radius: vars.$radius;
    padding: funcs.padding(1.5);
    display: inline-flex;
+   min-height: 40px;
    align-items: center;
    justify-content: center;
    color: colors.$primary;
+
+   &.square {
+      width: 40px;
+      height: 40px;
+      max-width: 40px;
+      max-height: 40px;
+   }
+
    &,
    & * {
       font-size: 20px;
@@ -52,6 +57,15 @@ $wrapperWidth: 400px;
    }
    &.ruby {
       background-color: colors.$ruby;
+   }
+   &.primary {
+      background-color: colors.$primary;
+   }
+   &.secondary {
+      background-color: colors.$secondary;
+   }
+   &.tertiary {
+      background-color: colors.$tertiary;
    }
 
    &.text {
@@ -66,6 +80,9 @@ $wrapperWidth: 400px;
       }
       &-secondary {
          color: colors.$secondary;
+      }
+      &-tertiary {
+         color: colors.$tertiary;
       }
    }
 }

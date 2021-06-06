@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { reactive } from '@vue/reactivity';
 import LeftHeader from './HeaderItem.vue';
-import { useModalStore } from '/src/store/modalStore';
-const modalStore = useModalStore();
+import { useModalStoreMethods } from '/src/stores/modalStore';
+const { openLikeModal } = useModalStoreMethods();
 
 const icons = reactive([
    {
@@ -15,7 +15,7 @@ const icons = reactive([
       title: 'Ara',
       name: 'search',
       isLink: false,
-      click: handleSearchClick,
+      click: openLikeModal.bind(null, { headerID: '', entryID: '' }),
    },
    {
       title: 'Yenile',
@@ -23,10 +23,6 @@ const icons = reactive([
       name: 'refresh',
    },
 ]);
-
-function handleSearchClick() {
-   modalStore.likesModal = true;
-}
 </script>
 
 <template>
@@ -48,19 +44,19 @@ function handleSearchClick() {
                            :title="icon.title"
                            :aria-label="icon.title"
                            :name="icon.name"
-                           @click="icon.click"
                         />
                      </RouterLink>
                   </template>
+
                   <icon
+                     v-else
                      class="icon button hover:turq"
                      role="button"
                      :tabindex="0"
                      :title="icon.title"
                      :aria-label="icon.title"
                      :name="icon.name"
-                     @click="icon.click"
-                     v-else
+                     @click="icon.click ? icon.click() : undefined"
                   />
                </template>
             </div>

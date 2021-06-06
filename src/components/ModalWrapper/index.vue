@@ -22,14 +22,16 @@ const closeModal = () => {
 
 <style lang="scss" scoped>
 $padding: 20px;
+$width: 100%;
+$height: 100%;
 ._modal_wrapper {
    padding: $padding;
    background-color: colors.$modalBackground;
    display: flex;
    align-items: center;
    justify-content: center;
-   width: 100vw;
-   height: 100vh;
+   width: $width;
+   height: $height;
    height: -webkit-fill-available;
    height: fill-available;
    overflow-x: hidden;
