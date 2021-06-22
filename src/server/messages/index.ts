@@ -146,4 +146,10 @@ export class Msg {
       },
       success: 'Başlık başarılı bir şekilde sol kısma eklendi.'
    };
+
+   static Likes = {
+      error: {
+         missingParameteres: 'Bazı parametrelet eksik.'
+      }
+   };
 }

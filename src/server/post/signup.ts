@@ -1,9 +1,8 @@
 import {
    defineSyncHandler,
-   trimLength,
    responseError,
    responseSuccess,
-   sanitizeUserName,
+   sanitizeUserName
 } from '@helpers/functions';
 import { nanoid } from 'nanoid';
 
@@ -27,7 +26,7 @@ export default defineSyncHandler((req, res) => {
          const user = db
             .get('users')
             .find({
-               username,
+               username
             })
             .value();
 
@@ -46,7 +45,7 @@ export default defineSyncHandler((req, res) => {
                      password,
                      entries: [],
                      isAdmin: false,
-                     likes: [],
+                     likes: []
                   })
                   .write();
 

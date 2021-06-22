@@ -28,6 +28,8 @@ import getVerification from '@get/getVerification';
 import getHome from '@get/getHome';
 import getUser from '@get/getUser';
 import getLikedEntriesByUser from '@get/getLikedEntriesByUser';
+import getLeft from '@get/getLeft';
+import getLikesFromEntry from '@get/getlikesFromEntry';
 
 import { createJob, startJobHandler } from '@jobs/index';
 import jobUpdateHome from '@jobs/updateHome';
@@ -39,7 +41,11 @@ async function createServer() {
    }
 
    /* App USE: */ {
-      Use(cors());
+      Use(
+         cors({
+            allowedHeaders: ['Authorization']
+         })
+      );
       Use(bodyParser.json());
       Use(logger());
    }
@@ -51,6 +57,8 @@ async function createServer() {
       Get('/user/:userName', getUser);
       Get('/user/:userName/likes', getLikedEntriesByUser);
       Get('/home', getHome);
+      Get('/left', getLeft);
+      Get('/likes/:header_id/:entry_id', getLikesFromEntry);
    }
 
    /* App POST: */ {

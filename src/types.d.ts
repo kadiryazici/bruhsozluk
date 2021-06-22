@@ -19,6 +19,7 @@ export interface Entry {
    body: string;
    date: number;
    username: string;
+   header_id: string;
    liked_by: string[];
 }
 
@@ -109,6 +110,4 @@ export type getHeaderResponse = Header & getHeaderResponsePage;
 export interface PostLikeBody extends UserEntryStore {}
 export interface UserLikesStore extends UserEntryStore {}
 
-export interface VerifyHeaderBody {
-   name: string;
-}
+export interface VerifyHeaderBody extends AddHeaderBody {}

@@ -35,9 +35,9 @@ export default defineSyncHandler((req, res) => {
 
             db.get('headers')
                .push({
-                  entries: [],
                   id,
-                  name
+                  name,
+                  entries: []
                })
                .write();
 

@@ -11,6 +11,17 @@ export default defineSyncHandler((req, res) => {
       if (header_id) {
          const db = useDB();
          const header = db.get('headers').find({ id: header_id }).value();
+
+         const hdr = db.get('headers').value();
+         const targetHeader = hdr.filter(v => {
+            return header_id === v.id;
+         });
+
+         console.log({
+            targetHeader,
+            targetHeaderLength: targetHeader[0].entries.length
+         });
+
          if (header) {
             let page = 1;
 
@@ -24,20 +35,19 @@ export default defineSyncHandler((req, res) => {
             } else {
                page = parseInt(req.query.page);
             }
-
             const entryStart = 10 * page - 10;
             const entryEnd = entryStart + 10;
-
             const pageData: getHeaderResponsePage = {
                currentPage: page,
                totalPage: Math.ceil(header.entries.length / 10),
-               totalResults: header.entries.length,
+               totalResults: header.entries.length
             };
+
             header.entries = header.entries.slice(entryStart, entryEnd);
 
             res.status(200).json({
                ...pageData,
-               ...header,
+               ...header
             } as getHeaderResponse);
          } else {
             responseError(res, Msg.get_header.error.wrongHeaderID);
@@ -48,4 +58,5 @@ export default defineSyncHandler((req, res) => {
    } else {
       responseError(res, Msg.get_header.error.neededParams);
    }
+   return;
 });

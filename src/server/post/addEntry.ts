@@ -36,7 +36,8 @@ export default defineAsyncHandler(async (req, res) => {
                date: Date.now(),
                id: nanoid(),
                liked_by: [],
-               username
+               username,
+               header_id: header.value().id
             } as Entry;
 
             header.get('entries').push(data).write();
