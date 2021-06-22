@@ -1,14 +1,37 @@
 <script lang="ts" setup>
 import VInput from '/src/components/Input/Input.vue';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
+import { postLogin } from '/src/api/postLogin';
+import { usePromise } from 'vierone';
+import { useAppStore } from '/src/stores/appStore';
+import { useRouter } from 'vue-router';
+import { SetUserAuthID } from '/src/helpers/auth';
+
+const router = useRouter();
+const appStore = useAppStore();
+
+ref: error = false;
 const input = reactive({
    username: '',
-   password: '',
+   password: ''
 });
 
-ref: username = '';
-ref: password = '';
-ref: error = true;
+async function handleLogin() {
+   const [res, err] = await usePromise(postLogin({ ...input }));
+   if (err) {
+      error = true;
+      input.password = '';
+      return;
+   }
+
+   appStore.isLogged = true;
+   appStore.userInformation.unshift(res!.data);
+   const [user] = appStore.userInformation;
+   SetUserAuthID(user.auth_id);
+   router.push({
+      name: 'Home'
+   });
+}
 </script>
 
 <template>
@@ -17,7 +40,7 @@ ref: error = true;
       <div class="login-body">
          <label class="_label">kullanıcı adı</label>
          <VInput
-            v-model="username"
+            v-model="input.username"
             v-model:error="error"
             errorMessage="bu yanlış olabilir"
             :type="'text'"
@@ -27,16 +50,12 @@ ref: error = true;
          <VInput
             v-model:error="error"
             errorMessage="bu da yanlış olabilir bilemiycem"
-            v-model="password"
+            v-model="input.password"
             :type="'password'"
          />
       </div>
       <div class="login-footer">
-         <VButton
-            @click="error = !error"
-            :text-color="'primary'"
-            :color="'turq'"
-         >
+         <VButton @click="handleLogin" :text-color="'primary'" :color="'turq'">
             yolla
          </VButton>
       </div>

@@ -1,27 +1,42 @@
 <script lang="ts" setup>
-import { reactive } from '@vue/reactivity';
+import { onMounted, reactive } from 'vue';
 import LeftHeader from './HeaderItem.vue';
-import { useModalStoreMethods } from '/src/stores/modalStore';
-const { openLikeModal } = useModalStoreMethods();
+import type { LeftContent } from '/src/api/types';
+import { getHome } from '/src/api/getLeft';
+import { usePromise } from 'vierone';
+
+const leftItems = reactive<LeftContent>([]);
+onMounted(async () => {
+   await fetchLeft();
+});
+
+async function fetchLeft() {
+   const [res, err] = await usePromise(getHome());
+   leftItems.length = 0;
+   if (res) {
+      const { data } = res;
+      leftItems.push(...data);
+   }
+}
 
 const icons = reactive([
    {
       title: 'Profil',
       name: 'person',
       isLink: true,
-      href: '/baslik',
+      href: '/login'
    },
    {
       title: 'Ara',
       name: 'search',
-      isLink: false,
-      click: openLikeModal.bind(null, { headerID: '', entryID: '' }),
+      isLink: false
    },
    {
       title: 'Yenile',
       isLink: false,
       name: 'refresh',
-   },
+      click: fetchLeft
+   }
 ]);
 </script>
 
@@ -30,7 +45,7 @@ const icons = reactive([
       <div id="left-content">
          <div class="top-menu">
             <router-link class="logo" to="/">
-               <VButton :textColor="'turq'">BRUH</VButton>
+               <VButton noPadding :textColor="'turq'">BRUH</VButton>
             </router-link>
 
             <div class="icons">
@@ -63,7 +78,11 @@ const icons = reactive([
          </div>
 
          <section class="headers-section">
-            <LeftHeader :key="n" v-for="n in 20" />
+            <LeftHeader
+               :itemData="item"
+               :key="item.id"
+               v-for="item in leftItems"
+            />
          </section>
       </div>
    </aside>

@@ -1,44 +1,80 @@
 <script lang="ts" setup>
+import { usePromise } from 'vierone';
+import { defineProps, onMounted, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { getHeader } from '/src/api/getHeader';
 import Entry from '/src/components/Entry/Entry.vue';
+import type { getHeaderResponse } from '/src/api/types.d';
+
+const route = useRoute();
+
+ref: loading = true;
+ref: activePage = 1;
+
+const pageData = reactive<getHeaderResponse[]>([]);
+
+onMounted(async () => {
+   const id = route.params.id as string;
+   const page = route.params.page as string | undefined;
+
+   if (page && !isNaN(parseInt(page))) {
+      activePage = parseInt(page);
+   }
+
+   const [res, err] = await usePromise(getHeader(id, page));
+   if (res) {
+      const { data } = res;
+      pageData.push(data);
+      loading = false;
+   }
+});
 </script>
 
 <template>
-   <div class="header-view">
-      <div class="header">
-         <div class="name">bruh sözlüğün mükemmel bir site olması</div>
-         <div class="page-changer">
-            <Icon
-               role="button"
-               aria-label="önceki sayfa"
-               title="önceki sayfa"
-               class="disable icon button"
-               name="keyboard_arrow_left"
-            />
-            <div :tabindex="0" class="page-number">
-               1/5
-               <div class="page-number-changer">
-                  <div
-                     :class="{ active: n === 1 }"
-                     v-for="n in 20"
-                     :key="n"
-                     class="item"
-                  >
-                     {{ n }}
+   <div v-if="loading">yükleniyor.....</div>
+   <div v-else class="header-view">
+      <template v-for="header in pageData">
+         <div class="header">
+            <div class="name">{{ header.name }}</div>
+            <div class="page-changer">
+               <Icon
+                  role="button"
+                  aria-label="önceki sayfa"
+                  title="önceki sayfa"
+                  class="disable icon button"
+                  name="keyboard_arrow_left"
+               />
+               <div :tabindex="0" class="page-number">
+                  {{ `${activePage}/${header.totalPage}` }}
+                  <div class="page-number-changer">
+                     <div
+                        :class="{ active: page === activePage }"
+                        v-for="page in header.totalPage"
+                        :key="page"
+                        class="item"
+                     >
+                        {{ page }}
+                     </div>
                   </div>
                </div>
+               <Icon
+                  role="button"
+                  aria-label="sonraki sayfa"
+                  title="sonraki sayfa"
+                  class="icon button"
+                  name="keyboard_arrow_right"
+               />
             </div>
-            <Icon
-               role="button"
-               aria-label="sonraki sayfa"
-               title="sonraki sayfa"
-               class="icon button"
-               name="keyboard_arrow_right"
+         </div>
+         <div class="entries">
+            <Entry
+               :entryData="entry"
+               class="entry"
+               v-for="entry in header.entries"
+               :key="entry.id"
             />
          </div>
-      </div>
-      <div class="entries">
-         <Entry class="entry" v-for="n in 7" :key="n" />
-      </div>
+      </template>
    </div>
 </template>
 

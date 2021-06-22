@@ -1,9 +1,16 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { defineProps } from 'vue';
+import type { LeftContentItem } from '/src/api/types.d';
+
+const props = defineProps<{
+   itemData: LeftContentItem;
+}>();
+</script>
 
 <template>
    <div class="left-header-wrapper">
-      <div class="body">bruh sözlüğün fevkalade bir site olması ama iyi</div>
-      <div class="count">{{ Math.floor(Math.random() * 120) }}</div>
+      <div class="body">{{ props.itemData.name }}</div>
+      <div class="count">{{ props.itemData.total_entry }}</div>
    </div>
 </template>
 

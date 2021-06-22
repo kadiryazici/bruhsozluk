@@ -1,32 +1,44 @@
 <script lang="ts" setup>
+import { defineProps, onBeforeUnmount } from 'vue';
+import type { Entry } from '/src/api/types';
+import { Modal } from 'modal-component-vue3';
+import ModalLikes from '/src/components/Modals/Likes/index.vue';
+import { getLikesOfEntry } from '/src/api/getLikesOfEntry';
+import { usePromise } from 'vierone';
+
 ref: liked = false;
+ref: isModalOpen = false;
+ref: likesOfEntry = [] as string[];
+
+const props = defineProps<{
+   entryData: Entry;
+}>();
+
+onBeforeUnmount(() => {
+   isModalOpen = false;
+});
+
+async function openModal() {
+   isModalOpen = true;
+
+   const [res, err] = await usePromise(
+      getLikesOfEntry({
+         header_id: props.entryData.header_id,
+         entry_id: props.entryData.id
+      })
+   );
+
+   if (res) {
+      const { data } = res;
+      likesOfEntry = data;
+   }
+}
 </script>
 
 <template>
    <div class="entry-wrapper">
       <div class="entry-body">
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate
-         assumenda illo asperiores iusto aliquam quam vitae molestias eius!
-         Veritatis ullam debitis ratione id non voluptas exercitationem
-         excepturi magnam molestiae natus laborum odio eius voluptate ex
-         corporis sit doloremque impedit illum, optio corrupti vero itaque
-         expedita dolorem assumenda. Nemo, alias adipisci!
-         <br />
-         <br />
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
-         quasi! Debitis accusantium esse voluptatibus velit, quidem quia
-         doloribus, nemo deleniti perferendis, temporibus quisquam reprehenderit
-         laborum aperiam aliquam odit inventore. Vel magni quis blanditiis
-         fugiat eum maxime, est ab a quod adipisci corrupti fugit at dolor
-         corporis odio aut. Repellat, nostrum!
-         <br />
-         <br />
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam
-         mollitia eveniet ad quisquam aperiam nesciunt facere consequuntur rerum
-         unde aliquid deleniti non quaerat, qui vero cumque debitis facilis
-         eligendi laudantium. Corrupti consectetur magnam aliquam veritatis quam
-         tenetur delectus debitis tempore cupiditate asperiores? Ipsa, ipsam a
-         quaerat numquam tenetur dignissimos pariatur!
+         {{ props.entryData.body }}
       </div>
       <div class="entry-footer">
          <div class="entry-info">
@@ -42,7 +54,13 @@ ref: liked = false;
                @click="liked = !liked"
                :name="liked ? 'favorite' : 'favorite_border'"
             />
-            <span class="count">215</span>
+            <span
+               v-if="props.entryData.liked_by.length > 0"
+               @click="openModal"
+               role="button"
+               class="count"
+               >{{ props.entryData.liked_by.length }}</span
+            >
             <Icon
                aria-label="sil"
                title="sil"
@@ -52,6 +70,10 @@ ref: liked = false;
             />
          </div>
       </div>
+
+      <Modal v-model:visible="isModalOpen">
+         <ModalLikes :users="likesOfEntry" @hide="isModalOpen = false" />
+      </Modal>
    </div>
 </template>
 
@@ -71,6 +93,7 @@ ref: liked = false;
       margin-bottom: funcs.padding(2);
       font-size: vars.$entryBodyFontSize;
       box-shadow: vars.$shadowDarkDown;
+      white-space: pre-line;
    }
 
    .entry-footer {
@@ -115,6 +138,10 @@ ref: liked = false;
          }
          .count {
             color: colors.$ruby;
+            cursor: pointer;
+            &:hover {
+               text-decoration: underline;
+            }
          }
          .delete-icon {
             margin-left: auto;

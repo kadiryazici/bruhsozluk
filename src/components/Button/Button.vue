@@ -4,7 +4,8 @@
          props.color,
          `text-${props.textColor}`,
          {
-            'no-hover': noHover
+            'no-hover': noHover,
+            'no-padding': noPadding
          }
       ]"
       ı
@@ -21,24 +22,26 @@ export type Colors = 'turq' | 'ruby' | 'primary' | 'secondary' | 'tertiary';
 <script lang="ts" setup>
 import { defineProps } from 'vue';
 
-const props =
-   defineProps<{
-      color?: Colors;
-      square?: boolean;
-      textColor: Colors;
-      noHover?: boolean;
-   }>();
+const props = defineProps<{
+   color?: Colors;
+   square?: boolean;
+   textColor: Colors;
+   noHover?: boolean;
+   noPadding?: boolean;
+}>();
 </script>
 
 <style lang="scss" scoped>
 ._button {
    border-radius: vars.$radius;
-   padding: funcs.padding(1.5);
    display: inline-flex;
-   min-height: 40px;
    align-items: center;
    justify-content: center;
    color: colors.$primary;
+
+   &:not(.no-padding) {
+      padding: funcs.padding(1.5);
+   }
 
    &.square {
       width: 40px;

@@ -7,38 +7,31 @@
          <router-view :key="route.fullPath"> </router-view>
       </template>
    </Main>
-
-   <!-- MODALS WILL BE HERE -->
-   <Modal v-model:visible="modalStore.visibility.likesModal">
-      <ModalLikes />
-   </Modal>
 </template>
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import { watchEffect } from 'vue';
 
 import Main from '/src/layouts/Main.vue';
 import Left from '/src/components/LeftBar/Left.vue';
-import { Modal } from 'modal-component-vue3';
-
-import ModalLikes from '/src/components/Modals/Likes/index.vue';
-
-import { useModalStore, useModalStoreGetters } from '/src/stores/modalStore';
+import { openModalCount } from 'modal-component-vue3';
+import { VerifyUser } from './helpers/auth';
+import { useAppStore } from './stores/appStore';
 
 const route = useRoute();
 
-// MODAL CHECK
-const modalStore = useModalStore();
-const { isThereOpenModal } = useModalStoreGetters();
+const appStore = useAppStore();
 
-watchEffect(() => {
-   if (isThereOpenModal.value) {
-      document.body.style.setProperty('overflow', 'hidden');
-   } else {
-      document.body.style.setProperty('overflow', 'auto');
-   }
-});
+// MODAL CHECK
+
+// watchEffect(() => {
+//    console.log(openModalCount.value);
+//    if (openModalCount.value > 0) {
+//       document.body.style.setProperty('overflow', 'hidden');
+//    } else {
+//       document.body.style.setProperty('overflow', 'auto');
+//    }
+// });
 </script>
 
 <style lang="scss">

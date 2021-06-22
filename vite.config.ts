@@ -22,5 +22,8 @@ export default defineConfig({
    server: {
       port: 8080,
       host: true
+   },
+   optimizeDeps: {
+      include: ['modal-component-vue3', 'axios']
    }
 });

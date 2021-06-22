@@ -1,20 +1,32 @@
 <script lang="ts" setup>
-import Entry from '/src/components/Entry/Entry.vue';
-ref: headers = [
-   '27 mart sorunsalı',
-   'bugün attan düşmem',
-   'faruk yeşil neden bu kadar ünlü',
-   'bruh sözlük güzel sözlük',
-   '1.55 boyunda kıllı gözlüklü göbekli erkek',
-];
+import { defineProps } from 'vue';
+import EntryVue from '/src/components/Entry/Entry.vue';
+import type { Header } from '/src/api/types.d';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const props = defineProps<{
+   data: Header;
+}>();
 </script>
 
 <template>
    <div class="home-entry">
-      <div class="header">
-         {{ headers[Math.floor(Math.random() * headers.length)] }}
+      <div
+         @click="
+            router.push({
+               name: 'Header',
+               params: {
+                  id: props.data.id
+               }
+            })
+         "
+         class="header"
+      >
+         {{ props.data.name }}
       </div>
-      <Entry />
+      <EntryVue :entryData="entry" v-for="entry in props.data.entries" />
    </div>
 </template>
 

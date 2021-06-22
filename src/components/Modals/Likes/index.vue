@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+import { defineEmit, defineProps } from 'vue';
+import Item from './Item.vue';
+import type { Entry } from '/src/api/types.d';
+
+const emit = defineEmit({
+   hide: () => true
+});
+
+const props = defineProps<{
+   users: Entry['liked_by'];
+}>();
+</script>
+
 <template>
    <div class="_likes">
       <div class="head">
@@ -10,7 +24,7 @@
             class="_close_button"
             :text-color="'ruby'"
             :color="'tertiary'"
-            @click="closeLikeModal"
+            @click="emit('hide')"
             noHover
             square
          >
@@ -19,21 +33,10 @@
       </div>
 
       <div class="users">
-         <Item v-for="n in 20">{{
-            ['farook yeshil', 'mavi sacli cocuk'][n % 2]
-         }}</Item>
+         <Item :key="user" v-for="user in props.users">{{ user }}</Item>
       </div>
    </div>
 </template>
-
-<script lang="ts" setup>
-import Item from './Item.vue';
-import { useModalStoreMethods } from '/src/stores/modalStore';
-
-// defineProps: header_id, entry_id for likes.
-
-const { closeLikeModal } = useModalStoreMethods();
-</script>
 
 <style lang="scss" scoped>
 $maxWidth: 400px;
