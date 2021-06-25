@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import VInput from '/src/components/Input/Input.vue';
 import { reactive } from 'vue';
-import { postLogin } from '/src/api/postLogin';
+import { postSignup } from '/src/api/postSignup';
 import { usePromise } from 'vierone';
 import { useAppStore } from '/src/stores/appStore';
 import { useRouter } from 'vue-router';
@@ -22,20 +22,15 @@ const input = reactive({
 
 async function handleLogin() {
    try {
-      const res = await postLogin({ ...input });
-      appStore.isLogged = true;
-      appStore.userInformation.unshift(res.data);
-      const [user] = appStore.userInformation;
-      SetUserAuthID(user.auth_id);
+      const res = await postSignup({ ...input });
       router.push({
-         name: 'Home'
+         name: 'Login'
       });
       notification.createNotification({
          kind: 'success',
-         text: 'başarılı bir şekilde giriş yapıldı'
+         text: 'başarılı bir şekilde kayıt yapıldı'
       });
    } catch (err) {
-      input.password = '';
       notification.createNotification({
          kind: 'error',
          text: (err.response.data as MsgResponse).msg
@@ -47,7 +42,7 @@ async function handleLogin() {
 
 <template>
    <div class="login-wrapper">
-      <div class="login-header">giriş</div>
+      <div class="login-header">kayıt ol</div>
       <div class="login-body">
          <label class="_label">kullanıcı adı</label>
          <VInput
@@ -68,10 +63,10 @@ async function handleLogin() {
             <RouterLink
                class="link"
                :to="{
-                  name: 'Signup'
+                  name: 'Login'
                }"
             >
-               Hesabınız yok mu? O zaman kayıt olun.
+               Hesabınız zaten var mı? giriş yapın o zaman.
             </RouterLink>
          </div>
       </div>

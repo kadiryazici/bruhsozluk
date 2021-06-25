@@ -1,7 +1,9 @@
 import { usePromise } from 'vierone';
 import { createRouter, createWebHistory, NavigationGuard } from 'vue-router';
-import { GetUserAuthID, VerifyUser } from '../helpers/auth';
-import { useAppStore } from '../stores/appStore';
+import { VerifyUser } from '/src/api/auth';
+import { GetUserAuthID } from '/src/helpers/auth';
+import { useAppStore } from '/src/stores/appStore';
+import { useModalStore } from '/src/stores/modalStore';
 
 const NoAuthHandle: NavigationGuard = async (to, from, next) => {
    const auth_id = GetUserAuthID();
@@ -56,8 +58,20 @@ const router = createRouter({
          name: 'Login',
          component: () => import('/src/pages/Login.vue'),
          beforeEnter: [NoAuthHandle]
+      },
+      {
+         path: '/signup',
+         name: 'Signup',
+         component: () => import('/src/pages/Signup.vue'),
+         beforeEnter: [NoAuthHandle]
       }
    ]
+});
+
+router.beforeEach((to, from, next) => {
+   const modalStore = useModalStore();
+   modalStore.closeAllModals();
+   next();
 });
 
 export default router;

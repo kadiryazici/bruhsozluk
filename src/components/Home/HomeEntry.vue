@@ -13,18 +13,17 @@ const props = defineProps<{
 
 <template>
    <div class="home-entry">
-      <div
-         @click="
-            router.push({
+      <div class="header">
+         <RouterLink
+            :to="{
                name: 'Header',
                params: {
                   id: props.data.id
                }
-            })
-         "
-         class="header"
-      >
-         {{ props.data.name }}
+            }"
+         >
+            {{ props.data.name }}
+         </RouterLink>
       </div>
       <EntryVue :entryData="entry" v-for="entry in props.data.entries" />
    </div>
@@ -42,5 +41,12 @@ const props = defineProps<{
    display: inline-block;
    margin-bottom: funcs.padding(1.5);
    font-size: vars.$headerFontSize;
+   * {
+      color: inherit;
+      text-decoration: inherit;
+      &:visited {
+         color: inherit;
+      }
+   }
 }
 </style>

@@ -111,3 +111,17 @@ export interface PostLikeBody extends UserEntryStore {}
 export interface UserLikesStore extends UserEntryStore {}
 
 export interface VerifyHeaderBody extends AddHeaderBody {}
+
+export interface MsgResponse {
+   type: string;
+   msg: string;
+}
+
+interface SearchBody {
+   query: string;
+}
+
+interface SearchResponse {
+   name: string;
+   id: string;
+}

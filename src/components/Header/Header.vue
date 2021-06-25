@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { usePromise } from 'vierone';
 import { defineProps, onMounted, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getHeader } from '/src/api/getHeader';
 import Entry from '/src/components/Entry/Entry.vue';
 import type { getHeaderResponse } from '/src/api/types.d';
 
 const route = useRoute();
+const router = useRouter();
 
 ref: loading = true;
 ref: activePage = 1;
@@ -28,12 +29,42 @@ onMounted(async () => {
       loading = false;
    }
 });
+
+function navigate(kind: 'next' | 'previous') {
+   const [header] = pageData;
+   if (header) {
+      if (kind === 'next') {
+         if (activePage < header.totalPage) {
+            router.push({
+               name: 'Header',
+               params: {
+                  id: header.id,
+                  page: activePage + 1
+               }
+            });
+         }
+      } //
+      else if (kind === 'previous') {
+         if (activePage > 1) {
+            router.push({
+               name: 'Header',
+               params: {
+                  id: header.id,
+                  page: activePage - 1
+               }
+            });
+         }
+      }
+   }
+}
+// @ts-ignore
+window.go = router.go;
 </script>
 
 <template>
-   <div v-if="loading">yükleniyor.....</div>
-   <div v-else class="header-view">
-      <template v-for="header in pageData">
+   <div class="header-view">
+      <div v-if="loading">yükleniyor.....</div>
+      <template v-else v-for="header in pageData">
          <div class="header">
             <div class="name">{{ header.name }}</div>
             <div class="page-changer">
@@ -41,9 +72,14 @@ onMounted(async () => {
                   role="button"
                   aria-label="önceki sayfa"
                   title="önceki sayfa"
-                  class="disable icon button"
+                  class="icon button"
+                  :class="{
+                     disable: activePage == 1
+                  }"
+                  @click="navigate('previous')"
                   name="keyboard_arrow_left"
                />
+               <!-- PAGE SELECTOR -->
                <div :tabindex="0" class="page-number">
                   {{ `${activePage}/${header.totalPage}` }}
                   <div class="page-number-changer">
@@ -52,16 +88,32 @@ onMounted(async () => {
                         v-for="page in header.totalPage"
                         :key="page"
                         class="item"
+                        role="navigation"
                      >
-                        {{ page }}
+                        <RouterLink
+                           :to="{
+                              name: 'Header',
+                              params: {
+                                 id: header.id,
+                                 page
+                              }
+                           }"
+                        >
+                           {{ page }}
+                        </RouterLink>
                      </div>
                   </div>
                </div>
+               <!-- PAGE SELECTOR END -->
                <Icon
                   role="button"
                   aria-label="sonraki sayfa"
                   title="sonraki sayfa"
                   class="icon button"
+                  @click="navigate('next')"
+                  :class="{
+                     disable: activePage >= header.totalPage
+                  }"
                   name="keyboard_arrow_right"
                />
             </div>
@@ -115,7 +167,8 @@ onMounted(async () => {
             position: relative;
             outline: none;
 
-            &:focus .page-number-changer {
+            &:focus .page-number-changer,
+            &:focus-within .page-number-changer {
                display: block;
             }
             .page-number-changer {
@@ -134,8 +187,8 @@ onMounted(async () => {
                overscroll-behavior-y: contain;
 
                .item {
-                  padding: funcs.padding(1) funcs.padding(1.5);
                   width: 100%;
+                  display: flex;
                   color: colors.$secondary;
                   text-align: center;
 
@@ -145,6 +198,17 @@ onMounted(async () => {
 
                   &.active {
                      color: colors.$turq;
+                  }
+
+                  a {
+                     color: inherit;
+                     text-decoration: inherit;
+                     width: 100%;
+                     padding: funcs.padding(1) funcs.padding(1.5);
+
+                     &::visited {
+                        color: inherit;
+                     }
                   }
                }
             }

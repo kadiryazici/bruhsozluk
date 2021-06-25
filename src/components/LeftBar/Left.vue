@@ -4,6 +4,11 @@ import LeftHeader from './HeaderItem.vue';
 import type { LeftContent } from '/src/api/types';
 import { getHome } from '/src/api/getLeft';
 import { usePromise } from 'vierone';
+import { useAppStore } from '/src/stores/appStore';
+import { useModalStore } from '/src/stores/modalStore';
+
+const appStore = useAppStore();
+const modalStore = useModalStore();
 
 const leftItems = reactive<LeftContent>([]);
 onMounted(async () => {
@@ -18,62 +23,62 @@ async function fetchLeft() {
       leftItems.push(...data);
    }
 }
-
-const icons = reactive([
-   {
-      title: 'Profil',
-      name: 'person',
-      isLink: true,
-      href: '/login'
-   },
-   {
-      title: 'Ara',
-      name: 'search',
-      isLink: false
-   },
-   {
-      title: 'Yenile',
-      isLink: false,
-      name: 'refresh',
-      click: fetchLeft
-   }
-]);
 </script>
 
 <template>
    <aside id="left-content-wrapper">
       <div id="left-content">
          <div class="top-menu">
-            <router-link class="logo" to="/">
+            <RouterLink class="logo" to="/">
                <VButton noPadding :textColor="'turq'">BRUH</VButton>
-            </router-link>
+            </RouterLink>
 
             <div class="icons">
-               <template :key="icon" v-for="icon in icons">
-                  <template v-if="icon.isLink && icon.href">
-                     <RouterLink class="button" :to="icon.href">
-                        <icon
-                           class="icon button hover:turq"
-                           role="button"
-                           :tabindex="0"
-                           :title="icon.title"
-                           :aria-label="icon.title"
-                           :name="icon.name"
-                        />
-                     </RouterLink>
-                  </template>
-
+               <!-- LOGIN -->
+               <RouterLink
+                  v-if="!appStore.isLogged"
+                  class="router-link button"
+                  :to="{ name: 'Login' }"
+               >
                   <icon
-                     v-else
                      class="icon button hover:turq"
                      role="button"
                      :tabindex="0"
-                     :title="icon.title"
-                     :aria-label="icon.title"
-                     :name="icon.name"
-                     @click="icon.click ? icon.click() : undefined"
+                     title="Profil"
+                     aria-label="Profil"
+                     name="person"
                   />
-               </template>
+               </RouterLink>
+               <icon
+                  v-else
+                  class="icon button hover:turq"
+                  role="button"
+                  :tabindex="0"
+                  title="Profil"
+                  aria-label="Profil"
+                  name="person"
+                  @click="modalStore.isProfileModalOpen = true"
+               />
+
+               <Icon
+                  title="Ara"
+                  aria-label="ara"
+                  role="button"
+                  class="icon button hover:turq"
+                  tabindex="0"
+                  @click="modalStore.isSearchModalOpen = true"
+                  name="search"
+               />
+
+               <Icon
+                  title="Yenile"
+                  aria-label="Yenile"
+                  role="button"
+                  class="icon button hover:turq"
+                  tabindex="0"
+                  name="refresh"
+                  @click="fetchLeft"
+               />
             </div>
          </div>
 

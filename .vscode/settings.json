@@ -1,3 +1,4 @@
 {
-   "volar.tsPlugin": true
+   "volar.tsPlugin": true,
+   "typescript.preferences.importModuleSpecifier": "non-relative"
 }

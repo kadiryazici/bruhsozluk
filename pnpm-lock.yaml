@@ -1,30 +1,38 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@types/lodash.debounce': ^4.0.6
   '@vitejs/plugin-vue': ^1.2.3
   '@vue/compiler-sfc': 3.0.11
+  autoprefixer: ^10.2.6
   axios: ^0.21.1
-  modal-component-vue3: ^1.0.2
+  lodash.debounce: ^4.0.8
+  modal-component-vue3: ^1.1.0
+  nanoid: ^3.1.23
   pinia: ^2.0.0-beta.3
   sass: latest
   typescript: ^4.1.3
-  vierone: ^0.1.4
+  vierone: ^0.2.5
   vite: 2.3.6
   vue: 3.0.11
   vue-router: ^4.0.4
 
 dependencies:
   axios: 0.21.1
-  modal-component-vue3: 1.0.2
+  lodash.debounce: 4.0.8
+  modal-component-vue3: 1.1.0
+  nanoid: 3.1.23
   pinia: 2.0.0-beta.3
   typescript: 4.3.2
-  vierone: 0.1.4
+  vierone: 0.2.5
   vue: 3.0.11
   vue-router: 4.0.8_vue@3.0.11
 
 devDependencies:
+  '@types/lodash.debounce': 4.0.6
   '@vitejs/plugin-vue': 1.2.3_@vue+compiler-sfc@3.0.11
   '@vue/compiler-sfc': 3.0.11_vue@3.0.11
+  autoprefixer: 10.2.6
   sass: 1.35.1
   vite: 2.3.6
 
@@ -43,6 +51,16 @@ packages:
     dependencies:
       '@babel/helper-validator-identifier': 7.14.0
       to-fast-properties: 2.0.0
+
+  /@types/lodash.debounce/4.0.6:
+    resolution: {integrity: sha512-4WTmnnhCfDvvuLMaF3KV4Qfki93KebocUF45msxhYyjMttZDQYzHkO639ohhk8+oco2cluAFL3t5+Jn4mleylQ==}
+    dependencies:
+      '@types/lodash': 4.14.170
+    dev: true
+
+  /@types/lodash/4.14.170:
+    resolution: {integrity: sha512-bpcvu/MKHHeYX+qeEN8GE7DIravODWdACVA1ctevD8CN24RhPZIKMn9ntfAsrvLfSX3cR5RrBKAbYm9bGs0A+Q==}
+    dev: true
 
   /@vitejs/plugin-vue/1.2.3_@vue+compiler-sfc@3.0.11:
     resolution: {integrity: sha512-LlnLpObkGKZ+b7dcpL4T24l13nPSHLjo+6Oc7MbZiKz5PMAUzADfNJ3EKfYIQ0l0969nxf2jp/9vsfnuJ7h6fw==}
@@ -139,6 +157,21 @@ packages:
       picomatch: 2.3.0
     dev: true
 
+  /autoprefixer/10.2.6:
+    resolution: {integrity: sha512-8lChSmdU6dCNMCQopIf4Pe5kipkAGj/fvTMslCsih0uHpOrXOPUEVOmYMMqmw3cekQkSD7EhIeuYl5y0BLdKqg==}
+    engines: {node: ^10 || ^12 || >=14}
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.1.0
+    dependencies:
+      browserslist: 4.16.6
+      caniuse-lite: 1.0.30001239
+      colorette: 1.2.2
+      fraction.js: 4.1.1
+      normalize-range: 0.1.2
+      postcss-value-parser: 4.1.0
+    dev: true
+
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
@@ -165,6 +198,22 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.0.1
+    dev: true
+
+  /browserslist/4.16.6:
+    resolution: {integrity: sha512-Wspk/PqO+4W9qp5iUTJsa1B/QrYn1keNCcEP5OvP7WBwT4KaDly0uONYmC6Xa3Z5IqnUgS0KcgLYu1l74x0ZXQ==}
+    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
+    hasBin: true
+    dependencies:
+      caniuse-lite: 1.0.30001239
+      colorette: 1.2.2
+      electron-to-chromium: 1.3.758
+      escalade: 3.1.1
+      node-releases: 1.1.73
+    dev: true
+
+  /caniuse-lite/1.0.30001239:
+    resolution: {integrity: sha512-cyBkXJDMeI4wthy8xJ2FvDU6+0dtcZSJW3voUF8+e9f1bBeuvyZfc3PNbkOETyhbR+dGCPzn9E7MA3iwzusOhQ==}
     dev: true
 
   /chokidar/3.5.2:
@@ -203,6 +252,10 @@ packages:
     resolution: {integrity: sha512-u1wmTI1jJGzCJzWndZo8mk4wnPTZd1eOIYTYvuEyOQGfmDl3TrabCCfKnOC86FZwW/9djqTl933UF/cS425i9A==}
     dev: false
 
+  /electron-to-chromium/1.3.758:
+    resolution: {integrity: sha512-StYtiDbgZdjcck3OLwsVVVif7QDuD5m5v2gF+XpETp5lHa7X0y3129YBlYaHRPyj1fep1oAaC6i//gAdp+rhbw==}
+    dev: true
+
   /emojis-list/3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
     engines: {node: '>= 4'}
@@ -212,6 +265,11 @@ packages:
     resolution: {integrity: sha512-vxENKWBo928ErLiT/uUv8Sl2EoC5cF3cZzCTc8hDEh9ZAZ75xblJCr72NeJo74lxWaGopIePZPIWq1qDpLUHQQ==}
     hasBin: true
     requiresBuild: true
+    dev: true
+
+  /escalade/3.1.1:
+    resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
+    engines: {node: '>=6'}
     dev: true
 
   /estree-walker/2.0.2:
@@ -233,6 +291,10 @@ packages:
       debug:
         optional: true
     dev: false
+
+  /fraction.js/4.1.1:
+    resolution: {integrity: sha512-MHOhvvxHTfRFpF1geTK9czMIZ6xclsEor2wkIGYYq+PxcQqT7vStJqjhe6S1TenZrMZzo+wlqOufBDVepUEgPg==}
+    dev: true
 
   /fsevents/2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -332,6 +394,10 @@ packages:
     resolution: {integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY=}
     dev: true
 
+  /lodash.debounce/4.0.8:
+    resolution: {integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=}
+    dev: false
+
   /lru-cache/5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
     dependencies:
@@ -354,8 +420,8 @@ packages:
     resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
     dev: true
 
-  /modal-component-vue3/1.0.2:
-    resolution: {integrity: sha512-OSO6ZEgKMF6O4CXrt/XQmKEXD191rC67M+uqWCVSLK/Ev89nEbaVt6Rtgap5iOtjDMheMSOwIN6iiV3JZ6U9Xg==}
+  /modal-component-vue3/1.1.0:
+    resolution: {integrity: sha512-uW6+A0kh7k7x/G8YEF49J4rfkKdgvX07zFQP73BQ4cRnvkVhkpl5IpzWDYJ+zlXkXGAmw5tqnqSUy5kr9ixDFg==}
     dependencies:
       vue: 3.0.11
     dev: false
@@ -364,10 +430,18 @@ packages:
     resolution: {integrity: sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /node-releases/1.1.73:
+    resolution: {integrity: sha512-uW7fodD6pyW2FZNZnp/Z3hvWKeEW1Y8R1+1CnErE8cXFXzl5blBOoVB41CvMer6P6Q0S5FXDwcHgFd1Wj0U9zg==}
     dev: true
 
   /normalize-path/3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
+  /normalize-range/0.1.2:
+    resolution: {integrity: sha1-LRDAa9/TEuqXd2laTShDlFa3WUI=}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -532,8 +606,8 @@ packages:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
     dev: true
 
-  /vierone/0.1.4:
-    resolution: {integrity: sha512-vM8gJC2L+6ZHWxs6f/1K2p43yo/S3SyJBhumU3P9RKyuwzm4YbdfyVH3P6icb+taw0vzC19NwM8njt/UvNZF9w==}
+  /vierone/0.2.5:
+    resolution: {integrity: sha512-obJ81iQKgLtdYk0TaqxXgCgKUaqDeXJZ2H5Ao+RgXfk+TEarf5ShBfbf+Hk09Y0+8dhT3PzVIHQnRNaSbGmfpA==}
     dev: false
 
   /vite/2.3.6:
