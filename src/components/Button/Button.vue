@@ -11,7 +11,10 @@
       ı
       class="button _button"
    >
-      <slot />
+      <div :class="{ loading }" class="button-text">
+         <slot />
+      </div>
+      <Icon class="loading-icon" v-if="loading" name="refresh" />
    </button>
 </template>
 
@@ -20,7 +23,7 @@ export type Colors = 'turq' | 'ruby' | 'primary' | 'secondary' | 'tertiary';
 </script>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 
 const props = defineProps<{
    color?: Colors;
@@ -28,7 +31,13 @@ const props = defineProps<{
    textColor: Colors;
    noHover?: boolean;
    noPadding?: boolean;
+   loading?: boolean;
+   size?: string;
 }>();
+
+ref: buttonFontSize = computed(() => {
+   return props.size || '20px';
+});
 </script>
 
 <style lang="scss" scoped>
@@ -38,6 +47,7 @@ const props = defineProps<{
    align-items: center;
    justify-content: center;
    color: colors.$primary;
+   position: relative;
 
    &:not(.no-padding) {
       padding: funcs.padding(1.5);
@@ -50,9 +60,22 @@ const props = defineProps<{
       max-height: 40px;
    }
 
-   &,
-   & * {
-      font-size: 20px;
+   .button-text {
+      font-size: v-bind('buttonFontSize');
+
+      &.loading {
+         opacity: 0;
+      }
+   }
+
+   .loading-icon {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      animation: 0.75s circleAnimation linear infinite;
    }
 
    &.turq {
@@ -87,6 +110,15 @@ const props = defineProps<{
       &-tertiary {
          color: colors.$tertiary;
       }
+   }
+}
+
+@keyframes circleAnimation {
+   0% {
+      transform: rotate(0deg);
+   }
+   100% {
+      transform: rotate(360deg);
    }
 }
 </style>

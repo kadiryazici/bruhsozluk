@@ -2,15 +2,15 @@
 import { defineProps, defineEmit } from 'vue';
 
 const props = defineProps<{
-   errorMessage: string;
+   errorMessage?: string;
    modelValue: string;
    type: 'text' | 'password';
-   error: boolean;
+   error?: boolean;
 }>();
 
 const emit = defineEmit({
    'update:modelValue': (value: string) => true,
-   'update:error': (value: boolean) => true,
+   'update:error': (value: boolean) => true
 });
 
 function onInput(e: Event) {
@@ -23,7 +23,7 @@ function onChange() {
    emit('update:error', false);
 }
 </script>
-<template>
+<template inherit-attrs="false">
    <div class="input-wrapper">
       <input
          @input="onInput"
@@ -31,6 +31,7 @@ function onChange() {
          :value="props.modelValue"
          class="_input"
          :type="type"
+         v-bind="$attrs"
       />
       <div :class="{ hidden: !error }" class="input-error">
          {{ props.errorMessage }}

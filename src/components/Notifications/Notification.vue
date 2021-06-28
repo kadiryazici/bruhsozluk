@@ -71,7 +71,8 @@ $bodyColor: colors.$secondary;
    width: 100%;
    display: flex;
    position: relative;
-   padding: funcs.padding(1);
+   padding-left: funcs.padding(1);
+   padding-right: funcs.padding(1);
    background-color: $bg;
    flex-shrink: 0;
    flex-grow: 0;
@@ -82,6 +83,7 @@ $bodyColor: colors.$secondary;
 
    .title {
       margin-bottom: funcs.padding(1);
+      margin-top: funcs.padding(1);
       background-color: $fore;
       width: 100%;
       padding: funcs.padding(1);
@@ -93,6 +95,7 @@ $bodyColor: colors.$secondary;
    }
    .body {
       padding: funcs.padding(1);
+      margin-bottom: funcs.padding(1);
       border-radius: 0 0 vars.$radius vars.$radius;
       background-color: $fore;
       font-size: $bodyFontSize;

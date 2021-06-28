@@ -79,11 +79,12 @@ export interface LoginResponse {
 
 export interface AddHeaderBody {
    name: string;
+   entryBody: string;
 }
 export interface AddHeaderResponse {
    id: string;
+   entryPage: number;
 }
-
 export interface AddEntryBody {
    body: string;
    header_id: string;
@@ -124,4 +125,8 @@ interface SearchBody {
 interface SearchResponse {
    name: string;
    id: string;
+}
+
+interface AddEntryResponse extends Entry {
+   page: number;
 }

@@ -135,12 +135,15 @@ a.button {
 
 .link {
    text-decoration: none;
+   color: colors.$turq;
+   cursor: pointer;
    &:hover {
       text-decoration: underline;
    }
 }
 
-$animationTime: 0.2s;
+$animationTime: 0.25s;
+$notificationAnimationtime: 0.5s;
 
 .page-animate-in {
    animation: $animationTime page-animation-in;
@@ -176,19 +179,56 @@ $animationTime: 0.2s;
 }
 
 .notification-in {
-   animation: notificationIn $animationTime ease;
+   animation: notificationIn $notificationAnimationtime ease-in-out;
 }
 
 .notification-out {
-   animation: notificationIn $animationTime ease reverse;
+   animation: notificationIn $notificationAnimationtime ease-in-out reverse;
 }
 
 @keyframes notificationIn {
    0% {
       transform: translateX(120%);
+      max-height: 0px;
+   }
+   35% {
+      transform: translateX(120%);
+      max-height: 200px;
    }
    100% {
       transform: translateX(0%);
+   }
+}
+
+.can-create-in {
+   --heightBegin: 0px;
+   --heightFinish: 50px;
+   animation: heightAnimation 0.35s ease-in-out;
+}
+.can-create-out {
+   --heightBegin: 50px;
+   --heightFinish: 0px;
+   animation: heightAnimation 0.35s ease-in-out;
+}
+@keyframes heightAnimation {
+   0% {
+      max-height: var(--heightBegin);
+   }
+   100% {
+      max-height: var(--heightFinish);
+   }
+}
+
+[data-highlight-anim] {
+   animation: highlightAnimation 1s 0.25s ease-in-out;
+}
+@keyframes highlightAnimation {
+   100%,
+   0% {
+      box-shadow: 0px 0px 0px 0px colors.$secondary;
+   }
+   50% {
+      box-shadow: 0px 0px 25px -4px colors.$secondary;
    }
 }
 </style>

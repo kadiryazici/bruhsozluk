@@ -7,7 +7,6 @@ import { useAppStore } from '/src/stores/appStore';
 import { useRouter } from 'vue-router';
 import { SetUserAuthID } from '/src/helpers/auth';
 import { useNotificationStore } from '/src/stores/notificationStore';
-import type { AxiosError } from 'axios';
 import type { MsgResponse } from '/src/api/types';
 
 const router = useRouter();
@@ -46,7 +45,7 @@ async function handleLogin() {
 </script>
 
 <template>
-   <div class="login-wrapper">
+   <form @submit.prevent="handleLogin" class="login-wrapper">
       <div class="login-header">giriş</div>
       <div class="login-body">
          <label class="_label">kullanıcı adı</label>
@@ -76,11 +75,9 @@ async function handleLogin() {
          </div>
       </div>
       <div class="login-footer">
-         <VButton @click="handleLogin" :text-color="'primary'" :color="'turq'">
-            yolla
-         </VButton>
+         <VButton :text-color="'primary'" :color="'turq'"> yolla </VButton>
       </div>
-   </div>
+   </form>
 </template>
 
 <style lang="scss" scoped>

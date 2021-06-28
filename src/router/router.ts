@@ -5,25 +5,37 @@ import { GetUserAuthID } from '/src/helpers/auth';
 import { useAppStore } from '/src/stores/appStore';
 import { useModalStore } from '/src/stores/modalStore';
 
-const NoAuthHandle: NavigationGuard = async (to, from, next) => {
-   const auth_id = GetUserAuthID();
-   if (!auth_id) {
-      next();
+const MustNotLoggedIn: NavigationGuard = async (to, from, next) => {
+   const appStore = useAppStore();
+
+   if (appStore.isLogged && appStore.userInformation.length > 0) {
+      next({
+         name: 'Home'
+      });
    } else {
-      const appStore = useAppStore();
-      if (appStore.isLogged && appStore.userInformation.length > 0) {
+      const [res, err] = await usePromise(VerifyUser());
+      if (err) {
+         next();
+      } else {
          next({
             name: 'Home'
          });
+      }
+   }
+};
+
+const MustLoggedIn: NavigationGuard = async (to, from, next) => {
+   const appStore = useAppStore();
+   if (appStore.isLogged && appStore.userInformation.length > 0) {
+      next();
+   } else {
+      const [res, err] = await usePromise(VerifyUser());
+      if (res) {
+         next();
       } else {
-         const [res, err] = await usePromise(VerifyUser());
-         if (err) {
-            next();
-         } else {
-            next({
-               name: 'Home'
-            });
-         }
+         next({
+            name: 'Home'
+         });
       }
    }
 };
@@ -57,13 +69,19 @@ const router = createRouter({
          path: '/login',
          name: 'Login',
          component: () => import('/src/pages/Login.vue'),
-         beforeEnter: [NoAuthHandle]
+         beforeEnter: [MustNotLoggedIn]
       },
       {
          path: '/signup',
          name: 'Signup',
          component: () => import('/src/pages/Signup.vue'),
-         beforeEnter: [NoAuthHandle]
+         beforeEnter: [MustNotLoggedIn]
+      },
+      {
+         path: '/create_header',
+         name: 'CreateHeader',
+         component: () => import('/src/pages/CreateHeader.vue'),
+         beforeEnter: [MustLoggedIn]
       }
    ]
 });

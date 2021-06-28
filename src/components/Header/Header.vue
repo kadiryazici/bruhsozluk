@@ -1,13 +1,20 @@
 <script lang="ts" setup>
 import { usePromise } from 'vierone';
-import { defineProps, onMounted, reactive } from 'vue';
+import { onBeforeUpdate, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getHeader } from '/src/api/getHeader';
 import Entry from '/src/components/Entry/Entry.vue';
 import type { getHeaderResponse } from '/src/api/types.d';
+import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
+import { sanitizeEntryBody } from '/src/helpers/app';
+import { postAddEntry } from '/src/api/postAddEntry';
+import type { AxiosError } from 'axios';
+import { useNotificationStore } from '/src/stores/notificationStore';
+import { useAppStore } from '/src/stores/appStore';
 
 const route = useRoute();
 const router = useRouter();
+const appStore = useAppStore();
 
 ref: loading = true;
 ref: activePage = 1;
@@ -17,6 +24,7 @@ const pageData = reactive<getHeaderResponse[]>([]);
 onMounted(async () => {
    const id = route.params.id as string;
    const page = route.params.page as string | undefined;
+   const focus = route.query.focus;
 
    if (page && !isNaN(parseInt(page))) {
       activePage = parseInt(page);
@@ -28,6 +36,19 @@ onMounted(async () => {
       pageData.push(data);
       loading = false;
    }
+   setTimeout(() => {
+      if (focus && typeof focus === 'string') {
+         1;
+         const element = document.getElementById(focus);
+         if (element) {
+            element.scrollIntoView({
+               block: 'start',
+               behavior: 'smooth'
+            });
+            element.setAttribute('data-highlight-anim', 'true');
+         }
+      }
+   }, 0);
 });
 
 function navigate(kind: 'next' | 'previous') {
@@ -57,8 +78,44 @@ function navigate(kind: 'next' | 'previous') {
       }
    }
 }
-// @ts-ignore
-window.go = router.go;
+
+ref: entryBody = '';
+ref: entryLoading = false;
+async function addEntry() {
+   if (entryLoading) return;
+
+   entryLoading = true;
+   const _entryBody = sanitizeEntryBody(entryBody);
+   if (_entryBody.length > 0) {
+      const header_id = route.params.id as string;
+      try {
+         const res = await postAddEntry(_entryBody, header_id);
+         const { data } = res;
+         router.push({
+            name: 'Header',
+            params: {
+               id: header_id,
+               page: data.page
+            },
+            query: {
+               focus: data.id
+            }
+         });
+      } catch (err) {
+         const _error = () => err as AxiosError;
+
+         const response = _error().response;
+         if (response && response.data.msg) {
+            const notification = useNotificationStore();
+            notification.createNotification({
+               kind: 'error',
+               text: response.data.msg
+            });
+         }
+      }
+   }
+   entryLoading = false;
+}
 </script>
 
 <template>
@@ -124,6 +181,14 @@ window.go = router.go;
                class="entry"
                v-for="entry in header.entries"
                :key="entry.id"
+               :id="entry.id"
+            />
+         </div>
+         <div v-if="appStore.isLogged" class="add-entry">
+            <AddEntryVue
+               :loading="entryLoading"
+               @send="addEntry"
+               v-model="entryBody"
             />
          </div>
       </template>
@@ -232,6 +297,10 @@ window.go = router.go;
             margin-bottom: funcs.padding(0);
          }
       }
+   }
+
+   .add-entry {
+      margin-top: funcs.padding(4);
    }
 }
 

@@ -1,26 +1,64 @@
 <script lang="ts" setup>
 import debounce from 'lodash.debounce';
 import { usePromise } from 'vierone';
-import { reactive, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { getSearch } from '/src/api/getSearch';
-import type { SearchResponse } from '/src/api/types';
+import { postVerifyHeader } from '/src/api/postVerifyHeader';
+import type { MsgResponse, SearchResponse } from '/src/api/types';
+import { sanitizeHeaderName } from '/src/helpers/app';
+import { useAppStore } from '/src/stores/appStore';
+import { useModalStore } from '/src/stores/modalStore';
+
+const appStore = useAppStore();
+const modalStore = useModalStore();
 
 ref: query = '';
 ref: didSearch = false;
+ref: isSearching = false;
+
+ref: sanitizedQuery = computed(() => sanitizeHeaderName(query));
+
+const headerExisting = reactive({
+   notExists: false,
+   msg: ''
+});
 
 const results = reactive<SearchResponse[]>([]);
 const Search = debounce(async (query: string) => {
+   isSearching = true;
+   headerExisting.notExists = false;
+   headerExisting.msg = '';
+
    const [res, err] = await usePromise(getSearch(query));
    if (res) {
       results.length = 0;
       results.push(...res.data);
    }
    didSearch = true;
+
+   if (appStore.isLogged) {
+      try {
+         const res = await postVerifyHeader(query);
+         const data = res.data;
+         headerExisting.notExists = true;
+         headerExisting.msg = data.msg;
+      } catch (error) {
+         console.log(error);
+      }
+   }
+   isSearching = false;
 }, 350);
 watch(
    () => query,
    async newValue => {
-      await Search(newValue);
+      headerExisting.notExists = false;
+      if (newValue.length < 1) {
+         didSearch = false;
+         results.length = 0;
+      }
+      if (newValue.length > 0) {
+         await Search(newValue);
+      }
    }
 );
 </script>
@@ -34,15 +72,51 @@ watch(
             class="type-area"
             type="text"
          />
-         <div tabindex="0" role="button" class="searchButton">
-            <Icon name="search" />
+         <div
+            @click="modalStore.isSearchModalOpen = false"
+            tabindex="0"
+            role="button"
+            class="closeButton"
+         >
+            <Icon name="close" />
          </div>
       </div>
       <div class="results">
          <div class="result-area">
-            <h2 class="not-found" v-if="didSearch && results.length < 1">
-               Sonuç Yok
+            <Transition
+               enterActiveClass="can-create-in"
+               leaveActiveClass="can-create-out"
+            >
+               <RouterLink
+                  :to="{
+                     name: 'CreateHeader',
+                     query: {
+                        baslik: sanitizedQuery
+                     }
+                  }"
+                  class="can-create link"
+                  v-if="headerExisting.notExists"
+               >
+                  <Icon name="add" />
+                  <span class="header-name">
+                     {{ sanitizedQuery }}
+                  </span>
+                  başlığı açılabilir.
+               </RouterLink>
+            </Transition>
+
+            <h2
+               class="not-found"
+               v-if="
+                  didSearch &&
+                  results.length < 1 &&
+                  query.length > 0 &&
+                  !isSearching
+               "
+            >
+               <Icon name="search_off" />Sonuç Yok
             </h2>
+
             <RouterLink
                class="result-item"
                v-for="result in results"
@@ -91,25 +165,29 @@ $inputHeight: 50px;
       position: relative;
       box-shadow: vars.$shadowDarkDown;
 
-      .searchButton {
-         width: $inputHeight;
-         height: $inputHeight;
-         background-color: colors.$turq;
+      .closeButton {
+         width: $inputHeight - 10px;
+         height: $inputHeight - 10px;
+         background-color: colors.$ruby;
+         color: colors.$secondary;
          display: inline-flex;
          align-items: center;
          justify-content: center;
          position: absolute;
-         right: 0;
+         right: 5px;
          top: 0;
-         border: 2px solid colors.$turq;
+         bottom: 0;
+         margin-top: auto;
+         margin-bottom: auto;
+         // border: 2px solid colors.$turq;
          border-radius: 50%;
          cursor: pointer;
          * {
             font-size: 25px;
          }
          &:hover {
-            border-color: colors.$secondary;
             background-color: colors.$secondary;
+            color: colors.$ruby;
          }
       }
 
@@ -144,6 +222,24 @@ $inputHeight: 50px;
       display: flex;
       flex-flow: column nowrap;
       overflow: hidden;
+
+      .can-create {
+         display: flex;
+         align-items: center;
+         width: 100%;
+         overflow: hidden;
+         ._icon {
+            font-size: 20px;
+         }
+         .header-name {
+            border-radius: vars.$radius;
+            padding: 0 funcs.padding(1);
+            background-color: colors.$turq;
+            color: colors.$primary;
+            margin-right: funcs.padding(1);
+         }
+         font-size: 13px;
+      }
       .result-area {
          background-color: colors.$primary;
          width: 100%;
@@ -158,8 +254,18 @@ $inputHeight: 50px;
          z-index: 100;
 
          .not-found {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: funcs.padding(2);
             text-align: center;
             color: colors.$secondary;
+            font-size: 20px;
+            ._icon {
+               font-size: 30px;
+               margin-right: funcs.padding(2);
+            }
          }
 
          .result-item {

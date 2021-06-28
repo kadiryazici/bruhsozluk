@@ -5,6 +5,9 @@ import { Modal } from 'modal-component-vue3';
 import ModalLikes from '/src/components/Modals/Likes/index.vue';
 import { getLikesOfEntry } from '/src/api/getLikesOfEntry';
 import { usePromise } from 'vierone';
+import { useAppStore } from '/src/stores/appStore';
+
+const appStore = useAppStore();
 
 ref: liked = false;
 ref: isModalOpen = false;
@@ -42,8 +45,8 @@ async function openModal() {
       </div>
       <div class="entry-footer">
          <div class="entry-info">
-            <a href="#" class="link writer">kadiryazici</a>
-            <span role="time" class="date">// 24.13.2015</span>
+            <a href="#" class="link writer">{{ entryData.username }}</a>
+            <span role="time" class="date">// {{ entryData.date }}</span>
          </div>
          <div class="icon-section">
             <Icon
@@ -67,6 +70,11 @@ async function openModal() {
                role="button"
                class="button delete-icon"
                name="delete"
+               v-if="
+                  appStore.isLogged &&
+                  appStore.userInformation.length > 0 &&
+                  appStore.userInformation[0].isAdmin
+               "
             />
          </div>
       </div>
