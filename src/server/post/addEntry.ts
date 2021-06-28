@@ -5,7 +5,7 @@ import {
    sanitizeEntryBody
 } from '@helpers/functions';
 import { Msg } from '@messages';
-import { AddEntryBody, Entry } from '@type';
+import { AddEntryBody, AddEntryResponse, Entry } from '@type';
 import { nanoid } from 'nanoid';
 import { addHeader2Left } from '@server/leftContent';
 
@@ -32,12 +32,12 @@ export default defineAsyncHandler(async (req, res) => {
             const username = user.get('username').value();
 
             const data = {
+               id: nanoid(),
+               header_id: header.value().id,
+               username,
                body,
                date: Date.now(),
-               id: nanoid(),
-               liked_by: [],
-               username,
-               header_id: header.value().id
+               liked_by: []
             } as Entry;
 
             header.get('entries').push(data).write();
@@ -54,7 +54,12 @@ export default defineAsyncHandler(async (req, res) => {
             // add current header to left content, because it is the last one b*tch.
             await addHeader2Left(header.value().id);
 
-            res.status(200).json(data);
+            const resData: AddEntryResponse = {
+               ...data,
+               page: Math.ceil(header.get('entries').value().length / 10)
+            };
+
+            res.status(200).json(resData);
          } else {
             responseError(res, error.bodyShouldHaveAtLeastOneLetter);
          }

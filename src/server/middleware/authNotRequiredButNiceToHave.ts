@@ -30,7 +30,7 @@ export default defineSyncHandler((req, res) => {
 
       resData = resData
          .filter(header => {
-            return header.name.startsWith(query.toLocaleLowerCase('tr-TR'));
+            return header.name.match(query.toLocaleLowerCase('tr-TR'));
          })
          .slice(0, 10);
 

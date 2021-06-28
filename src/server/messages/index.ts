@@ -28,7 +28,9 @@ export class Msg {
    static add_header = {
       error: {
          nameNeeded: 'Başlık ismi gerekiyor.',
-         headerExists: 'Bu başlık zaten var.'
+         entryBodyNeeded: 'Entry girdisi gerekiyor',
+         headerExists: 'Bu başlık zaten var.',
+         anErrorOccured: 'Başlık açarken bir hata oluştu.'
       }
    };
 

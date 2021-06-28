@@ -43,8 +43,8 @@ export default defineSyncHandler((req, res) => {
                      auth_id: nanoid(),
                      username,
                      password,
-                     entries: [],
                      isAdmin: false,
+                     entries: [],
                      likes: []
                   })
                   .write();

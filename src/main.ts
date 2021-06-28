@@ -1,5 +1,6 @@
-import { cors } from '@tinyhttp/cors';
+// import { cors } from '@tinyhttp/cors';
 import { logger } from '@tinyhttp/logger';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import { Delete, Get, Listen, Post, Use } from '@app';
@@ -41,11 +42,7 @@ async function createServer() {
    }
 
    /* App USE: */ {
-      Use(
-         cors({
-            allowedHeaders: ['Authorization']
-         })
-      );
+      Use(cors());
       Use(bodyParser.json());
       Use(logger());
    }

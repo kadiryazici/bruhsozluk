@@ -79,9 +79,11 @@ export interface LoginResponse {
 
 export interface AddHeaderBody {
    name: string;
+   entryBody: string;
 }
 export interface AddHeaderResponse {
    id: string;
+   entryPage: number;
 }
 
 export interface AddEntryBody {
@@ -111,3 +113,19 @@ export interface PostLikeBody extends UserEntryStore {}
 export interface UserLikesStore extends UserEntryStore {}
 
 export interface VerifyHeaderBody extends AddHeaderBody {}
+
+interface SearchBody {
+   query: string;
+}
+export interface MsgResponse {
+   type: string;
+   msg: string;
+}
+interface SearchResponse {
+   name: string;
+   id: string;
+}
+
+interface AddEntryResponse extends Entry {
+   page: number;
+}
