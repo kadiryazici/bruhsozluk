@@ -9,9 +9,6 @@ declare module 'vue' {
       VButton: typeof VButton;
       Icon: typeof Icon;
    }
-}
-
-declare module '@vue/runtime-core' {
    interface ComponentCustomProperties {
       $log: typeof console.log;
    }
