@@ -14,7 +14,13 @@ export default defineConfig({
          }
       }
    },
-   plugins: [vue()],
+   plugins: [
+      vue({
+         script: {
+            refSugar: true
+         }
+      })
+   ],
    build: {
       polyfillDynamicImport: true,
       minify: 'esbuild'

@@ -30,7 +30,7 @@ async function fetchLeft() {
       <div id="left-content">
          <div class="top-menu">
             <RouterLink class="logo" to="/">
-               <VButton noPadding :textColor="'turq'">BRUH</VButton>
+               <VButton :noPadding="true" :textColor="'turq'">BRUH</VButton>
             </RouterLink>
 
             <div class="icons">

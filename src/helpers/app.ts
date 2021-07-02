@@ -1,3 +1,5 @@
+import once from 'lodash.once';
+
 export function sanitizeHeaderName(name: string) {
    // ilk önce baştaki ve sondaki boşlukları silelim.
    let sanitized = name.trim();
@@ -79,4 +81,16 @@ export function sanitizeEntryBody(str: string) {
    str = reduceLinebreaksMoreThanThree(str);
    str = str.trim();
    return str;
+}
+
+export function useFocus2ElementOnce() {
+   const focusToElement = once((el: HTMLElement) => {
+      el.scrollIntoView({
+         block: 'center',
+         inline: 'center',
+         behavior: 'smooth'
+      });
+      el.setAttribute('data-highlight-anim', '');
+   });
+   return focusToElement;
 }

@@ -1,5 +1,13 @@
+<script lang="ts">
+type TemplateRef<T> = null | T;
+
+export interface EntryExposes {
+   entryWrapper: TemplateRef<HTMLElement>;
+}
+</script>
+
 <script lang="ts" setup>
-import { defineProps, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount } from 'vue';
 import type { Entry } from '/src/api/types';
 import { Modal } from 'modal-component-vue3';
 import ModalLikes from '/src/components/Modals/Likes/index.vue';
@@ -12,6 +20,11 @@ const appStore = useAppStore();
 ref: liked = false;
 ref: isModalOpen = false;
 ref: likesOfEntry = [] as string[];
+
+ref: entryWrapper = null as TemplateRef<HTMLElement>;
+defineExpose({
+   entryWrapper: $entryWrapper
+});
 
 const props = defineProps<{
    entryData: Entry;
@@ -39,7 +52,7 @@ async function openModal() {
 </script>
 
 <template>
-   <div class="entry-wrapper">
+   <div ref="entryWrapper" class="entry-wrapper">
       <div class="entry-body">
          {{ props.entryData.body }}
       </div>

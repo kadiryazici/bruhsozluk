@@ -5,15 +5,13 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmit, defineProps } from 'vue';
-
 const props = defineProps<{
    visible: boolean;
 }>();
 
-const emit = defineEmit({
-   'update:visible': (value: boolean) => true,
-});
+const emit = defineEmits<{
+   (event: 'update:visible', value: boolean): void;
+}>();
 
 const closeModal = () => {
    emit('update:visible', false);

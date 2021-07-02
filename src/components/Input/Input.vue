@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { defineProps, defineEmit } from 'vue';
-
 const props = defineProps<{
    errorMessage?: string;
    modelValue: string;
@@ -8,10 +6,10 @@ const props = defineProps<{
    error?: boolean;
 }>();
 
-const emit = defineEmit({
-   'update:modelValue': (value: string) => true,
-   'update:error': (value: boolean) => true
-});
+const emit = defineEmits<{
+   (event: 'update:modelValue', value: string): void;
+   (event: 'update:error', value: boolean): void;
+}>();
 
 function onInput(e: Event) {
    if (e.currentTarget instanceof HTMLInputElement) {

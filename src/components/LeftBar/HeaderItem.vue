@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineProps } from 'vue';
 import type { LeftContentItem } from '/src/api/types.d';
 
 const props = defineProps<{

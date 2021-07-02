@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { defineEmit, defineProps } from 'vue';
 import Item from './Item.vue';
 import type { Entry } from '/src/api/types.d';
 
-const emit = defineEmit({
-   hide: () => true
-});
+const emit = defineEmits<{
+   (event: 'hide'): void;
+}>();
 
 const props = defineProps<{
    users: Entry['liked_by'];
@@ -25,8 +24,8 @@ const props = defineProps<{
             :text-color="'ruby'"
             :color="'tertiary'"
             @click="emit('hide')"
-            noHover
-            square
+            :noHover="true"
+            :square="true"
          >
             <Icon class="button-icon" :name="'close'" />
          </VButton>

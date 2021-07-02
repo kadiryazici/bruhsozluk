@@ -5,7 +5,8 @@
          `text-${props.textColor}`,
          {
             'no-hover': noHover,
-            'no-padding': noPadding
+            'no-padding': noPadding,
+            square: square
          }
       ]"
       ı
@@ -23,17 +24,22 @@ export type Colors = 'turq' | 'ruby' | 'primary' | 'secondary' | 'tertiary';
 </script>
 
 <script lang="ts" setup>
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 
-const props = defineProps<{
-   color?: Colors;
-   square?: boolean;
-   textColor: Colors;
-   noHover?: boolean;
-   noPadding?: boolean;
-   loading?: boolean;
-   size?: string;
-}>();
+const props = withDefaults(
+   defineProps<{
+      color?: Colors;
+      square?: boolean;
+      textColor: Colors;
+      noHover?: boolean;
+      noPadding?: boolean;
+      loading?: boolean;
+      size?: string;
+   }>(),
+   {
+      textColor: 'primary'
+   }
+);
 
 ref: buttonFontSize = computed(() => {
    return props.size || '20px';

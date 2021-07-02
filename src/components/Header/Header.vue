@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import { usePromise } from 'vierone';
-import { onBeforeUpdate, onMounted, reactive } from 'vue';
+import { isTruthy, usePromise } from 'vierone';
+import { onMounted, reactive } from 'vue';
+import once from 'lodash.once';
+
 import { useRoute, useRouter } from 'vue-router';
 import { getHeader } from '/src/api/getHeader';
+
 import Entry from '/src/components/Entry/Entry.vue';
+import type { EntryExposes } from '/src/components/Entry/Entry.vue';
+
 import type { getHeaderResponse } from '/src/api/types.d';
 import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
-import { sanitizeEntryBody } from '/src/helpers/app';
+import { sanitizeEntryBody, useFocus2ElementOnce } from '/src/helpers/app';
 import { postAddEntry } from '/src/api/postAddEntry';
 import type { AxiosError } from 'axios';
 import { useNotificationStore } from '/src/stores/notificationStore';
@@ -21,11 +26,11 @@ ref: activePage = 1;
 
 const pageData = reactive<getHeaderResponse[]>([]);
 
-onMounted(async () => {
-   const id = route.params.id as string;
-   const page = route.params.page as string | undefined;
-   const focus = route.query.focus;
+const id = route.params.id as string;
+const page = route.params.page as string | undefined;
+ref: focusID = route.query.focus;
 
+onMounted(async () => {
    if (page && !isNaN(parseInt(page))) {
       activePage = parseInt(page);
    }
@@ -36,19 +41,6 @@ onMounted(async () => {
       pageData.push(data);
       loading = false;
    }
-   setTimeout(() => {
-      if (focus && typeof focus === 'string') {
-         1;
-         const element = document.getElementById(focus);
-         if (element) {
-            element.scrollIntoView({
-               block: 'start',
-               behavior: 'smooth'
-            });
-            element.setAttribute('data-highlight-anim', 'true');
-         }
-      }
-   }, 0);
 });
 
 function navigate(kind: 'next' | 'previous') {
@@ -116,6 +108,14 @@ async function addEntry() {
    }
    entryLoading = false;
 }
+
+const focusToElement = useFocus2ElementOnce();
+const focusToEntry = (_ref: any) => {
+   const $ref = _ref as EntryExposes;
+   if ($ref && $ref.entryWrapper !== null) {
+      focusToElement($ref.entryWrapper);
+   }
+};
 </script>
 
 <template>
@@ -182,6 +182,13 @@ async function addEntry() {
                v-for="entry in header.entries"
                :key="entry.id"
                :id="entry.id"
+               :ref="
+                  component => {
+                     if (entry.id === focusID) {
+                        focusToEntry(component);
+                     }
+                  }
+               "
             />
          </div>
          <div v-if="appStore.isLogged" class="add-entry">

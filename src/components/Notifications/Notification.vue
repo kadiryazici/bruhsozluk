@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineProps } from 'vue';
 import type { Notification } from '/src/stores/notificationStore';
 import { useNotificationStore } from '/src/stores/notificationStore';
 

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineEmit, defineProps } from 'vue';
 import type { Colors } from '/src/components/Button/Button.vue';
 
 const props = defineProps<{
@@ -8,7 +7,7 @@ const props = defineProps<{
    loading?: boolean;
 }>();
 
-const emit = defineEmit({
+const emit = defineEmits({
    'update:modelValue': (value: string) => true,
    send: () => true
 });
