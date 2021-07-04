@@ -9,6 +9,8 @@ import { sanitizeHeaderName } from '/src/helpers/app';
 import { useAppStore } from '/src/stores/appStore';
 import { useModalStore } from '/src/stores/modalStore';
 
+import SearchItemSkeleton from '/src/components/Modals/Search/SearchSkeleton.vue';
+
 const appStore = useAppStore();
 const modalStore = useModalStore();
 
@@ -117,18 +119,23 @@ watch(
                <Icon name="search_off" />Sonuç Yok
             </h2>
 
-            <RouterLink
-               class="result-item"
-               v-for="result in results"
-               :to="{
-                  name: 'Header',
-                  params: {
-                     id: result.id
-                  }
-               }"
-            >
-               {{ result.name }}
-            </RouterLink>
+            <template v-else>
+               <SearchItemSkeleton v-if="isSearching" />
+
+               <RouterLink
+                  v-else
+                  class="result-item"
+                  v-for="result in results"
+                  :to="{
+                     name: 'Header',
+                     params: {
+                        id: result.id
+                     }
+                  }"
+               >
+                  {{ result.name }}
+               </RouterLink>
+            </template>
          </div>
       </div>
    </div>

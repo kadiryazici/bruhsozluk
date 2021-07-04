@@ -2,7 +2,6 @@
 import VInput from '/src/components/Input/Input.vue';
 import { reactive } from 'vue';
 import { postLogin } from '/src/api/postLogin';
-import { usePromise } from 'vierone';
 import { useAppStore } from '/src/stores/appStore';
 import { useRouter } from 'vue-router';
 import { SetUserAuthID } from '/src/helpers/auth';
@@ -20,6 +19,14 @@ const input = reactive({
 });
 
 async function handleLogin() {
+   if (!input.username.length && !input.username.length) {
+      notification.createNotification({
+         kind: 'error',
+         text: 'Lütfen alanları gerektiği şekilde doldurun.'
+      });
+      return;
+   }
+
    try {
       const res = await postLogin({ ...input });
       appStore.isLogged = true;

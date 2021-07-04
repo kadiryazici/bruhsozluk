@@ -94,3 +94,21 @@ export function useFocus2ElementOnce() {
    });
    return focusToElement;
 }
+
+export function msToDateString(ms: number): string {
+   const add0 = (num: number) => {
+      const _num = num.toString();
+      return _num.length > 1 ? num : `0` + num;
+   };
+
+   const date = new Date(ms);
+
+   const hour = date.getHours();
+   const minute = date.getMinutes();
+
+   const day = add0(date.getDate());
+   const month = add0(date.getMonth() + 1);
+   const year = date.getFullYear();
+
+   return `${day}/${month}/${year} ${add0(minute)}:${add0(hour)}`;
+}

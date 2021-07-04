@@ -6,11 +6,11 @@ export default defineConfig({
       preprocessorOptions: {
          scss: {
             additionalData: `
-            @use "src/scss/colors";
-            @use "src/scss/mixins";
-            @use "src/scss/vars";
-            @use "src/scss/funcs";
-         `
+               @use "src/scss/colors";
+               @use "src/scss/mixins";
+               @use "src/scss/vars";
+               @use "src/scss/funcs";
+            `
          }
       }
    },
@@ -23,7 +23,8 @@ export default defineConfig({
    ],
    build: {
       polyfillDynamicImport: true,
-      minify: 'esbuild'
+      minify: 'esbuild',
+      assetsInlineLimit: 0
    },
    server: {
       port: 8080,

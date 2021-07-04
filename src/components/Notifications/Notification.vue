@@ -17,11 +17,20 @@ Icons.set('error', 'error');
 Icons.set('warning', 'warning');
 Icons.set('info', 'info');
 
-const Titles = new Map<string, string>();
-Titles.set('success', 'başarılı');
-Titles.set('error', 'hata');
-Titles.set('warning', 'uyarı');
-Titles.set('info', 'bilgi');
+class Configs {
+   static Title = class {
+      static success = 'başarılı';
+      static error = 'hata';
+      static warning = 'uyarı';
+      static info = 'bilgi';
+   };
+   static Icon = class {
+      static success = 'check_circle';
+      static error = 'error';
+      static warning = 'warning';
+      static info = 'info';
+   };
+}
 
 const props = defineProps<{
    notificationData: Notification;
@@ -36,16 +45,15 @@ function handleNotificationClick() {
 </script>
 
 <template>
-   <div @click="handleNotificationClick" class="notification">
-      <div class="title">{{ Titles.get(props.notificationData.kind) }}</div>
+   <div
+      @click="handleNotificationClick"
+      class="notification"
+      :class="notificationData.kind"
+   >
+      <div class="title">{{ Configs.Title[notificationData.kind] }}</div>
       <div class="body">{{ props.notificationData.text }}</div>
-      <div :class="[props.notificationData.kind]" class="type">
-         <Icon
-            :name="
-               Icons.get(props.notificationData.kind) ||
-               NotificationIcon.success
-            "
-         />
+      <div :class="[notificationData.kind]" class="type">
+         <Icon :name="Configs.Icon[notificationData.kind]" />
       </div>
    </div>
 </template>
@@ -125,15 +133,23 @@ $bodyColor: colors.$secondary;
 
       &.success {
          color: $success;
+         $borderValue: 3px solid $success;
+         border: $borderValue;
       }
       &.error {
          color: $error;
+         $borderValue: 3px solid $error;
+         border: $borderValue;
       }
       &.warning {
          color: $warning;
+         $borderValue: 3px solid $warning;
+         border: $borderValue;
       }
       &.info {
          color: $info;
+         $borderValue: 3px solid $info;
+         border: $borderValue;
       }
    }
 }

@@ -2,12 +2,9 @@
 import VInput from '/src/components/Input/Input.vue';
 import { reactive } from 'vue';
 import { postSignup } from '/src/api/postSignup';
-import { usePromise } from 'vierone';
 import { useAppStore } from '/src/stores/appStore';
 import { useRouter } from 'vue-router';
-import { SetUserAuthID } from '/src/helpers/auth';
 import { useNotificationStore } from '/src/stores/notificationStore';
-import type { AxiosError } from 'axios';
 import type { MsgResponse } from '/src/api/types';
 
 const router = useRouter();
@@ -20,7 +17,15 @@ const input = reactive({
    password: ''
 });
 
-async function handleLogin() {
+async function handleSignUP() {
+   if (!input.username.length && !input.username.length) {
+      notification.createNotification({
+         kind: 'error',
+         text: 'Lütfen alanları gerektiği şekilde doldurun.'
+      });
+      return;
+   }
+
    try {
       const res = await postSignup({ ...input });
       router.push({
@@ -41,7 +46,7 @@ async function handleLogin() {
 </script>
 
 <template>
-   <div class="login-wrapper">
+   <form @submit.prevent="handleSignUP" class="login-wrapper">
       <div class="login-header">kayıt ol</div>
       <div class="login-body">
          <label class="_label">kullanıcı adı</label>
@@ -71,11 +76,9 @@ async function handleLogin() {
          </div>
       </div>
       <div class="login-footer">
-         <VButton @click="handleLogin" :text-color="'primary'" :color="'turq'">
-            yolla
-         </VButton>
+         <VButton :text-color="'primary'" :color="'turq'"> yolla </VButton>
       </div>
-   </div>
+   </form>
 </template>
 
 <style lang="scss" scoped>

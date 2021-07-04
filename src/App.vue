@@ -1,69 +1,12 @@
-<template>
-   <Main>
-      <template #left>
-         <Left />
-      </template>
-      <template #content>
-         <router-view v-slot="{ Component }">
-            <Transition
-               mode="out-in"
-               leaveActiveClass="page-animate-out"
-               enterActiveClass="page-animate-in"
-            >
-               <component :key="route.fullPath" :is="Component" />
-            </Transition>
-         </router-view>
-      </template>
-   </Main>
-
-   <NotificationWrapperVue />
-
-   <Modal v-model:visible="modalStore.isProfileModalOpen">
-      <ProfileModalVue />
-   </Modal>
-   <Modal v-model:visible="modalStore.isSearchModalOpen">
-      <SearchModalVue />
-   </Modal>
-</template>
-
 <script lang="ts" setup>
-import { useRoute } from 'vue-router';
-import Main from '/src/layouts/Main.vue';
-import Left from '/src/components/LeftBar/Left.vue';
-import NotificationWrapperVue from '/src/components/Notifications/NotificationWrapper.vue';
-import { Modal } from 'modal-component-vue3';
-import { useModalStore } from '/src/stores/modalStore';
-import { VerifyUser } from './api/auth';
-import { usePromise } from 'vierone';
-import { useAppStore } from './stores/appStore';
-import { onBeforeMount, watchEffect } from 'vue';
-import ProfileModalVue from '/src/components/Modals/Profile/ProfileModal.vue';
-import SearchModalVue from '/src/components/Modals/Search/SearchModal.vue';
-
-const modalStore = useModalStore();
-const route = useRoute();
-const appStore = useAppStore();
-
-async function checkUser() {
-   const [res, err] = await usePromise(VerifyUser());
-   if (err) {
-   } else {
-      appStore.isLogged = true;
-      appStore.userInformation = [res!];
-   }
-}
-onBeforeMount(async () => {
-   await checkUser();
-});
-
-watchEffect(() => {
-   if (modalStore.isAnyModalOpen) {
-      document.body.style.overflow = 'hidden';
-   } else {
-      document.body.style.overflow = 'auto';
-   }
-});
+import AppMain from '/src/AppMain.vue';
 </script>
+
+<template>
+   <Suspense>
+      <AppMain />
+   </Suspense>
+</template>
 
 <style lang="scss">
 html,

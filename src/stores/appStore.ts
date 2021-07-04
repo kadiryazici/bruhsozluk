@@ -5,6 +5,12 @@ export const useAppStore = defineStore({
    id: 'appStore',
    state: () => ({
       isLogged: false,
-      userInformation: <LoginResponse[]>[]
-   })
+      userInformation: <LoginResponse[]>[],
+      routerComponentKey: ''
+   }),
+   actions: {
+      reloadRouterView() {
+         this.routerComponentKey = Math.random().toString().slice(-4);
+      }
+   }
 });

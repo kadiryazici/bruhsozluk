@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import { isTruthy, usePromise } from 'vierone';
 import { onMounted, reactive } from 'vue';
-import once from 'lodash.once';
 
 import { useRoute, useRouter } from 'vue-router';
 import { getHeader } from '/src/api/getHeader';
 
 import Entry from '/src/components/Entry/Entry.vue';
-import type { EntryExposes } from '/src/components/Entry/Entry.vue';
 
 import type { getHeaderResponse } from '/src/api/types.d';
 import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
@@ -16,10 +14,12 @@ import { postAddEntry } from '/src/api/postAddEntry';
 import type { AxiosError } from 'axios';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { useAppStore } from '/src/stores/appStore';
+import HeaderSkeletonVue from '/src/components/Header/HeaderSkeleton.vue';
 
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
+const notificationStore = useNotificationStore();
 
 ref: loading = true;
 ref: activePage = 1;
@@ -29,6 +29,7 @@ const pageData = reactive<getHeaderResponse[]>([]);
 const id = route.params.id as string;
 const page = route.params.page as string | undefined;
 ref: focusID = route.query.focus;
+ref: isFocusMatched = false;
 
 onMounted(async () => {
    if (page && !isNaN(parseInt(page))) {
@@ -41,6 +42,14 @@ onMounted(async () => {
       pageData.push(data);
       loading = false;
    }
+   setTimeout(() => {
+      if (focusID && !isFocusMatched) {
+         notificationStore.createNotification({
+            kind: 'error',
+            text: 'Odaklanılacak Entry silinmiş veya bulunamadı.'
+         });
+      }
+   }, 0);
 });
 
 function navigate(kind: 'next' | 'previous') {
@@ -109,18 +118,18 @@ async function addEntry() {
    entryLoading = false;
 }
 
-const focusToElement = useFocus2ElementOnce();
-const focusToEntry = (_ref: any) => {
-   const $ref = _ref as EntryExposes;
-   if ($ref && $ref.entryWrapper !== null) {
-      focusToElement($ref.entryWrapper);
-   }
-};
+const _focusToElement = useFocus2ElementOnce();
+function focusToElement(_el: any) {
+   const el = _el as unknown as HTMLElement;
+   _focusToElement(el);
+}
 </script>
 
 <template>
    <div class="header-view">
-      <div v-if="loading">yükleniyor.....</div>
+      <!-- LOADING STARTS -->
+      <HeaderSkeletonVue v-if="loading" />
+      <!-- LOADING ENDS -->
       <template v-else v-for="header in pageData">
          <div class="header">
             <div class="name">{{ header.name }}</div>
@@ -177,18 +186,19 @@ const focusToEntry = (_ref: any) => {
          </div>
          <div class="entries">
             <Entry
+               @atMount="
+                  el => {
+                     if (entry.id === focusID) {
+                        isFocusMatched = true;
+                        focusToElement(el);
+                     }
+                  }
+               "
                :entryData="entry"
                class="entry"
                v-for="entry in header.entries"
                :key="entry.id"
                :id="entry.id"
-               :ref="
-                  component => {
-                     if (entry.id === focusID) {
-                        focusToEntry(component);
-                     }
-                  }
-               "
             />
          </div>
          <div v-if="appStore.isLogged" class="add-entry">

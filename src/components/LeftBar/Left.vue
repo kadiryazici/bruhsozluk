@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
-import LeftHeader from './HeaderItem.vue';
+import { usePromise } from 'vierone';
+
+import LeftHeaderItem from '/src/components/LeftBar/LeftHeaderItem.vue';
+import LeftHeaderSkeleton from '/src/components/LeftBar/LeftItemSkeleton.vue';
 import type { LeftContent } from '/src/api/types';
 import { getHome } from '/src/api/getLeft';
-import { usePromise } from 'vierone';
 import { useAppStore } from '/src/stores/appStore';
 import { useModalStore } from '/src/stores/modalStore';
 
@@ -11,17 +13,22 @@ const appStore = useAppStore();
 const modalStore = useModalStore();
 
 const leftItems = reactive<LeftContent>([]);
+ref: loading = false;
 onMounted(async () => {
    await fetchLeft();
 });
 
 async function fetchLeft() {
-   const [res, err] = await usePromise(getHome());
+   if (loading) return;
+
+   loading = true;
    leftItems.length = 0;
+   const [res, err] = await usePromise(getHome());
    if (res) {
       const { data } = res;
       leftItems.push(...data);
    }
+   loading = false;
 }
 </script>
 
@@ -83,7 +90,9 @@ async function fetchLeft() {
          </div>
 
          <section class="headers-section">
-            <LeftHeader
+            <LeftHeaderSkeleton v-if="loading" />
+            <LeftHeaderItem
+               v-else
                :itemData="item"
                :key="item.id"
                v-for="item in leftItems"

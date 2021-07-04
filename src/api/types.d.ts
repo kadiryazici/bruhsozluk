@@ -23,6 +23,15 @@ export interface Entry {
    liked_by: string[];
 }
 
+// export type EntryResponse = Omit<Entry, 'liked_by'>
+export interface EntryResponse extends Omit<Entry, 'liked_by'> {
+   likeCount: number;
+}
+
+export interface HeaderResponse extends Omit<Header, 'entries'> {
+   entries: EntryResponse[];
+}
+
 export interface LeftContentItem {
    id: string;
    name: string;
@@ -85,6 +94,7 @@ export interface AddHeaderResponse {
    id: string;
    entryPage: number;
 }
+
 export interface AddEntryBody {
    body: string;
    header_id: string;
@@ -106,22 +116,20 @@ export interface getHeaderResponsePage {
    totalResults: number;
 }
 
-export type getHeaderResponse = Header & getHeaderResponsePage;
+export type getHeaderResponse = HeaderResponse & getHeaderResponsePage;
 
 export interface PostLikeBody extends UserEntryStore {}
 export interface UserLikesStore extends UserEntryStore {}
 
 export interface VerifyHeaderBody extends AddHeaderBody {}
 
+interface SearchBody {
+   query: string;
+}
 export interface MsgResponse {
    type: string;
    msg: string;
 }
-
-interface SearchBody {
-   query: string;
-}
-
 interface SearchResponse {
    name: string;
    id: string;
