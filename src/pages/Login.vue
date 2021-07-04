@@ -1,9 +1,13 @@
 <script lang="ts" setup>
 import LoginView from '/src/components/Login/Login.vue';
+import { Head } from '@vueuse/head';
 </script>
 
 <template>
    <div class="login-wrapper">
+      <Head>
+         <title>Giriş | Bruhsozluk</title>
+      </Head>
       <LoginView />
    </div>
 </template>

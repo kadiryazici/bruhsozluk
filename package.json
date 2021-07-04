@@ -8,6 +8,7 @@
       "deploy": "npm run build && firebase deploy"
    },
    "dependencies": {
+      "@vueuse/head": "^0.6.0",
       "axios": "^0.21.1",
       "lodash.debounce": "^4.0.8",
       "lodash.once": "^4.1.1",

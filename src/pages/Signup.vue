@@ -1,9 +1,13 @@
 <script lang="ts" setup>
 import SignupView from '/src/components/Signup/SignupView.vue';
+import { Head } from '@vueuse/head';
 </script>
 
 <template>
    <div class="signup-wrapper">
+      <Head>
+         <title>Kayıt Oluş | Bruhsozluk</title>
+      </Head>
       <SignupView />
    </div>
 </template>

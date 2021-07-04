@@ -6,6 +6,7 @@ import { sanitizeEntryBody, sanitizeHeaderName } from '/src/helpers/app';
 import { postCreateHeader } from '/src/api/postCreateHeader';
 import type { AxiosError, AxiosResponse } from 'axios';
 import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
+import { Head } from '@vueuse/head';
 
 const route = useRoute();
 const router = useRouter();
@@ -52,6 +53,9 @@ async function createHeader() {
 
 <template>
    <form @submit.prevent id="create-header">
+      <Head>
+         <title>Başlık Oluşturma | Bruhsozluk</title>
+      </Head>
       <TitleVue class="title">
          <template #icon>
             <Icon name="add_circle" />

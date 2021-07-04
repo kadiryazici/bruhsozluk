@@ -4,6 +4,7 @@ import { usePromise } from 'vierone';
 import type { Header } from '/src/api/types.d';
 import { getHome } from '/src/api/getHome';
 import { onMounted, reactive } from 'vue';
+import { Head } from '@vueuse/head';
 
 const headers = reactive<Header[]>([]);
 
@@ -19,6 +20,10 @@ onMounted(async () => {
 
 <template>
    <div>
+      <Head
+         >,
+         <title>Bruhsozluk</title>
+      </Head>
       <HomeEntry :data="header" v-for="header in headers" />
    </div>
 </template>

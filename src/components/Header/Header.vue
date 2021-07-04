@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { isTruthy, usePromise } from 'vierone';
-import { onMounted, reactive } from 'vue';
+import { usePromise } from 'vierone';
+import { computed, onMounted, reactive } from 'vue';
+import { Head } from '@vueuse/head';
 
 import { useRoute, useRouter } from 'vue-router';
 import { getHeader } from '/src/api/getHeader';
@@ -25,6 +26,10 @@ ref: loading = true;
 ref: activePage = 1;
 
 const pageData = reactive<getHeaderResponse[]>([]);
+ref: pageTitle = computed(() => {
+   const { name } = pageData[0];
+   return `${name} | Bruhsozluk`;
+});
 
 const id = route.params.id as string;
 const page = route.params.page as string | undefined;
@@ -35,13 +40,13 @@ onMounted(async () => {
    if (page && !isNaN(parseInt(page))) {
       activePage = parseInt(page);
    }
-
    const [res, err] = await usePromise(getHeader(id, page));
    if (res) {
       const { data } = res;
       pageData.push(data);
       loading = false;
    }
+
    setTimeout(() => {
       if (focusID && !isFocusMatched) {
          notificationStore.createNotification({
@@ -131,6 +136,10 @@ function focusToElement(_el: any) {
       <HeaderSkeletonVue v-if="loading" />
       <!-- LOADING ENDS -->
       <template v-else v-for="header in pageData">
+         <Head>
+            <title>{{ pageTitle }}</title>
+         </Head>
+
          <div class="header">
             <div class="name">{{ header.name }}</div>
             <div class="page-changer">

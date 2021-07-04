@@ -1,7 +1,8 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from '/src/App.vue';
 import router from '/src/router/router';
 import { createPinia } from 'pinia';
+import { createHead } from '@vueuse/head';
 
 import Icon from '/src/components/Icon/Icon.vue';
 import VButton from '/src/components/Button/Button.vue';
@@ -18,7 +19,8 @@ app.config.globalProperties.$log = console.log;
 }
 
 const pinia = createPinia();
-
-app.use(pinia);
-app.use(router);
+const head = createHead();
+app.use(pinia) //
+   .use(router)
+   .use(head);
 app.mount('#app');
