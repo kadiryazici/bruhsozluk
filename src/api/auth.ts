@@ -8,20 +8,17 @@ export async function VerifyUser() {
    const id = GetUserAuthID();
    if (!id) throw new Error('Id bulunamadı');
 
-   const [res, err] = await usePromise(
-      axios.get<LoginResponse>(ReqURL('/verify'), {
+   try {
+      const res = await axios.get<LoginResponse>(ReqURL('/verify'), {
          headers: {
             Authorization: id
          }
-      })
-   );
-
-   if (err) {
-      throw err;
+      });
+      const { data } = res;
+      return data;
+   } catch (error) {
+      throw error;
    }
-
-   const { data } = res!;
-   return data;
 }
 
 export async function SignUp(param: SignupBody) {}
