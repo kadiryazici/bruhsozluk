@@ -2,7 +2,7 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    sanitizeUserName,
-   responseError,
+   responseError
 } from '@helpers/functions';
 import { Msg } from '@messages';
 import { GetUserResponse, GetUserResponseEntries } from '@type';
@@ -31,12 +31,10 @@ export default defineSyncHandler((req, res) => {
 
       if (clearUserName) {
          const db = useDB();
-         console.log({
-            clearUserName,
-         });
+
          const user = db.get('users').find({ username: clearUserName });
          if (user.value()) {
-            let userEntryDetails = user.get('entries').value(); // bu dizi
+            let userEntryDetails = [...user.get('entries').value()]; // bu dizi
             const userData = user.value();
 
             const { pageEntryCount } = Config.get_user;
@@ -49,8 +47,8 @@ export default defineSyncHandler((req, res) => {
 
             userEntryDetails = userEntryDetails.slice(entryStart, entryEnd);
 
-            const responseEntryData: GetUserResponseEntries[] = userEntryDetails.map(
-               value => {
+            const responseEntryData: GetUserResponseEntries[] =
+               userEntryDetails.map(value => {
                   const header = db
                      .get('headers')
                      .find({ id: value.header_id });
@@ -65,10 +63,9 @@ export default defineSyncHandler((req, res) => {
                   return {
                      header_id,
                      header_name,
-                     entry,
+                     entry
                   };
-               }
-            );
+               });
 
             res.status(200).json(<GetUserResponse>{
                username: userData.username,
@@ -77,7 +74,7 @@ export default defineSyncHandler((req, res) => {
                entries: responseEntryData,
                currentPage,
                totalPage,
-               totalResults,
+               totalResults
             });
          } else {
             // KULLANICI BULUNAMADI

@@ -14,7 +14,7 @@ export const app = new App({
    },
 
    settings: {
-      xPoweredBy: true
+      xPoweredBy: false
    }
 });
 

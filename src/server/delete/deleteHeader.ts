@@ -52,14 +52,13 @@ function deleteHeaderEntriesFromUsers(header_id: string) {
    db.get('users')
       .forEach(user => {
          const user_id = user.id;
-         db.get('users')
-            .find({ id: user_id })
+         const _user = db.get('users').find({ id: user_id });
+         _user //
             .get('entries')
             .remove({ header_id })
             .write();
 
-         db.get('users')
-            .find({ id: user_id })
+         _user //
             .get('likes')
             .remove({ header_id })
             .write();

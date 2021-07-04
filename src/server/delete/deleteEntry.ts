@@ -2,7 +2,7 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    responseError,
-   responseSuccess,
+   responseSuccess
 } from '@helpers/functions';
 import { Msg } from '@messages';
 
@@ -30,6 +30,7 @@ export default defineSyncHandler((req, res) => {
                requestUsername.value().isAdmin
             ) {
                header.get('entries').remove({ id: entry_id }).write();
+
                db.get('users')
                   .find({ username: entryValue.username })
                   .get('entries')

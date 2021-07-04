@@ -1,7 +1,8 @@
 // import { cors } from '@tinyhttp/cors';
 import { logger } from '@tinyhttp/logger';
 import cors from 'cors';
-import bodyParser from 'body-parser';
+import express from 'express';
+import { rateLimit } from '@tinyhttp/rate-limit';
 
 import { Delete, Get, Listen, Post, Use } from '@app';
 
@@ -34,6 +35,7 @@ import getLikesFromEntry from '@get/getlikesFromEntry';
 
 import { createJob, startJobHandler } from '@jobs/index';
 import jobUpdateHome from '@jobs/updateHome';
+import chalk from 'chalk';
 
 async function createServer() {
    /* DB SETUP: */ {
@@ -43,8 +45,19 @@ async function createServer() {
 
    /* App USE: */ {
       Use(cors());
-      Use(bodyParser.json());
+      Use(express.json());
       Use(logger());
+      Use(
+         rateLimit({
+            max: 100,
+            windowMs: 1 * 60 * 1000,
+            headers: true,
+            message: JSON.stringify({
+               type: 'error',
+               msg: 'Limit Aşıldı Lütfen 1 Dakika Sonra Tekrar Deneyiniz'
+            })
+         })
+      );
    }
 
    /* App GET: */ {
@@ -85,7 +98,8 @@ async function createServer() {
 
    /* App LISTEN: */ {
       Listen(Config.app.port, () => {
-         console.log(`server is on: ${Config.app.port}`);
+         const str = `${chalk.magenta('SERVER')} ${chalk.green('is on:')}`;
+         console.log(`${str} ${Config.app.port}`);
       });
    }
 
