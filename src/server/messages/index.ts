@@ -154,4 +154,11 @@ export class Msg {
          missingParameteres: 'Bazı parametrelet eksik.'
       }
    };
+
+   static GetUser = {
+      error: {
+         missingParameters: 'Bazı parametrelet eksik.',
+         userNotFound: 'Kullanıcı bulunamadı'
+      }
+   };
 }

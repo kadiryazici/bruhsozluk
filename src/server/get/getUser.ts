@@ -5,7 +5,7 @@ import {
    responseError
 } from '@helpers/functions';
 import { Msg } from '@messages';
-import { GetUserResponse, GetUserResponseEntries } from '@type';
+import { EntryResponse, GetUserResponse, GetUserResponseEntries } from '@type';
 import { Config } from '@config';
 /*
 AUTH NOT REQUIRED
@@ -34,7 +34,9 @@ export default defineSyncHandler((req, res) => {
 
          const user = db.get('users').find({ username: clearUserName });
          if (user.value()) {
-            let userEntryDetails = [...user.get('entries').value()]; // bu dizi
+            const userEntryDetails = [...user.get('entries').value()];
+            const userLikedEntriesCount = user.get('likes').value().length;
+
             const userData = user.value();
 
             const { pageEntryCount } = Config.get_user;
@@ -45,10 +47,12 @@ export default defineSyncHandler((req, res) => {
             const totalPage = Math.ceil(userEntryDetails.length / 10);
             const currentPage = page;
 
-            userEntryDetails = userEntryDetails.slice(entryStart, entryEnd);
+            const entrySlice = userEntryDetails
+               .reverse()
+               .slice(entryStart, entryEnd);
 
-            const responseEntryData: GetUserResponseEntries[] =
-               userEntryDetails.map(value => {
+            const responseEntryData: GetUserResponseEntries[] = entrySlice.map(
+               value => {
                   const header = db
                      .get('headers')
                      .find({ id: value.header_id });
@@ -60,30 +64,42 @@ export default defineSyncHandler((req, res) => {
                      .find({ id: value.entry_id })
                      .value();
 
+                  const entryResponse: EntryResponse = {
+                     body: entry.body,
+                     date: entry.date,
+                     header_id: entry.header_id,
+                     id: entry.id,
+                     username: entry.username,
+                     likeCount: entry.liked_by.length
+                  };
+
                   return {
                      header_id,
                      header_name,
-                     entry
+                     entry: entryResponse
                   };
-               });
+               }
+            );
 
-            res.status(200).json(<GetUserResponse>{
+            res.status(200).json({
                username: userData.username,
                id: userData.id,
                isAdmin: userData.isAdmin,
                entries: responseEntryData,
+               totalLikes: userLikedEntriesCount,
+               totalEntry: userEntryDetails.length,
                currentPage,
                totalPage,
                totalResults
-            });
+            } as GetUserResponse);
          } else {
             // KULLANICI BULUNAMADI
-            responseError(res, Msg.get_header.error.wrongHeaderID); // yanlış username?
+            responseError(res, Msg.GetUser.error.userNotFound); // yanlış username?
          }
       } else {
-         responseError(res, Msg.get_header.error.neededParams);
+         responseError(res, Msg.GetUser.error.missingParameters);
       }
    } else {
-      responseError(res, Msg.get_header.error.neededParams);
+      responseError(res, Msg.GetUser.error.missingParameters);
    }
 });

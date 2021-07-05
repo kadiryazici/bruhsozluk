@@ -64,8 +64,8 @@ async function createServer() {
       Get('/header/:header_id', getHeader);
       Get('/entry/:header_id/:entry_id', getEntry);
       Get('/verify', getVerification);
-      Get('/user/:userName', getUser);
       Get('/user/:userName/likes', getLikedEntriesByUser);
+      Get('/user/:userName', getUser);
       Get('/home', getHome);
       Get('/left', getLeft);
       Get('/likes/:header_id/:entry_id', getLikesFromEntry);

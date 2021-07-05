@@ -2,18 +2,17 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    sanitizeUserName,
-   responseError,
+   responseError
 } from '@helpers/functions';
 import { Msg } from '@messages';
-import { GetLikesResponse, GetLikedEntriesByUserEntries } from '@type';
+import { EntryResponse, GetLikesResponse } from '@type';
 import { Config } from '@config';
 /*
 AUTH NOT REQUIRED
 /user/{ user_name }/?page=1
- user_name should be seperated by "-" not " ". 
-"bruh sozluk" should be "bruh-sozluk"
 */
 export default defineSyncHandler((req, res) => {
+   console.log('url geldi');
    if (req.params && req.params.userName) {
       let page = 1;
 
@@ -33,29 +32,29 @@ export default defineSyncHandler((req, res) => {
 
       if (clearUserName) {
          const db = useDB();
-         console.log({
-            clearUserName,
-         });
+
          const user = db.get('users').find({ username: clearUserName });
          if (user.value()) {
-            let userLikedEntryData = user.get('likes').value(); // bu dizi
-            const userData = user.value();
+            const userLikesDetails = [...user.get('likes').value()];
 
             const { pageEntryCount } = Config.get_user;
             const entryStart = pageEntryCount * page - pageEntryCount;
             const entryEnd = entryStart + pageEntryCount;
 
-            const totalResults = userLikedEntryData.length;
-            const totalPage = Math.ceil(userLikedEntryData.length / 10);
+            const totalResults = userLikesDetails.length;
+            const totalPage = Math.ceil(userLikesDetails.length / 10);
             const currentPage = page;
 
-            userLikedEntryData = userLikedEntryData.slice(entryStart, entryEnd);
+            const likeEntrySlice = userLikesDetails
+               .reverse()
+               .slice(entryStart, entryEnd);
 
-            const responseEntryData: GetLikedEntriesByUserEntries[] = userLikedEntryData.map(
-               value => {
+            const responseLikesEntryData: GetLikesResponse['entries'] =
+               likeEntrySlice.map(value => {
                   const header = db
                      .get('headers')
                      .find({ id: value.header_id });
+
                   const header_id = header.get('id').value();
                   const header_name = header.get('name').value();
 
@@ -64,34 +63,41 @@ export default defineSyncHandler((req, res) => {
                      .find({ id: value.entry_id })
                      .value();
 
+                  console.log({
+                     entryID: entry
+                  });
+
+                  const entryResponse: EntryResponse = {
+                     body: entry.body,
+                     date: entry.date,
+                     header_id: entry.header_id,
+                     id: entry.id,
+                     username: entry.username,
+                     likeCount: entry.liked_by.length
+                  };
+
                   return {
                      header_id,
                      header_name,
-                     entry,
+                     entry: entryResponse
                   };
-               }
-            );
+               });
 
-            res.status(200).json(<GetLikesResponse>{
-               username: userData.username,
-               id: userData.id,
-               isAdmin: userData.isAdmin,
-               entries: responseEntryData,
+            const resData: GetLikesResponse = {
+               entries: responseLikesEntryData,
                currentPage,
                totalPage,
-               totalResults,
-            });
+               totalResults
+            };
+            res.status(200).json(resData);
          } else {
             // KULLANICI BULUNAMADI
-            responseError(
-               res,
-               Msg.get_liked_entries_by_user.error.userNotFound
-            ); // yanlış username?
+            responseError(res, Msg.GetUser.error.userNotFound); // yanlış username?
          }
       } else {
-         responseError(res, Msg.get_liked_entries_by_user.error.missingParams);
+         responseError(res, Msg.GetUser.error.missingParameters);
       }
    } else {
-      responseError(res, Msg.get_liked_entries_by_user.error.missingParams);
+      responseError(res, Msg.GetUser.error.missingParameters);
    }
 });

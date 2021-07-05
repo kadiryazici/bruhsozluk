@@ -31,28 +31,5 @@ function updateHomeHandler() {
          entries: [sortedEntries[0]]
       };
    });
-
-   // // get most liked entry from header.
-   // const entriesShuffledHeader = headers.map(header => {
-   //    const object = {
-   //       id: header.id,
-   //       name: header.name,
-   //       entries: [] as Entry[]
-   //    };
-
-   //    //if there is entry
-   //    if (header.entries.length > 0) {
-   //       const sortedEntries = [...header.entries].sort(
-   //          (a, b) => b.liked_by.length - a.liked_by.length
-   //       );
-   //       object.entries = [sortedEntries[0]];
-   //    }
-   //    return object;
-   // });
-
-   // // remove headers that has 0 entry.
-   // const filteredHeaders = entriesShuffledHeader.filter(header => {
-   //    return header.entries.length > 0;
-   // });
    db.set('homeData', _headers).write();
 }

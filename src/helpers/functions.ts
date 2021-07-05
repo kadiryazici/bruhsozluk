@@ -119,7 +119,8 @@ export function removeMultipleSpaces(str: string): string {
  * @description Replaces Hyphens(-) to Spaces(  ).
  */
 export function replaceHyphensToSpaces(str: string): string {
-   return str.replace('-', ' ');
+   const regex = /\-/g;
+   return str.replace(regex, ' ');
 }
 
 export function replaceTurkishLetters(str: string): string {
