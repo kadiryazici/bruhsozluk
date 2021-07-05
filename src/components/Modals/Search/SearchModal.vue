@@ -2,14 +2,16 @@
 import debounce from 'lodash.debounce';
 import { usePromise } from 'vierone';
 import { computed, reactive, watch } from 'vue';
+
+import type { SearchResponse } from '/src/api/types';
+
+import SearchItemSkeleton from '/src/components/Modals/Search/SearchSkeleton.vue';
+
 import { getSearch } from '/src/api/getSearch';
 import { postVerifyHeader } from '/src/api/postVerifyHeader';
-import type { SearchResponse } from '/src/api/types';
 import { sanitizeHeaderName } from '/src/helpers/app';
 import { useAppStore } from '/src/stores/appStore';
 import { useModalStore } from '/src/stores/modalStore';
-
-import SearchItemSkeleton from '/src/components/Modals/Search/SearchSkeleton.vue';
 
 const appStore = useAppStore();
 const modalStore = useModalStore();
@@ -17,9 +19,7 @@ const modalStore = useModalStore();
 ref: query = '';
 ref: didSearch = false;
 ref: isSearching = false;
-
 ref: sanitizedQuery = computed(() => sanitizeHeaderName(query));
-
 const headerExisting = reactive({
    notExists: false,
    msg: ''

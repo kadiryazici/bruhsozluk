@@ -38,10 +38,9 @@ export const useNotificationStore = defineStore({
             id: nanoid()
          });
       },
+
       deleteNotification(id: Notification['id']) {
-         const index = this.notifications.findIndex(n => {
-            return n.id === id;
-         });
+         const index = this.notifications.findIndex(n => n.id === id);
          this.notifications.splice(index, 1);
       }
    }

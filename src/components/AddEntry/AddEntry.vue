@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import type { Colors } from '/src/components/Button/Button.vue';
 
-const props = defineProps<{
+interface Props {
    modelValue: string;
    hideSend?: boolean;
    loading?: boolean;
-}>();
+}
+const props = defineProps<Props>();
 
 const emit = defineEmits({
    'update:modelValue': (value: string) => true,

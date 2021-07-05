@@ -43,14 +43,19 @@ const appStore = useAppStore();
    background-color: colors.$primary;
    flex-flow: column nowrap;
    border-radius: vars.$radius;
-   padding: funcs.padding(2);
+   overflow: hidden;
+   border: 2px solid darken(colors.$secondary, 80%);
 
    .profile-icon {
-      padding: funcs.padding(4);
+      padding: funcs.padding(2);
       text-align: center;
+      background-color: colors.$turq;
+      border-top-left-radius: vars.$radius;
+      border-top-right-radius: vars.$radius;
       * {
          color: colors.$secondary;
          font-size: 75px;
+         text-shadow: vars.$shadowDarkDownText;
       }
    }
 
@@ -59,6 +64,7 @@ const appStore = useAppStore();
       margin-top: auto;
       flex-flow: column nowrap;
       color: colors.$secondary;
+      padding: funcs.padding(2);
 
       .select-item {
          width: 100%;

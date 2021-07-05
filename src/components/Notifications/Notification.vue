@@ -4,19 +4,6 @@ import { useNotificationStore } from '/src/stores/notificationStore';
 
 const nStore = useNotificationStore();
 
-const NotificationIcon = {
-   success: 'check_circle',
-   error: 'error',
-   warning: 'warning',
-   info: 'info'
-};
-
-const Icons = new Map<string, string>();
-Icons.set('success', 'check_circle');
-Icons.set('error', 'error');
-Icons.set('warning', 'warning');
-Icons.set('info', 'info');
-
 class Configs {
    static Title = class {
       static success = 'başarılı';
@@ -31,10 +18,10 @@ class Configs {
       static info = 'info';
    };
 }
-
-const props = defineProps<{
+interface Props {
    notificationData: Notification;
-}>();
+}
+const props = defineProps<Props>();
 
 function handleNotificationClick() {
    if (props.notificationData.onClick) {

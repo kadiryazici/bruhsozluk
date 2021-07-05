@@ -99,7 +99,7 @@ export function msToDateString(ms: number): string {
    const month = add0(date.getMonth() + 1);
    const year = date.getFullYear();
 
-   return `${day}/${month}/${year} ${add0(minute)}:${add0(hour)}`;
+   return `${day}/${month}/${year} ${add0(hour)}:${add0(minute)}`;
 }
 
 export function sanitizeUserName(username: string) {

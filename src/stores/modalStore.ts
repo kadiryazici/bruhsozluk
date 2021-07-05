@@ -7,11 +7,9 @@ export const useModalStore = defineStore({
       isSearchModalOpen: false
    }),
    getters: {
-      isAnyModalOpen(): boolean {
-         const modals = [this.isProfileModalOpen, this.isSearchModalOpen];
-         const isOpen = !modals.every(v => {
-            return v === false;
-         });
+      isAnyModalOpen(state): boolean {
+         const modals = [state.isProfileModalOpen, state.isSearchModalOpen];
+         const isOpen = !modals.every(m => m === false);
          return isOpen;
       }
    },

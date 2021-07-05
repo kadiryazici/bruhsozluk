@@ -10,10 +10,14 @@
                leaveActiveClass="page-animate-out"
                enterActiveClass="page-animate-in"
             >
+               <!-- <KeepAlive :max="10"> -->
                <component
-                  :key="route.fullPath + appStore.routerComponentKey"
+                  :key="
+                     route.fullPath.split('#')[0] + appStore.routerComponentKey
+                  "
                   :is="Component"
                />
+               <!-- </KeepAlive> -->
             </Transition>
          </router-view>
       </template>
@@ -30,18 +34,20 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
+import { usePromise } from 'vierone';
+import { Modal } from 'modal-component-vue3';
+
 import Main from '/src/layouts/Main.vue';
 import Left from '/src/components/LeftBar/Left.vue';
 import NotificationWrapperVue from '/src/components/Notifications/NotificationWrapper.vue';
-import { Modal } from 'modal-component-vue3';
-import { useModalStore } from '/src/stores/modalStore';
-import { VerifyUser } from '/src/api/auth';
-import { usePromise } from 'vierone';
-import { useAppStore } from '/src/stores/appStore';
-import { onMounted, watchEffect } from 'vue';
 import ProfileModalVue from '/src/components/Modals/Profile/ProfileModal.vue';
 import SearchModalVue from '/src/components/Modals/Search/SearchModal.vue';
+
+import { useModalStore } from '/src/stores/modalStore';
+import { VerifyUser } from '/src/api/auth';
+import { useAppStore } from '/src/stores/appStore';
 import { OnAppMounted } from '/src/helpers/functionsOnAppMounted';
 
 const modalStore = useModalStore();

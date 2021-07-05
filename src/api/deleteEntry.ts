@@ -7,7 +7,10 @@ interface Params {
    entry_id: Entry['id'];
    header_id: Header['id'];
 }
-
+/**
+ * @required Auth
+ * @does Sends api request to api to delete entry
+ */
 export async function deleteEntry(params: Params) {
    const appStore = useAppStore();
    const [user] = appStore.userInformation;

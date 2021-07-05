@@ -1,15 +1,17 @@
+<script lang="ts" setup>
+import { defineProps } from 'vue';
+
+interface Props {
+   name: string;
+}
+const props = defineProps<Props>();
+</script>
+
 <template>
    <span translate="no" class="_icon material-icons">
       {{ props.name }}
    </span>
 </template>
-
-<script lang="ts" setup>
-import { defineProps } from 'vue';
-const props = defineProps<{
-   name: string;
-}>();
-</script>
 
 <style lang="scss" scoped>
 ._icon {

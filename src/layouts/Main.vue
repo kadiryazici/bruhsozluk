@@ -26,7 +26,7 @@ $leftContentWidth: 300px;
 .right {
    width: 100%;
    // height: max-content;
-   display: table;
+   display: block;
    background-color: colors.$primary;
    padding: funcs.padding(5);
    // overflow: auto;

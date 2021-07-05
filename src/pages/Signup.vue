@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import SignupView from '/src/components/Signup/SignupView.vue';
 import { Head } from '@vueuse/head';
+
+import SignupView from '/src/components/Signup/SignupView.vue';
 </script>
 
 <template>

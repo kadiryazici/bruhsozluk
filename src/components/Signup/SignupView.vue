@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import VInput from '/src/components/Input/Input.vue';
 import { reactive } from 'vue';
-import { postSignup } from '/src/api/postSignup';
-import { useAppStore } from '/src/stores/appStore';
 import { useRouter } from 'vue-router';
-import { useNotificationStore } from '/src/stores/notificationStore';
+
 import type { MsgResponse } from '/src/api/types';
+import type { AxiosError } from 'axios';
+
+import VInput from '/src/components/Input/Input.vue';
+
+import { postSignup } from '/src/api/postSignup';
+import { useNotificationStore } from '/src/stores/notificationStore';
 
 const router = useRouter();
-const appStore = useAppStore();
 const notification = useNotificationStore();
 
 ref: error = false;
@@ -27,19 +29,25 @@ async function handleSignUP() {
    }
 
    try {
-      const res = await postSignup({ ...input });
-      router.push({
-         name: 'Login'
-      });
+      await postSignup({ ...input });
+      router.push({ name: 'Login' });
       notification.createNotification({
          kind: 'success',
          text: 'başarılı bir şekilde kayıt yapıldı'
       });
-   } catch (err) {
-      notification.createNotification({
-         kind: 'error',
-         text: (err.response.data as MsgResponse).msg
-      });
+   } catch (err: unknown) {
+      const error = err as AxiosError;
+      if (error.response && error.response.data.msg) {
+         notification.createNotification({
+            kind: 'error',
+            text: error.response.data.msg
+         });
+      } else {
+         notification.createNotification({
+            kind: 'error',
+            text: 'Kayıt olma sırasında bir hata oluştu.'
+         });
+      }
       return;
    }
 }

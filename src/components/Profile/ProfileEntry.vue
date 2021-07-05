@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { defineProps } from 'vue';
-import EntryVue from '/src/components/Entry/Entry.vue';
 import type { GetUserResponseEntries } from '/src/api/types.d';
+import EntryVue from '/src/components/Entry/Entry.vue';
 
-const props = defineProps<{
+interface Props {
    data: GetUserResponseEntries;
-}>();
+}
+const props = defineProps<Props>();
 </script>
 
 <template>
@@ -14,9 +15,7 @@ const props = defineProps<{
          <RouterLink
             :to="{
                name: 'Header',
-               params: {
-                  id: props.data.header_id
-               }
+               params: { id: props.data.header_id }
             }"
          >
             {{ props.data.header_name }}

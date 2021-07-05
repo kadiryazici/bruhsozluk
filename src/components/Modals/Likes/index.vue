@@ -32,7 +32,7 @@ const props = defineProps<{
       </div>
 
       <div class="users">
-         <Item :key="user" v-for="user in props.users">{{ user }}</Item>
+         <Item :username="user" :key="user" v-for="user in props.users" />
       </div>
    </div>
 </template>

@@ -6,7 +6,8 @@ export const useAppStore = defineStore({
    state: () => ({
       isLogged: false,
       userInformation: <LoginResponse[]>[],
-      routerComponentKey: ''
+      routerComponentKey: '',
+      routerHistoryNames: [] as string[]
    }),
    actions: {
       reloadRouterView() {

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { LeftContentItem } from '/src/api/types.d';
 
-const props = defineProps<{
+interface Props {
    itemData: LeftContentItem;
-}>();
+}
+const props = defineProps<Props>();
 </script>
 
 <template>

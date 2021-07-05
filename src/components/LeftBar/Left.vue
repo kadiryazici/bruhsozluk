@@ -12,12 +12,12 @@ import { useModalStore } from '/src/stores/modalStore';
 const appStore = useAppStore();
 const modalStore = useModalStore();
 
-const leftItems = reactive<LeftContent>([]);
-ref: loading = false;
 onMounted(async () => {
    await fetchLeft();
 });
 
+const leftItems = reactive<LeftContent>([]);
+ref: loading = false;
 async function fetchLeft() {
    if (loading) return;
 
@@ -37,7 +37,7 @@ async function fetchLeft() {
       <div id="left-content">
          <div class="top-menu">
             <RouterLink class="logo" to="/">
-               <VButton :noPadding="true" :textColor="'turq'">BRUH</VButton>
+               <VButton noPadding :textColor="`turq`">BRUH</VButton>
             </RouterLink>
 
             <div class="icons">
@@ -101,8 +101,6 @@ async function fetchLeft() {
       </div>
    </aside>
 </template>
-
-<script setup></script>
 
 <style lang="scss" scoped>
 #left-content-wrapper {

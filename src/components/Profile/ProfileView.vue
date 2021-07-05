@@ -2,15 +2,17 @@
 import { computed, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Head } from '@vueuse/head';
+
 import type { AxiosError } from 'axios';
+import type { Colors } from '/src/components/Button/Button.vue';
+import type { GetUserResponse } from '/src/api/types';
 
 import Title from '/src/components/Title/Title.vue';
+import ProfileEntry from '/src/components/Profile/ProfileEntry.vue';
+
 import { fixURLUsername, sanitizeUserName } from '/src/helpers/app';
-import type { GetUserResponse } from '/src/api/types';
 import { getUser } from '/src/api/getUser';
 import { useNotificationStore } from '/src/stores/notificationStore';
-import ProfileEntry from '/src/components/Profile/ProfileEntry.vue';
-import type { Colors } from '/src/components/Button/Button.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -56,9 +58,10 @@ async function loadNextPage() {
       const { totalPage } = user;
       if (entryPage < totalPage) {
          isLoadingNewEntries = true;
-         const {
-            data: { entries }
-         } = await getUser(fixURLUsername(userName), entryPage + 1);
+         const _username = fixURLUsername(userName);
+         const targetPage = entryPage + 1;
+         const { data } = await getUser(_username, targetPage);
+         const { entries } = data;
          userData[0].entries.push(...entries);
          entryPage += 1;
       }

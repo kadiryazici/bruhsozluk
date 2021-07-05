@@ -1,3 +1,27 @@
+<script lang="ts" setup>
+import { computed } from 'vue';
+
+interface Props {
+   color?: Colors;
+   square?: boolean;
+   textColor?: Colors;
+   noHover?: boolean;
+   noPadding?: boolean;
+   loading?: boolean;
+   size?: string;
+   bordered?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+   textColor: 'primary',
+   bordered: false
+});
+
+ref: buttonFontSize = computed(() => {
+   return props.size || '20px';
+});
+</script>
+
 <template>
    <button
       :class="[
@@ -29,31 +53,6 @@ export type Colors =
    | 'tertiary'
    | 'lime'
    | 'sun';
-</script>
-
-<script lang="ts" setup>
-import { computed } from 'vue';
-
-const props = withDefaults(
-   defineProps<{
-      color: Colors;
-      square?: boolean;
-      textColor?: Colors;
-      noHover?: boolean;
-      noPadding?: boolean;
-      loading?: boolean;
-      size?: string;
-      bordered?: boolean;
-   }>(),
-   {
-      textColor: 'primary',
-      bordered: false
-   }
-);
-
-ref: buttonFontSize = computed(() => {
-   return props.size || '20px';
-});
 </script>
 
 <style lang="scss" scoped>

@@ -1,12 +1,15 @@
 <script lang="ts" setup>
-import VInput from '/src/components/Input/Input.vue';
 import { reactive } from 'vue';
+
+import type { MsgResponse } from '/src/api/types';
+
+import VInput from '/src/components/Input/Input.vue';
+
 import { postLogin } from '/src/api/postLogin';
 import { useAppStore } from '/src/stores/appStore';
 import { useRouter } from 'vue-router';
 import { SetUserAuthID } from '/src/helpers/auth';
 import { useNotificationStore } from '/src/stores/notificationStore';
-import type { MsgResponse } from '/src/api/types';
 
 const router = useRouter();
 const appStore = useAppStore();
@@ -61,7 +64,6 @@ async function handleLogin() {
             v-model:error="error"
             errorMessage="bu yanlış olabilir"
             :type="'text'"
-            data-msg="hoşgeldiniz"
          />
 
          <label class="_label">şifre</label>

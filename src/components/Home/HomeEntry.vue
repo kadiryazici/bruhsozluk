@@ -1,25 +1,18 @@
 <script lang="ts" setup>
 import { defineProps } from 'vue';
+import type { getHeaderResponse } from '/src/api/types.d';
 import EntryVue from '/src/components/Entry/Entry.vue';
-import type { Header, getHeaderResponse } from '/src/api/types.d';
-import { useRouter } from 'vue-router';
 
-const props = defineProps<{
+interface Props {
    data: getHeaderResponse;
-}>();
+}
+const props = defineProps<Props>();
 </script>
 
 <template>
    <div class="home-entry">
       <div class="header">
-         <RouterLink
-            :to="{
-               name: 'Header',
-               params: {
-                  id: props.data.id
-               }
-            }"
-         >
+         <RouterLink :to="{ name: 'Header', params: { id: props.data.id } }">
             {{ props.data.name }}
          </RouterLink>
       </div>

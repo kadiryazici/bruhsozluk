@@ -1,12 +1,14 @@
 <script lang="ts" setup>
+import { useRoute, useRouter } from 'vue-router';
+import type { AxiosError } from 'axios';
+import { Head } from '@vueuse/head';
+
 import TitleVue from '/src/components/Title/Title.vue';
 import VInput from '/src/components/Input/Input.vue';
-import { useRoute, useRouter } from 'vue-router';
+import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
+
 import { sanitizeEntryBody, sanitizeHeaderName } from '/src/helpers/app';
 import { postCreateHeader } from '/src/api/postCreateHeader';
-import type { AxiosError, AxiosResponse } from 'axios';
-import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
-import { Head } from '@vueuse/head';
 
 const route = useRoute();
 const router = useRouter();
@@ -28,8 +30,7 @@ async function createHeader() {
    try {
       if (sanitizeEntryBody(entryBody).length > 0) {
          loading = true;
-         const res = await postCreateHeader(headerName, entryBody);
-         const { data } = res;
+         const { data } = await postCreateHeader(headerName, entryBody);
          router.push({
             name: 'Header',
             params: {
@@ -38,11 +39,9 @@ async function createHeader() {
             }
          });
       }
-   } catch (err) {
-      error = true;
-      const _error = () => err as AxiosError;
-
-      const response = _error().response;
+   } catch (err: unknown) {
+      const error = err as AxiosError;
+      const response = error.response;
       if (response && response.data.msg) {
          errorMessage = response.data.msg;
       }

@@ -7,14 +7,15 @@ import { useRoute, useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
 import type { getHeaderResponse } from '/src/api/types.d';
 
-import { getHeader } from '/src/api/getHeader';
 import Entry from '/src/components/Entry/Entry.vue';
 import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
+import HeaderSkeletonVue from '/src/components/Header/HeaderSkeleton.vue';
+
+import { getHeader } from '/src/api/getHeader';
 import { sanitizeEntryBody, useFocus2ElementOnce } from '/src/helpers/app';
 import { postAddEntry } from '/src/api/postAddEntry';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { useAppStore } from '/src/stores/appStore';
-import HeaderSkeletonVue from '/src/components/Header/HeaderSkeleton.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -35,6 +36,7 @@ const page = route.params.page as string | undefined;
 ref: focusID = route.query.focus;
 ref: isFocusMatched = false;
 
+//#region OnMounted Component
 onMounted(async () => {
    if (page && !isNaN(parseInt(page))) {
       activePage = parseInt(page);
@@ -55,7 +57,9 @@ onMounted(async () => {
       }
    }, 0);
 });
+//#endregion
 
+//#region Naviate Function
 function navigate(kind: 'next' | 'previous') {
    const [header] = pageData;
    if (header) {
@@ -83,9 +87,11 @@ function navigate(kind: 'next' | 'previous') {
       }
    }
 }
+//#endregion
 
 ref: entryBody = '';
 ref: entryLoading = false;
+//#region AddEntry Function
 async function addEntry() {
    if (entryLoading) return;
 
@@ -121,6 +127,7 @@ async function addEntry() {
    }
    entryLoading = false;
 }
+//#endregion
 
 const _focusToElement = useFocus2ElementOnce();
 function focusToElement(_el: any) {

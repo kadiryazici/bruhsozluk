@@ -19,22 +19,23 @@ import { msToDateString } from '/src/helpers/app';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { deleteEntry } from '/src/api/deleteEntry';
 
-const emit = defineEmits<{
+interface Emits {
    (event: 'atMount', value: HTMLElement): void;
-}>();
-const props = defineProps<{
+}
+interface Props {
    entryData: EntryResponse;
-}>();
+}
+
+const emit = defineEmits<Emits>();
+const props = defineProps<Props>();
 const appStore = useAppStore();
 const notificationStore = useNotificationStore();
 
 ref: liked = false;
 ref: likesOfEntry = [] as string[];
 ref: entryWrapper = null as TemplateRef<HTMLElement>;
-
 ref: isModalOpen = false;
 ref: isDeleteModalOpen = false;
-
 ref: canDelete = computed(
    () =>
       appStore.isLogged &&
@@ -79,37 +80,32 @@ async function copyEntryLink() {
          kind: 'success',
          text: 'Entry adresi panoya kopyalandı.'
       });
+
    const notifyError = () =>
       notificationStore.createNotification({
          kind: 'error',
          text: 'Entry adresi panoya kopyalanamadı.'
       });
 
-   const entryID = props.entryData.id;
-   const url =
-      window.location.protocol +
-      '//' +
-      window.location.host +
-      window.location.pathname +
-      `?focus=${entryID}`;
+   const { id: entryID } = props.entryData;
+   const { protocol, host } = window.location;
+   const { header_id, page } = props.entryData;
+
+   const url = `${protocol}//${host}/baslik/${header_id}/${page}?focus=${entryID}`;
 
    if ('clipboard' in navigator) {
       const [res, err] = await usePromise(navigator.clipboard.writeText(url));
-      if (err) {
-         notifyError();
-      } else {
-         notifySuccess();
-      }
+      if (err) notifyError();
+      else notifySuccess();
       return;
    } //
    else if ('execCommand' in document) {
       const _area = document.createElement('textarea');
-
       _area.style.left = '0px';
       _area.style.top = '0px';
       _area.style.position = 'fixed';
-
       _area.textContent = url;
+
       document.body.insertAdjacentElement('afterbegin', _area);
       _area.focus();
       _area.select();
@@ -179,15 +175,13 @@ async function handleEntryDelete() {
             <RouterLink
                :to="{
                   name: 'Profile',
-                  params: {
-                     username: entryData.username
-                  }
+                  params: { username: entryData.username }
                }"
                class="link writer"
                >{{ entryData.username }}</RouterLink
             >
             <span @click="copyEntryLink" role="time, link" class="link date">{{
-               `${msToDateString(entryData.date)}`
+               msToDateString(entryData.date)
             }}</span>
          </div>
          <div class="icon-section">

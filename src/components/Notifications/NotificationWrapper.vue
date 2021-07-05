@@ -27,9 +27,7 @@ function stopChecker() {
    }
 }
 
-onMounted(() => {
-   createChecker();
-});
+onMounted(createChecker);
 onUnmounted(stopChecker);
 </script>
 

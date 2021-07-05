@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import LoginView from '/src/components/Login/Login.vue';
 import { Head } from '@vueuse/head';
+
+import LoginView from '/src/components/Login/Login.vue';
 </script>
 
 <template>

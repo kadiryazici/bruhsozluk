@@ -26,6 +26,7 @@ export interface Entry {
 // export type EntryResponse = Omit<Entry, 'liked_by'>
 export interface EntryResponse extends Omit<Entry, 'liked_by'> {
    likeCount: number;
+   page: number;
 }
 
 export interface HeaderResponse extends Omit<Header, 'entries'> {

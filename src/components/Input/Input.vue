@@ -5,21 +5,23 @@ export default {
 </script>
 
 <script lang="ts" setup>
-const props = defineProps<{
+interface Props {
    errorMessage?: string;
    modelValue: string;
    type: 'text' | 'password';
    error?: boolean;
-}>();
-
-const emit = defineEmits<{
+}
+interface Emits {
    (event: 'update:modelValue', value: string): void;
    (event: 'update:error', value: boolean): void;
-}>();
+}
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
 
 function onInput(e: Event) {
-   if (e.currentTarget instanceof HTMLInputElement) {
-      emit('update:modelValue', e.currentTarget.value);
+   const { currentTarget: cT } = e;
+   if (cT instanceof HTMLInputElement) {
+      emit('update:modelValue', cT.value);
    }
 }
 
@@ -27,6 +29,7 @@ function onChange() {
    emit('update:error', false);
 }
 </script>
+
 <template inherit-attrs="false">
    <div class="input-wrapper">
       <input

@@ -1,8 +1,18 @@
+<script lang="ts" setup>
+interface Props {
+   username: string;
+}
+const props = defineProps<Props>();
+</script>
+
 <template>
    <div class="_likeItem">
       <Icon class="_icon" name="person" />
-      <RouterLink to="#" class="text link">
-         <slot />
+      <RouterLink
+         :to="{ name: 'Profile', params: { username: props.username } }"
+         class="text link"
+      >
+         {{ props.username }}
       </RouterLink>
    </div>
 </template>

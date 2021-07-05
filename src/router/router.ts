@@ -45,13 +45,19 @@ const router = createRouter({
    linkActiveClass: 'vierone-link-active',
 
    scrollBehavior: (to, from, savedPosition) => {
-      if (savedPosition && to.name === 'Todo') {
-         return { top: savedPosition.top };
-      } else {
-         return {
-            top: 0
-         };
-      }
+      return new Promise((resolve, reject) => {
+         setTimeout(() => {
+            let top = 0;
+            if (savedPosition) {
+               top = savedPosition.top;
+            }
+            window.scroll({
+               top,
+               behavior: 'smooth'
+            });
+            resolve(undefined);
+         }, 500);
+      });
    },
 
    routes: [
@@ -95,6 +101,13 @@ router.beforeEach((to, from, next) => {
    const modalStore = useModalStore();
    modalStore.closeAllModals();
    next();
+});
+
+router.beforeResolve(to => {
+   if (to.name && typeof to.name === 'string') {
+      const appStore = useAppStore();
+      appStore.routerHistoryNames.push(to.name);
+   }
 });
 
 export default router;

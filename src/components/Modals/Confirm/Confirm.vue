@@ -6,20 +6,22 @@ interface Props {
    text: string;
    iconName?: string;
 }
+interface Emits {
+   (event: 'deny'): void;
+   (event: 'accept'): void;
+}
+
 const props = withDefaults(defineProps<Props>(), {
    iconName: 'help'
 });
-
-const emit = defineEmits<{
-   (event: 'deny'): void;
-   (event: 'accept'): void;
-}>();
+const emit = defineEmits<Emits>();
 
 //#region Button Props
 ref: acceptButton = computed(() => ({
    textColor: 'lime' as Colors,
    color: 'lime' as Colors,
    bordered: true,
+   size: '15px',
    onClick: () => {
       emit('accept');
    }
@@ -28,6 +30,7 @@ ref: denyButton = computed(() => ({
    textColor: 'ruby' as Colors,
    color: 'ruby' as Colors,
    bordered: true,
+   size: '15px',
    onClick: () => {
       emit('deny');
    }
@@ -40,16 +43,20 @@ ref: denyButton = computed(() => ({
       <div class="_type">
          <Icon :name="props.iconName" />
       </div>
+
       <div class="_body">
          <div class="_text">
             {{ props.text }}
          </div>
+
          <div class="_buttons">
             <VButton v-bind="acceptButton">
                <Icon class="_icon" name="done" />
                evet
             </VButton>
+
             <span class="seperator"></span>
+
             <VButton v-bind="denyButton">
                <Icon class="_icon" name="close" />
                hayır
@@ -66,6 +73,7 @@ ref: denyButton = computed(() => ({
    min-height: 250px;
    flex-flow: column nowrap;
    background-color: colors.$primary;
+   border: 1px solid darken(colors.$secondary, 80%);
    overflow: hidden;
    border-radius: vars.$radius;
 
@@ -77,7 +85,7 @@ ref: denyButton = computed(() => ({
       align-items: center;
       justify-content: center;
       * {
-         font-size: 50px;
+         font-size: 75px;
          color: colors.$secondary;
          text-shadow: vars.$shadowDarkDownText;
       }
@@ -107,6 +115,7 @@ ref: denyButton = computed(() => ({
 
       ._icon {
          margin-right: funcs.padding(2);
+         font-size: 15px;
       }
       .seperator {
          width: funcs.padding(2);
