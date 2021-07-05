@@ -1,6 +1,10 @@
 import { head } from '.pnpm/@types+lodash@4.14.170/node_modules/@types/lodash';
 import { useDB } from '@db';
-import { defineSyncHandler, responseError } from '@helpers/functions';
+import {
+   defineSyncHandler,
+   getEntryPageOfHeader,
+   responseError
+} from '@helpers/functions';
 import { Msg } from '@messages';
 import {
    getHeaderResponse,
@@ -43,27 +47,22 @@ export default defineSyncHandler((req, res) => {
             let _header = v8.deserialize(v8.serialize(header)) as Header;
             _header.entries = _header.entries.slice(entryStart, entryEnd);
 
-            const resData: HeaderResponse = {
+            const resData: getHeaderResponse = {
                id: _header.id,
                name: _header.name,
                entries: _header.entries.map(entry => {
                   const likeCount = entry.liked_by.length;
-                  const { body, header_id, date, id, username } = entry;
+                  const { liked_by, ...entryData } = entry;
                   return {
-                     body,
-                     header_id,
-                     date,
-                     id,
-                     username,
-                     likeCount
+                     ...entryData,
+                     likeCount,
+                     page: getEntryPageOfHeader(_header.id, entryData.id)
                   };
-               })
-            } as HeaderResponse;
+               }),
+               ...pageData
+            };
 
-            res.status(200).json({
-               ...pageData,
-               ...resData
-            } as getHeaderResponse);
+            res.status(200).json(resData);
          } else {
             responseError(res, Msg.get_header.error.wrongHeaderID);
          }

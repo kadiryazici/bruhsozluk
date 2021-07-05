@@ -1,3 +1,5 @@
+import { useDB } from '@db';
+import { Config } from '@server/config';
 import type {
    SyncHandler,
    AsyncHandler,
@@ -161,4 +163,15 @@ export function sanitizeEntryBody(str: string) {
 
 export function minuteToMiliseconds(minute: number) {
    return minute * 60 * 1000;
+}
+
+export function getEntryPageOfHeader(header_id: string, entry_id: string) {
+   const db = useDB();
+   const header = db.get('headers').find({ id: header_id });
+
+   const entryIndex = header.value().entries.findIndex(v => {
+      return v.id === entry_id;
+   });
+   const entryPage = Math.ceil((entryIndex + 1) / Config.entry.entryPerPage);
+   return entryPage;
 }

@@ -26,6 +26,7 @@ export interface Entry {
 // export type EntryResponse = Omit<Entry, 'liked_by'>
 export interface EntryResponse extends Omit<Entry, 'liked_by'> {
    likeCount: number;
+   page: number;
 }
 
 export interface HeaderResponse extends Omit<Header, 'entries'> {
@@ -43,9 +44,10 @@ export interface User {
    auth_id: string;
    username: string;
    password: string;
+   isAdmin: boolean;
+   joinedAt: number;
    entries: UserEntryStore[];
    likes: UserLikesStore[];
-   isAdmin: boolean;
 }
 
 export interface GetUserResponse extends PageResponse {

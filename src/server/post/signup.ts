@@ -41,6 +41,7 @@ export default defineSyncHandler((req, res) => {
                   .push({
                      id: nanoid(),
                      auth_id: nanoid(),
+                     joinedAt: Date.now(),
                      username,
                      password,
                      isAdmin: false,

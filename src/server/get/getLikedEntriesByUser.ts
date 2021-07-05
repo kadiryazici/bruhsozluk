@@ -2,17 +2,17 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    sanitizeUserName,
-   responseError
+   responseError,
+   getEntryPageOfHeader
 } from '@helpers/functions';
 import { Msg } from '@messages';
-import { EntryResponse, GetLikesResponse } from '@type';
+import { Entry, EntryResponse, GetLikesResponse } from '@type';
 import { Config } from '@config';
 /*
 AUTH NOT REQUIRED
 /user/{ user_name }/?page=1
 */
 export default defineSyncHandler((req, res) => {
-   console.log('url geldi');
    if (req.params && req.params.userName) {
       let page = 1;
 
@@ -58,22 +58,22 @@ export default defineSyncHandler((req, res) => {
                   const header_id = header.get('id').value();
                   const header_name = header.get('name').value();
 
-                  const entry = header
+                  const dbEntryData = header
                      .get('entries')
                      .find({ id: value.entry_id })
+                     .cloneDeep()
                      .value();
 
-                  console.log({
-                     entryID: entry
-                  });
+                  const entryPage = getEntryPageOfHeader(
+                     header_id,
+                     dbEntryData.id
+                  );
+                  const { liked_by, ...entry } = dbEntryData;
 
                   const entryResponse: EntryResponse = {
-                     body: entry.body,
-                     date: entry.date,
-                     header_id: entry.header_id,
-                     id: entry.id,
-                     username: entry.username,
-                     likeCount: entry.liked_by.length
+                     ...entry,
+                     likeCount: liked_by.length,
+                     page: entryPage
                   };
 
                   return {

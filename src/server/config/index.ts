@@ -2,6 +2,9 @@ export class Config {
    static app = {
       port: 3000
    };
+   static entry = {
+      entryPerPage: 10
+   };
    static auth = {
       usernameMax: 20,
       usernameMin: 3,

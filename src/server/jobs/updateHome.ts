@@ -1,6 +1,8 @@
 import { useDB } from '@db';
+import { getEntryPageOfHeader } from '@helpers/functions';
 import { defineJob } from '@jobs/index';
-import { Entry } from '@type';
+import { Config } from '@server/config';
+import { Entry, HeaderResponse } from '@type';
 import _ from 'lodash';
 
 export default defineJob({
@@ -21,15 +23,24 @@ function updateHomeHandler() {
    _headers = _.shuffle(_headers);
    _headers = _headers.slice(0, 5);
 
-   _headers = _headers.map(v => {
-      const sortedEntries = [...v.entries].sort(
+   const fixedHeaders: HeaderResponse[] = _headers.map(header => {
+      let sortedEntries = [...header.entries].sort(
          (a, b) => b.liked_by.length - a.liked_by.length
       );
+
+      const { liked_by, ...entry } = sortedEntries[0];
+      const entryPage = getEntryPageOfHeader(header.id, entry.id);
       return {
-         id: v.id,
-         name: v.name,
-         entries: [sortedEntries[0]]
+         id: header.id,
+         name: header.name,
+         entries: [
+            {
+               ...entry,
+               likeCount: liked_by.length,
+               page: entryPage
+            }
+         ]
       };
    });
-   db.set('homeData', _headers).write();
+   db.set('homeData', fixedHeaders).write();
 }
