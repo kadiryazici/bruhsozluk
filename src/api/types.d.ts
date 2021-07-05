@@ -47,6 +47,7 @@ export interface User {
    entries: UserEntryStore[];
    likes: UserLikesStore[];
    isAdmin: boolean;
+   joinedAt: number;
 }
 
 export interface GetUserResponse extends PageResponse {
@@ -56,6 +57,7 @@ export interface GetUserResponse extends PageResponse {
    totalEntry: number;
    totalLikes: number;
    entries: GetUserResponseEntries[];
+   joinedAt: User['joinedAt'];
 }
 
 export interface GetUserResponseEntries {
