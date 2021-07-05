@@ -61,6 +61,7 @@ async function handleLogin() {
             v-model:error="error"
             errorMessage="bu yanlış olabilir"
             :type="'text'"
+            data-msg="hoşgeldiniz"
          />
 
          <label class="_label">şifre</label>

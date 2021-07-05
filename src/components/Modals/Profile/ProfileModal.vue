@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { LogOut } from '/src/helpers/auth';
+import { useAppStore } from '/src/stores/appStore';
+
+const appStore = useAppStore();
 </script>
 
 <template>
@@ -8,10 +11,19 @@ import { LogOut } from '/src/helpers/auth';
          <Icon name="person" />
       </div>
       <div class="select">
-         <div role="button" class="select-item margin">
+         <RouterLink
+            :to="{
+               name: 'Profile',
+               params: {
+                  username: appStore.userInformation[0].username
+               }
+            }"
+            role="button"
+            class="select-item margin"
+         >
             <Icon class="select-icon" name="person" />
             Profili Görüntüle
-         </div>
+         </RouterLink>
 
          <div @click="LogOut" role="button" class="select-item">
             <Icon class="select-icon" name="logout" />
@@ -58,6 +70,8 @@ import { LogOut } from '/src/helpers/auth';
          align-items: center;
          width: 100%;
          flex-flow: row nowrap;
+         color: colors.$secondary;
+         text-decoration: none;
 
          .select-icon {
             margin-right: funcs.padding(1);

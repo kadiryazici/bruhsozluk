@@ -82,6 +82,11 @@ const router = createRouter({
          name: 'CreateHeader',
          component: () => import('/src/pages/CreateHeader.vue'),
          beforeEnter: [MustLoggedIn]
+      },
+      {
+         path: '/user/:username',
+         name: 'Profile',
+         component: () => import('/src/pages/Profile.vue')
       }
    ]
 });

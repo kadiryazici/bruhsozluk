@@ -4,16 +4,20 @@ type TemplateRef<T> = null | T;
 
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted } from 'vue';
-import type { EntryResponse } from '/src/api/types';
 import { Modal } from 'modal-component-vue3';
-import ModalLikes from '/src/components/Modals/Likes/index.vue';
-import { getLikesOfEntry } from '/src/api/getLikesOfEntry';
 import { usePromise } from 'vierone';
+
+import type { AxiosError } from 'axios';
+import type { EntryResponse } from '/src/api/types';
+
+import ModalLikes from '/src/components/Modals/Likes/index.vue';
+import ModalConfirm from '/src/components/Modals/Confirm/Confirm.vue';
+
+import { getLikesOfEntry } from '/src/api/getLikesOfEntry';
 import { useAppStore } from '/src/stores/appStore';
 import { msToDateString } from '/src/helpers/app';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { deleteEntry } from '/src/api/deleteEntry';
-import type { AxiosError } from 'axios';
 
 const emit = defineEmits<{
    (event: 'atMount', value: HTMLElement): void;
@@ -25,9 +29,11 @@ const appStore = useAppStore();
 const notificationStore = useNotificationStore();
 
 ref: liked = false;
-ref: isModalOpen = false;
 ref: likesOfEntry = [] as string[];
 ref: entryWrapper = null as TemplateRef<HTMLElement>;
+
+ref: isModalOpen = false;
+ref: isDeleteModalOpen = false;
 
 ref: canDelete = computed(
    () =>
@@ -37,15 +43,16 @@ ref: canDelete = computed(
          appStore.userInformation[0].username === props.entryData.username)
 );
 
+//#region Hooks
 onMounted(() => {
    if (entryWrapper) {
       emit('atMount', entryWrapper);
    }
 });
-
 onBeforeUnmount(() => {
    isModalOpen = false;
 });
+//#endregion
 
 //#region OpenModal
 async function openModal() {
@@ -157,6 +164,7 @@ async function handleEntryDelete() {
          notifyError('Entry silinirken bir hata oluştu.');
       }
    }
+   isDeleteModalOpen = true;
 }
 //#endregion
 </script>
@@ -168,7 +176,16 @@ async function handleEntryDelete() {
       </div>
       <div class="entry-footer">
          <div class="entry-info">
-            <a href="#" class="link writer">{{ entryData.username }}</a>
+            <RouterLink
+               :to="{
+                  name: 'Profile',
+                  params: {
+                     username: entryData.username
+                  }
+               }"
+               class="link writer"
+               >{{ entryData.username }}</RouterLink
+            >
             <span @click="copyEntryLink" role="time, link" class="link date">{{
                `${msToDateString(entryData.date)}`
             }}</span>
@@ -195,7 +212,7 @@ async function handleEntryDelete() {
                role="button"
                class="button delete-icon"
                name="delete"
-               @click="handleEntryDelete"
+               @click="isDeleteModalOpen = true"
                v-if="canDelete"
             />
          </div>
@@ -203,6 +220,14 @@ async function handleEntryDelete() {
 
       <Modal v-model:visible="isModalOpen">
          <ModalLikes :users="likesOfEntry" @hide="isModalOpen = false" />
+      </Modal>
+
+      <Modal v-model:visible="isDeleteModalOpen">
+         <ModalConfirm
+            @accept="handleEntryDelete"
+            @deny="isDeleteModalOpen = false"
+            text="entry silinecek, emin misiniz?"
+         />
       </Modal>
    </div>
 </template>
@@ -214,6 +239,7 @@ async function handleEntryDelete() {
    padding: funcs.padding(2);
    background-color: colors.$coal;
    border-radius: vars.$radius;
+   text-align: left;
 
    .entry-body {
       background-color: colors.$primary;

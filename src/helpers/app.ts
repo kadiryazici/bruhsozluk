@@ -56,23 +56,12 @@ export function sanitizeHeaderName(name: string) {
    return sanitized.trim().toLocaleLowerCase('tr-TR');
 }
 
-/**
- * @description Replaces Hyphens(-) to Spaces(  ).
- */
-function replaceHyphensToSpaces(str: string): string {
-   return str.replace('-', ' ');
-}
-
 export function removeMultipleTabs(str: string) {
    return str.replace(/\t\t+/g, '\t');
 }
 
 export function reduceLinebreaksMoreThanThree(str: string) {
    return str.replace(/\n\n\n+/, '\n\n');
-}
-
-export function removeMultipleSpaces(str: string): string {
-   return str.replace(/  +/g, ' ');
 }
 
 export function sanitizeEntryBody(str: string) {
@@ -111,4 +100,61 @@ export function msToDateString(ms: number): string {
    const year = date.getFullYear();
 
    return `${day}/${month}/${year} ${add0(minute)}:${add0(hour)}`;
+}
+
+export function sanitizeUserName(username: string) {
+   const supportedLetters =
+      '1234567890' + 'abcçdefgğhıijklmnoöprsşjtuüvyz' + 'qwx' + ' ';
+
+   username = replaceHyphensToSpaces(username);
+
+   let usernameArray = [...username.toLocaleLowerCase('tr-TR')];
+   usernameArray = usernameArray.map(letter => {
+      if (supportedLetters.includes(letter)) return letter;
+      else return '';
+   });
+   username = usernameArray.join('').trim();
+
+   username = removeMultipleSpaces(username);
+   username = replaceTurkishLetters(username);
+   return username;
+}
+
+export function removeMultipleSpaces(str: string): string {
+   return str.replace(/  +/g, ' ');
+}
+
+/**
+ * @description Replaces Hyphens(-) to Spaces(  ).
+ */
+export function replaceHyphensToSpaces(str: string): string {
+   const regex = /\-/g;
+   return str.replace(regex, ' ');
+}
+
+export function replaceTurkishLetters(str: string): string {
+   const trToEn = [
+      ['ı', 'i'],
+      ['ğ', 'g'],
+      ['ü', 'u'],
+      ['ş', 's'],
+      ['ö', 'o'],
+      ['ç', 'c']
+   ];
+   for (let [tr, en] of trToEn) {
+      const regex = RegExp(`\\${tr}`, 'g');
+      str = str.replace(regex, en);
+   }
+   return str;
+}
+
+export function replaceSpacesToHyphens(str: string) {
+   const regex = / /g;
+   return str.replace(regex, ' ');
+}
+
+export function fixURLUsername(username: string) {
+   username = sanitizeUserName(username);
+   username = replaceSpacesToHyphens(username);
+   return username;
 }

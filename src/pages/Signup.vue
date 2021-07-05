@@ -6,7 +6,7 @@ import { Head } from '@vueuse/head';
 <template>
    <div class="signup-wrapper">
       <Head>
-         <title>Kayıt Oluş | Bruhsozluk</title>
+         <title>Kayıt Oluş | Bruhsözlük</title>
       </Head>
       <SignupView />
    </div>

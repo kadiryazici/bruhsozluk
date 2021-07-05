@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { defineProps } from 'vue';
 import EntryVue from '/src/components/Entry/Entry.vue';
-import type { Header, getHeaderResponse } from '/src/api/types.d';
-import { useRouter } from 'vue-router';
+import type { GetUserResponseEntries } from '/src/api/types.d';
 
 const props = defineProps<{
-   data: getHeaderResponse;
+   data: GetUserResponseEntries;
 }>();
 </script>
 
@@ -16,20 +15,21 @@ const props = defineProps<{
             :to="{
                name: 'Header',
                params: {
-                  id: props.data.id
+                  id: props.data.header_id
                }
             }"
          >
-            {{ props.data.name }}
+            {{ props.data.header_name }}
          </RouterLink>
       </div>
-      <EntryVue :entryData="entry" v-for="entry in props.data.entries" />
+      <EntryVue :entryData="props.data.entry" />
    </div>
 </template>
 
 <style lang="scss" scoped>
 .home-entry {
    margin-bottom: funcs.padding(5);
+   text-align: left;
 }
 .header {
    padding: funcs.padding(1) funcs.padding(2);

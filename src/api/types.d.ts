@@ -51,24 +51,20 @@ export interface User {
 export interface GetUserResponse extends PageResponse {
    id: User['id'];
    username: User['username'];
-   entries: GetUserResponseEntries[];
    isAdmin: User['isAdmin'];
+   totalEntry: number;
+   totalLikes: number;
+   entries: GetUserResponseEntries[];
 }
 
 export interface GetUserResponseEntries {
    header_name: Header['name'];
    header_id: Header['id'];
-   entry: Entry; // bu dizi olmayacak
+   entry: EntryResponse; // bu dizi olmayacak
 }
 
 export interface GetLikesResponse extends GetUserResponse {}
 export interface GetLikedEntriesByUserEntries extends GetUserResponseEntries {}
-
-export interface GetUserResponseEntries {
-   header_name: Header['name'];
-   header_id: Header['id'];
-   entry: Entry; // bu dizi olmayacak
-}
 
 export interface UserEntryStore {
    header_id: Header['id'];

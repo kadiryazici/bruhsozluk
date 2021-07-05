@@ -4,7 +4,7 @@ import { usePromise } from 'vierone';
 import { computed, reactive, watch } from 'vue';
 import { getSearch } from '/src/api/getSearch';
 import { postVerifyHeader } from '/src/api/postVerifyHeader';
-import type { MsgResponse, SearchResponse } from '/src/api/types';
+import type { SearchResponse } from '/src/api/types';
 import { sanitizeHeaderName } from '/src/helpers/app';
 import { useAppStore } from '/src/stores/appStore';
 import { useModalStore } from '/src/stores/modalStore';
@@ -26,6 +26,7 @@ const headerExisting = reactive({
 });
 
 const results = reactive<SearchResponse[]>([]);
+//#region Search Function
 const Search = debounce(async (query: string) => {
    isSearching = true;
    headerExisting.notExists = false;
@@ -50,6 +51,8 @@ const Search = debounce(async (query: string) => {
    }
    isSearching = false;
 }, 350);
+//#endregion
+//#region Search Query Watcher
 watch(
    () => query,
    async newValue => {
@@ -63,6 +66,7 @@ watch(
       }
    }
 );
+//#endregion
 </script>
 
 <template>

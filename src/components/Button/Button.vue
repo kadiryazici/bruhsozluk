@@ -4,9 +4,10 @@
          props.color,
          `text-${props.textColor}`,
          {
-            'no-hover': noHover,
-            'no-padding': noPadding,
-            square: square
+            'no-hover': props.noHover,
+            'no-padding': props.noPadding,
+            square: props.square,
+            bordered: props.bordered
          }
       ]"
       ı
@@ -20,7 +21,14 @@
 </template>
 
 <script lang="ts">
-export type Colors = 'turq' | 'ruby' | 'primary' | 'secondary' | 'tertiary';
+export type Colors =
+   | 'turq'
+   | 'ruby'
+   | 'primary'
+   | 'secondary'
+   | 'tertiary'
+   | 'lime'
+   | 'sun';
 </script>
 
 <script lang="ts" setup>
@@ -28,16 +36,18 @@ import { computed } from 'vue';
 
 const props = withDefaults(
    defineProps<{
-      color?: Colors;
+      color: Colors;
       square?: boolean;
-      textColor: Colors;
+      textColor?: Colors;
       noHover?: boolean;
       noPadding?: boolean;
       loading?: boolean;
       size?: string;
+      bordered?: boolean;
    }>(),
    {
-      textColor: 'primary'
+      textColor: 'primary',
+      bordered: false
    }
 );
 
@@ -55,6 +65,11 @@ ref: buttonFontSize = computed(() => {
    color: colors.$primary;
    position: relative;
 
+   &.bordered {
+      background-color: transparent !important;
+      border: 2px solid;
+   }
+
    &:not(.no-padding) {
       padding: funcs.padding(1.5);
    }
@@ -67,7 +82,12 @@ ref: buttonFontSize = computed(() => {
    }
 
    .button-text {
-      font-size: v-bind('buttonFontSize');
+      display: flex;
+      align-items: center;
+      &,
+      & * {
+         font-size: v-bind('buttonFontSize');
+      }
 
       &.loading {
          opacity: 0;
@@ -86,18 +106,31 @@ ref: buttonFontSize = computed(() => {
 
    &.turq {
       background-color: colors.$turq;
+      border-color: colors.$turq;
    }
    &.ruby {
       background-color: colors.$ruby;
+      border-color: colors.$ruby;
    }
    &.primary {
       background-color: colors.$primary;
+      border-color: colors.$primary;
    }
    &.secondary {
       background-color: colors.$secondary;
+      border-color: colors.$secondary;
    }
    &.tertiary {
       background-color: colors.$tertiary;
+      border-color: colors.$tertiary;
+   }
+   &.lime {
+      background-color: colors.$lime;
+      border-color: colors.$lime;
+   }
+   &.sun {
+      background-color: colors.$sun;
+      border-color: colors.$sun;
    }
 
    &.text {
@@ -115,6 +148,12 @@ ref: buttonFontSize = computed(() => {
       }
       &-tertiary {
          color: colors.$tertiary;
+      }
+      &-lime {
+         color: colors.$lime;
+      }
+      &-sun {
+         color: colors.$sun;
       }
    }
 }

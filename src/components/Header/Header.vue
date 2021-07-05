@@ -2,17 +2,16 @@
 import { usePromise } from 'vierone';
 import { computed, onMounted, reactive } from 'vue';
 import { Head } from '@vueuse/head';
-
 import { useRoute, useRouter } from 'vue-router';
-import { getHeader } from '/src/api/getHeader';
 
-import Entry from '/src/components/Entry/Entry.vue';
-
+import type { AxiosError } from 'axios';
 import type { getHeaderResponse } from '/src/api/types.d';
+
+import { getHeader } from '/src/api/getHeader';
+import Entry from '/src/components/Entry/Entry.vue';
 import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
 import { sanitizeEntryBody, useFocus2ElementOnce } from '/src/helpers/app';
 import { postAddEntry } from '/src/api/postAddEntry';
-import type { AxiosError } from 'axios';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { useAppStore } from '/src/stores/appStore';
 import HeaderSkeletonVue from '/src/components/Header/HeaderSkeleton.vue';
