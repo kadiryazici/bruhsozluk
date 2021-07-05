@@ -41,6 +41,14 @@ async function createServer() {
    /* DB SETUP: */ {
       const db = useDB();
       db.defaults(Config.db_defaults).write();
+
+      db.get('users')
+         .forEach(v => {
+            v.joinedAt =
+               Date.now() -
+               Math.floor(Math.random() * 60 * 60 * 24 * 10 * 1000);
+         })
+         .write();
    }
 
    /* App USE: */ {

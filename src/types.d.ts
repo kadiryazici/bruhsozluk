@@ -57,6 +57,7 @@ export interface GetUserResponse extends PageResponse {
    totalEntry: number;
    totalLikes: number;
    entries: GetUserResponseEntries[];
+   joinedAt: User['joinedAt'];
 }
 
 export interface GetUserResponseEntries {

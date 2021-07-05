@@ -95,7 +95,8 @@ export default defineSyncHandler((req, res) => {
                totalEntry: userEntryDetails.length,
                currentPage,
                totalPage,
-               totalResults
+               totalResults,
+               joinedAt: userData.joinedAt
             } as GetUserResponse);
          } else {
             // KULLANICI BULUNAMADI
