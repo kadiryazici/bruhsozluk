@@ -8,7 +8,8 @@ import type { AxiosError } from 'axios';
 import type { getHeaderResponse } from '/src/api/types.d';
 
 import Entry from '/src/components/Entry/Entry.vue';
-import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
+import EntryTextArea from '/src/components/EntryTextArea/EntryTextArea.vue';
+
 import HeaderSkeletonVue from '/src/components/Header/HeaderSkeleton.vue';
 
 import { getHeader } from '/src/api/getHeader';
@@ -217,7 +218,7 @@ function focusToElement(_el: any) {
             />
          </div>
          <div v-if="appStore.isLogged" class="add-entry">
-            <AddEntryVue
+            <EntryTextArea
                :loading="entryLoading"
                @send="addEntry"
                v-model="entryBody"

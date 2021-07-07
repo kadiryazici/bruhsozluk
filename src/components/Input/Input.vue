@@ -30,7 +30,7 @@ function onChange() {
 }
 </script>
 
-<template inherit-attrs="false">
+<template>
    <div class="input-wrapper">
       <input
          @input="onInput"

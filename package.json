@@ -1,11 +1,10 @@
 {
    "name": "bruh-sozluk",
-   "version": "0.0.0",
+   "version": "1.0.1",
    "description": "birader anı öyle bir sözlüktür ki",
    "scripts": {
       "dev": "vite",
-      "build": "vite build",
-      "deploy": "npm run build && firebase deploy"
+      "build": "vite build"
    },
    "dependencies": {
       "@vueuse/head": "latest",
@@ -15,12 +14,12 @@
       "modal-component-vue3": "^1.1.0",
       "nanoid": "^3.1.23",
       "pinia": "^2.0.0-beta.3",
-      "typescript": "^4.3.5",
       "vierone": "0.3.5",
       "vue": "next",
       "vue-router": "^4.0.10"
    },
    "devDependencies": {
+      "typescript": "^4.3.5",
       "@types/lodash": "^4.14.170",
       "@types/lodash.debounce": "^4.0.6",
       "@types/lodash.once": "^4.1.6",

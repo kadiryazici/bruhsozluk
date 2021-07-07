@@ -5,7 +5,7 @@ import { Head } from '@vueuse/head';
 
 import TitleVue from '/src/components/Title/Title.vue';
 import VInput from '/src/components/Input/Input.vue';
-import AddEntryVue from '/src/components/AddEntry/AddEntry.vue';
+import EntryTextArea from '/src/components/EntryTextArea/EntryTextArea.vue';
 
 import { sanitizeEntryBody, sanitizeHeaderName } from '/src/helpers/app';
 import { postCreateHeader } from '/src/api/postCreateHeader';
@@ -40,10 +40,14 @@ async function createHeader() {
          });
       }
    } catch (err: unknown) {
-      const error = err as AxiosError;
-      const response = error.response;
+      const requestError = err as AxiosError;
+      const response = requestError.response;
       if (response && response.data.msg) {
          errorMessage = response.data.msg;
+         error = true;
+      } else {
+         errorMessage = 'Bir hata oluştu.';
+         error = true;
       }
    }
    loading = false;
@@ -73,7 +77,7 @@ async function createHeader() {
       />
 
       <div class="entry_area">
-         <AddEntryVue :hideSend="true" v-model="entryBody" />
+         <EntryTextArea :hideSend="true" v-model="entryBody" />
       </div>
 
       <div class="button-area">
