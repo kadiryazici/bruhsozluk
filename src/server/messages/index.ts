@@ -7,7 +7,7 @@ class Messages {
 
    public auth = {
       error: {
-         msg: 'Giriş kimliği yanlış olabilir.'
+         msg: 'Giriş yapman gerekiyor.'
       }
    };
 
