@@ -77,7 +77,7 @@ async function createHeader() {
       />
 
       <div class="entry_area">
-         <EntryTextArea :hideSend="true" v-model="entryBody" />
+         <EntryTextArea hideSend v-model="entryBody" />
       </div>
 
       <div class="button-area">
