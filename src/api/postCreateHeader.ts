@@ -7,16 +7,8 @@ import { useAppStore } from '/src/stores/appStore';
 export async function postCreateHeader(name: string, entryBody: string) {
    const appStore = useAppStore();
    const [user] = appStore.userInformation;
-   return await axios.post<AddHeaderResponse>(
-      ReqURL('/add_header'),
-      {
-         name,
-         entryBody
-      } as AddHeaderBody,
-      {
-         headers: {
-            Authorization: user.auth_id || ''
-         }
-      }
-   );
+   return await axios.post<AddHeaderResponse>(ReqURL('/add_header'), {
+      name,
+      entryBody
+   } as AddHeaderBody);
 }

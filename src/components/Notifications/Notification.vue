@@ -120,25 +120,28 @@ $bodyColor: colors.$secondary;
          font-size: 25px;
       }
 
+      $boxShadowOptions: 0px 0px 15px 2px;
+      $borderValue: 3px solid;
       &.success {
          color: $success;
-         $borderValue: 3px solid $success;
-         border: $borderValue;
+         border: $borderValue $success;
+         box-shadow: $boxShadowOptions rgba($success, 0.4);
       }
       &.error {
          color: $error;
-         $borderValue: 3px solid $error;
-         border: $borderValue;
+         border: $borderValue $error;
+
+         box-shadow: $boxShadowOptions rgba($error, 0.4);
       }
       &.warning {
          color: $warning;
-         $borderValue: 3px solid $warning;
-         border: $borderValue;
+         border: $borderValue $warning;
+         box-shadow: $boxShadowOptions rgba($warning, 0.4);
       }
       &.info {
          color: $info;
-         $borderValue: 3px solid $info;
-         border: $borderValue;
+         border: $borderValue $info;
+         box-shadow: $boxShadowOptions rgba($info, 0.4);
       }
    }
 }

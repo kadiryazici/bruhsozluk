@@ -11,19 +11,18 @@ export function GetUserAuthID() {
 }
 
 /**
- * Must use in vue instance (setup)
+ ** Must use in vue instance (setup)
  */
 export function LogOut() {
    const appStore = useAppStore();
    const modalStore = useModalStore();
-   const nStore = useNotificationStore();
+   const notification = useNotificationStore();
 
    window.localStorage.removeItem(key);
    appStore.isLogged = false;
    appStore.userInformation = [];
    modalStore.isProfileModalOpen = false;
-   nStore.createNotification({
-      kind: 'success',
+   notification.Success({
       text: 'Başarılı bir şekilde çıkış yapıldı'
    });
 }

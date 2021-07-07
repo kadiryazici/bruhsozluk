@@ -8,16 +8,8 @@ export async function postAddEntry(body: string, header_id: string) {
    const [user] = appStore.userInformation;
 
    const url = ReqURL(`/add_entry`);
-   return await axios.post<AddEntryResponse>(
-      url,
-      {
-         body,
-         header_id
-      } as AddEntryBody,
-      {
-         headers: {
-            Authorization: user.auth_id
-         }
-      }
-   );
+   return await axios.post<AddEntryResponse>(url, {
+      body,
+      header_id
+   } as AddEntryBody);
 }

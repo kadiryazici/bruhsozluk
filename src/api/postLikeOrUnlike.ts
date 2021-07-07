@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ReqURL } from '/src/api/config';
 import type { MsgResponse, PostLikeBody } from '/src/api/types.d';
-import { GetUserAuthID } from '/src/helpers/auth';
 
 /**
  * * To like an entry, requires authentication

@@ -9,6 +9,7 @@ import { usePromise } from 'vierone';
 
 import type { AxiosError } from 'axios';
 import type { EntryResponse } from '/src/api/types';
+import type { RouterLinkProps } from 'vue-router';
 
 import ModalLikes from '/src/components/Modals/Likes/index.vue';
 import ModalConfirm from '/src/components/Modals/Confirm/Confirm.vue';
@@ -18,7 +19,8 @@ import { useAppStore } from '/src/stores/appStore';
 import { msToDateString } from '/src/helpers/app';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { deleteEntry } from '/src/api/deleteEntry';
-import { postLikeEntry, postUnLikeEntry } from '/src/api/changeLike';
+import { postLikeEntry, postUnLikeEntry } from '/src/api/postLikeOrUnlike';
+import axios from 'axios';
 
 interface Emits {
    (event: 'atMount', value: HTMLElement): void;
@@ -30,7 +32,7 @@ interface Props {
 const emit = defineEmits<Emits>();
 const props = defineProps<Props>();
 const appStore = useAppStore();
-const notificationStore = useNotificationStore();
+const notification = useNotificationStore();
 
 ref: liked = props.entryData.didLike;
 ref: likeRequestLoading = false;
@@ -45,8 +47,24 @@ ref: canDelete = computed(
       (appStore.userInformation[0].isAdmin ||
          appStore.userInformation[0].username === props.entryData.username)
 );
+ref: entryURL = computed(() => {
+   const { id: entryID } = props.entryData;
+   const { protocol, host } = window.location;
+   const { header_id, page } = props.entryData;
 
-//#region Hooks
+   return {
+      name: 'Header',
+      params: {
+         id: header_id,
+         page
+      },
+      query: {
+         focus: entryID
+      }
+   } as RouterLinkProps['to'];
+   return `${protocol}//${host}/baslik/${header_id}/${page}?focus=${entryID}`;
+});
+
 onMounted(() => {
    if (entryWrapper) {
       emit('atMount', entryWrapper);
@@ -55,7 +73,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
    isModalOpen = false;
 });
-//#endregion
 
 //#region OpenModal
 async function openModal() {
@@ -78,14 +95,12 @@ async function openModal() {
 //#region Copy Entry Link
 async function copyEntryLink() {
    const notifySuccess = () =>
-      notificationStore.createNotification({
-         kind: 'success',
+      notification.Success({
          text: 'Entry adresi panoya kopyalandı.'
       });
 
    const notifyError = () =>
-      notificationStore.createNotification({
-         kind: 'error',
+      notification.Error({
          text: 'Entry adresi panoya kopyalanamadı.'
       });
 
@@ -130,36 +145,27 @@ async function copyEntryLink() {
 
 //#region handleEntryDelete
 async function handleEntryDelete() {
-   const notify = notificationStore.createNotification;
-
-   const notifySuccess = (text: string) => {
-      notify({
-         kind: 'success',
-         text
-      });
-   };
-
-   const notifyError = (text: string) => {
-      notify({
-         kind: 'error',
-         text
-      });
-   };
-
    try {
       const { data: resData } = await deleteEntry({
          header_id: props.entryData.header_id,
          entry_id: props.entryData.id
       });
-      notifySuccess(resData.msg);
+      notification.Success({
+         text: resData.msg
+      });
       appStore.reloadRouterView();
-   } catch (error) {
-      const _error = () => error as AxiosError;
-      if ((_error().response, _error().response!.data.msg)) {
-         notifyError(_error().response!.data.msg as string);
+   } catch (error: unknown) {
+      const _error = error as AxiosError;
+      const response = _error.response || null;
+      if (response && response.data.msg) {
+         notification.Error({
+            text: response.data.msg as string
+         });
       } //
       else {
-         notifyError('Entry silinirken bir hata oluştu.');
+         notification.Error({
+            text: 'Entry silinirken bir hata oluştu.'
+         });
       }
    }
    isDeleteModalOpen = true;
@@ -180,8 +186,7 @@ async function changeLike() {
    if (kind === 'like') {
       try {
          const { data } = await postLikeEntry(requestBody);
-         notificationStore.createNotification({
-            kind: 'success',
+         notification.Success({
             text: data.msg
          });
          props.entryData.likeCount += 1;
@@ -192,13 +197,12 @@ async function changeLike() {
          if (error.response && error.response.data && error.response.data.msg) {
             text = error.response.data.msg as string;
          }
-         notificationStore.createNotification({ kind: 'error', text });
+         notification.Error({ text });
       }
    } else {
       try {
          const { data } = await postUnLikeEntry(requestBody);
-         notificationStore.createNotification({
-            kind: 'success',
+         notification.Success({
             text: data.msg
          });
          props.entryData.likeCount -= 1;
@@ -211,8 +215,7 @@ async function changeLike() {
             text = error.response.data.msg as string;
          }
 
-         notificationStore.createNotification({
-            kind: 'error',
+         notification.Error({
             text
          });
       }
@@ -237,18 +240,18 @@ async function changeLike() {
                class="link writer"
                >{{ entryData.username }}</RouterLink
             >
-            <span @click="copyEntryLink" role="time, link" class="link date">{{
+            <RouterLink role="time, link" class="link date" :to="entryURL">{{
                msToDateString(entryData.date)
-            }}</span>
+            }}</RouterLink>
          </div>
          <div class="icon-section">
             <Icon
+               @click="changeLike"
+               :name="liked ? 'favorite' : 'favorite_border'"
                role="button"
                aria-label="beğen"
                title="beğen"
                class="button heart-icon"
-               @click="changeLike"
-               :name="liked ? 'favorite' : 'favorite_border'"
             />
             <span
                v-if="props.entryData.likeCount > 0"
@@ -258,13 +261,13 @@ async function changeLike() {
                >{{ props.entryData.likeCount }}</span
             >
             <Icon
+               @click="isDeleteModalOpen = true"
+               v-if="canDelete"
                aria-label="sil"
                title="sil"
                role="button"
                class="button delete-icon"
                name="delete"
-               @click="isDeleteModalOpen = true"
-               v-if="canDelete"
             />
          </div>
       </div>

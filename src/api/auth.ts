@@ -11,11 +11,7 @@ export async function VerifyUser() {
    if (!id) throw new Error('Id bulunamadı');
 
    try {
-      const res = await axios.get<LoginResponse>(ReqURL('/verify'), {
-         headers: {
-            Authorization: id
-         }
-      });
+      const res = await axios.get<LoginResponse>(ReqURL('/verify'));
       const { data } = res;
       return data;
    } catch (error) {

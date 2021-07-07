@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { ReqURL } from '/src/api/config';
-import type { LeftContent } from '/src/api/types.d';
 
 type LikesResponse = string[];
 interface Params {

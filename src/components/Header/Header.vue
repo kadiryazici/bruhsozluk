@@ -13,7 +13,7 @@ import EntryTextArea from '/src/components/EntryTextArea/EntryTextArea.vue';
 import HeaderSkeletonVue from '/src/components/Header/HeaderSkeleton.vue';
 
 import { getHeader } from '/src/api/getHeader';
-import { sanitizeEntryBody, useFocus2ElementOnce } from '/src/helpers/app';
+import { sanitizeEntryBody, focusToElement } from '/src/helpers/app';
 import { postAddEntry } from '/src/api/postAddEntry';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { useAppStore } from '/src/stores/appStore';
@@ -21,7 +21,7 @@ import { useAppStore } from '/src/stores/appStore';
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
-const notificationStore = useNotificationStore();
+const notification = useNotificationStore();
 
 ref: loading = true;
 ref: activePage = 1;
@@ -43,16 +43,18 @@ onMounted(async () => {
       activePage = parseInt(page);
    }
    const [res, err] = await usePromise(getHeader(id, page));
-   if (res) {
-      const { data } = res;
-      pageData.push(data);
-      loading = false;
+   if (err) {
+      router.push({ name: '404' });
+      return;
    }
+
+   const { data } = res!;
+   pageData.push(data);
+   loading = false;
 
    setTimeout(() => {
       if (focusID && !isFocusMatched) {
-         notificationStore.createNotification({
-            kind: 'error',
+         notification.Error({
             text: 'Odaklanılacak Entry silinmiş veya bulunamadı.'
          });
       }
@@ -129,12 +131,6 @@ async function addEntry() {
    entryLoading = false;
 }
 //#endregion
-
-const _focusToElement = useFocus2ElementOnce();
-function focusToElement(_el: any) {
-   const el = _el as unknown as HTMLElement;
-   _focusToElement(el);
-}
 </script>
 
 <template>
@@ -151,19 +147,17 @@ function focusToElement(_el: any) {
             <div class="name">{{ header.name }}</div>
             <div class="page-changer">
                <Icon
+                  :class="{ disable: activePage == 1 }"
+                  @click="navigate('previous')"
                   role="button"
+                  class="icon button"
                   aria-label="önceki sayfa"
                   title="önceki sayfa"
-                  class="icon button"
-                  :class="{
-                     disable: activePage == 1
-                  }"
-                  @click="navigate('previous')"
                   name="keyboard_arrow_left"
                />
                <!-- PAGE SELECTOR -->
                <div :tabindex="0" class="page-number">
-                  {{ `${activePage}/${header.totalPage}` }}
+                  {{ activePage + '/' + header.totalPage }}
                   <div class="page-number-changer">
                      <div
                         :class="{ active: page === activePage }"
@@ -175,10 +169,7 @@ function focusToElement(_el: any) {
                         <RouterLink
                            :to="{
                               name: 'Header',
-                              params: {
-                                 id: header.id,
-                                 page
-                              }
+                              params: { id: header.id, page }
                            }"
                         >
                            {{ page }}
@@ -193,9 +184,7 @@ function focusToElement(_el: any) {
                   title="sonraki sayfa"
                   class="icon button"
                   @click="navigate('next')"
-                  :class="{
-                     disable: activePage >= header.totalPage
-                  }"
+                  :class="{ disable: activePage >= header.totalPage }"
                   name="keyboard_arrow_right"
                />
             </div>

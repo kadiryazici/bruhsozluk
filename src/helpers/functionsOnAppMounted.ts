@@ -7,8 +7,7 @@ export function OnAppMounted() {
    registerFunction(() => {
       const notification = useNotificationStore();
       window.addEventListener('online', () => {
-         notification.createNotification({
-            kind: 'info',
+         notification.Info({
             text: 'internet bağlantısı yeniden sağlandı'
          });
       });
@@ -17,8 +16,7 @@ export function OnAppMounted() {
    registerFunction(() => {
       const notification = useNotificationStore();
       window.addEventListener('offline', () => {
-         notification.createNotification({
-            kind: 'warning',
+         notification.Warning({
             text: 'internet bağlantısı kesildi'
          });
       });

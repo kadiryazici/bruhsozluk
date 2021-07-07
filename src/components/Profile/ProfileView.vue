@@ -17,6 +17,7 @@ import {
 } from '/src/helpers/app';
 import { getUser } from '/src/api/getUser';
 import { useNotificationStore } from '/src/stores/notificationStore';
+import { usePromise } from 'vierone';
 
 const route = useRoute();
 const router = useRouter();
@@ -37,23 +38,15 @@ ref: userName = computed((): string => {
 });
 
 onMounted(async () => {
-   try {
-      const { data } = await getUser(fixURLUsername(userName));
-      userData.length = 0;
-      userData.push(data);
-      entryPage = data.currentPage;
-   } catch (error: unknown) {
-      const err = error as AxiosError;
-      if (err.response && err.response.data.msg) {
-         notification.createNotification({
-            kind: 'error',
-            text: err.response.data.msg as string
-         });
-      }
-      router.push({
-         name: 'Home'
-      });
+   const [res, err] = await usePromise(getUser(fixURLUsername(userName)));
+   if (err) {
+      router.push({ name: '404' });
+      return;
    }
+   const { data } = res!;
+   userData.length = 0;
+   userData.push(data);
+   entryPage = data.currentPage;
 });
 
 async function loadNextPage() {

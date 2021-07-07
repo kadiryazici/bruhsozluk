@@ -1,6 +1,6 @@
 {
    "name": "bruh-sozluk",
-   "version": "1.0.1",
+   "version": "1.1.0",
    "description": "birader anı öyle bir sözlüktür ki",
    "scripts": {
       "dev": "vite",
@@ -10,7 +10,6 @@
       "@vueuse/head": "latest",
       "axios": "^0.21.1",
       "lodash.debounce": "^4.0.8",
-      "lodash.once": "^4.1.1",
       "modal-component-vue3": "^1.1.0",
       "nanoid": "^3.1.23",
       "pinia": "^2.0.0-beta.3",
@@ -19,14 +18,13 @@
       "vue-router": "^4.0.10"
    },
    "devDependencies": {
-      "typescript": "^4.3.5",
       "@types/lodash": "^4.14.170",
       "@types/lodash.debounce": "^4.0.6",
-      "@types/lodash.once": "^4.1.6",
       "@vitejs/plugin-vue": "^1.2.4",
       "@vue/compiler-sfc": "latest",
       "autoprefixer": "^10.2.6",
       "sass": "latest",
+      "typescript": "^4.3.5",
       "vite": "2.4.0"
    }
 }

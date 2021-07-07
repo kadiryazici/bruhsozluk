@@ -1,3 +1,13 @@
+<script lang="ts">
+export type Colors =
+   | 'turq'
+   | 'ruby'
+   | 'primary'
+   | 'secondary'
+   | 'tertiary'
+   | 'lime'
+   | 'sun';
+</script>
 <script lang="ts" setup>
 import { computed } from 'vue';
 
@@ -43,17 +53,6 @@ ref: buttonFontSize = computed(() => {
       <Icon class="loading-icon" v-if="loading" name="refresh" />
    </button>
 </template>
-
-<script lang="ts">
-export type Colors =
-   | 'turq'
-   | 'ruby'
-   | 'primary'
-   | 'secondary'
-   | 'tertiary'
-   | 'lime'
-   | 'sun';
-</script>
 
 <style lang="scss" scoped>
 ._button {

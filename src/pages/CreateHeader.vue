@@ -20,7 +20,6 @@ ref: entryBody = '';
 ref: loading = false;
 
 if (route.query.baslik && typeof route.query.baslik == 'string') {
-   console.log(route);
    headerName = sanitizeHeaderName(route.query.baslik);
 }
 

@@ -21,8 +21,7 @@ const input = reactive({
 
 async function handleSignUP() {
    if (!input.username.length && !input.username.length) {
-      notification.createNotification({
-         kind: 'error',
+      notification.Error({
          text: 'Lütfen alanları gerektiği şekilde doldurun.'
       });
       return;
@@ -31,22 +30,15 @@ async function handleSignUP() {
    try {
       await postSignup({ ...input });
       router.push({ name: 'Login' });
-      notification.createNotification({
-         kind: 'success',
-         text: 'başarılı bir şekilde kayıt yapıldı'
-      });
+      notification.Success({ text: 'başarılı bir şekilde kayıt yapıldı' });
    } catch (err: unknown) {
       const error = err as AxiosError;
       if (error.response && error.response.data.msg) {
-         notification.createNotification({
-            kind: 'error',
+         notification.Error({
             text: error.response.data.msg
          });
       } else {
-         notification.createNotification({
-            kind: 'error',
-            text: 'Kayıt olma sırasında bir hata oluştu.'
-         });
+         notification.Error({ text: 'Kayıt olma sırasında bir hata oluştu.' });
       }
       return;
    }
@@ -84,7 +76,9 @@ async function handleSignUP() {
          </div>
       </div>
       <div class="login-footer">
-         <VButton :text-color="'primary'" :color="'turq'"> yolla </VButton>
+         <VButton bordered :text-color="'lime'" :color="'lime'">
+            yolla
+         </VButton>
       </div>
    </form>
 </template>

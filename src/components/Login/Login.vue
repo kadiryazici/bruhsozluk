@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 
 import type { MsgResponse } from '/src/api/types';
+import type { AxiosError } from 'axios';
 
 import VInput from '/src/components/Input/Input.vue';
 
@@ -23,8 +24,7 @@ const input = reactive({
 
 async function handleLogin() {
    if (!input.username.length && !input.username.length) {
-      notification.createNotification({
-         kind: 'error',
+      notification.Error({
          text: 'Lütfen alanları gerektiği şekilde doldurun.'
       });
       return;
@@ -39,16 +39,18 @@ async function handleLogin() {
       router.push({
          name: 'Home'
       });
-      notification.createNotification({
-         kind: 'success',
+      notification.Success({
          text: 'başarılı bir şekilde giriş yapıldı'
       });
-   } catch (err) {
+   } catch (err: unknown) {
+      const { response } = err as AxiosError;
       input.password = '';
-      notification.createNotification({
-         kind: 'error',
-         text: (err.response.data as MsgResponse).msg
-      });
+
+      if (response && response.data.msg) {
+         notification.Error({ text: response.data.msg as string });
+      } else {
+         notification.Error({ text: 'Giriş yaparken bir hata oldu.' });
+      }
       return;
    }
 }
@@ -85,7 +87,7 @@ async function handleLogin() {
          </div>
       </div>
       <div class="login-footer">
-         <VButton :text-color="'primary'" :color="'turq'"> yolla </VButton>
+         <VButton bordered :text-color="'lime'" :color="'lime'">yolla</VButton>
       </div>
    </form>
 </template>

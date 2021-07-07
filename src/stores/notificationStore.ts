@@ -39,6 +39,31 @@ export const useNotificationStore = defineStore({
          });
       },
 
+      Error(params: Omit<INotification, 'kind'>) {
+         this.createNotification({
+            kind: 'error',
+            ...params
+         });
+      },
+      Success(params: Omit<INotification, 'kind'>) {
+         this.createNotification({
+            kind: 'success',
+            ...params
+         });
+      },
+      Info(params: Omit<INotification, 'kind'>) {
+         this.createNotification({
+            kind: 'info',
+            ...params
+         });
+      },
+      Warning(params: Omit<INotification, 'kind'>) {
+         this.createNotification({
+            kind: 'warning',
+            ...params
+         });
+      },
+
       deleteNotification(id: Notification['id']) {
          const index = this.notifications.findIndex(n => n.id === id);
          this.notifications.splice(index, 1);
