@@ -1,6 +1,6 @@
 {
    "name": "bruh-sozluk",
-   "version": "1.1.0",
+   "version": "1.2.0",
    "description": "birader anı öyle bir sözlüktür ki",
    "scripts": {
       "dev": "vite",

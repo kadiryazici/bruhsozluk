@@ -24,6 +24,7 @@
    </Main>
 
    <NotificationWrapperVue />
+   <ConfirmView />
 
    <Modal v-model:visible="modalStore.isProfileModalOpen">
       <ProfileModalVue />
@@ -44,15 +45,18 @@ import Left from '/src/components/LeftBar/Left.vue';
 import NotificationWrapperVue from '/src/components/Notifications/NotificationWrapper.vue';
 import ProfileModalVue from '/src/components/Modals/Profile/ProfileModal.vue';
 import SearchModalVue from '/src/components/Modals/Search/SearchModal.vue';
+import ConfirmView from '/src/components/Confirm/ConfirmView.vue';
 
 import { useModalStore } from '/src/stores/modalStore';
 import { VerifyUser } from '/src/api/auth';
 import { useAppStore } from '/src/stores/appStore';
 import { OnAppMounted } from '/src/helpers/functionsOnAppMounted';
+import { useConfirm } from './stores/confirmStore';
 
 const modalStore = useModalStore();
 const route = useRoute();
 const appStore = useAppStore();
+const confirm = useConfirm();
 
 if (!import.meta.env.SSR) {
    const [res, err] = await usePromise(VerifyUser());
@@ -67,7 +71,7 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-   if (modalStore.isAnyModalOpen) {
+   if (modalStore.isAnyModalOpen || confirm.activeConfirms.length > 0) {
       document.body.style.overflow = 'hidden';
    } else {
       document.body.style.overflow = 'auto';

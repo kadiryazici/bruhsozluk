@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, NavigationGuard } from 'vue-router';
 import { VerifyUser } from '/src/api/auth';
 import { GetUserAuthID } from '/src/helpers/auth';
 import { useAppStore } from '/src/stores/appStore';
+import { useConfirm } from '/src/stores/confirmStore';
 import { useModalStore } from '/src/stores/modalStore';
 
 const MustNotLoggedIn: NavigationGuard = async (to, from, next) => {
@@ -108,6 +109,14 @@ export const newRouter = () => {
       ]
    });
    router.beforeEach((to, from, next) => {
+      const confirmStore = useConfirm();
+      if (confirmStore.activeConfirms.length > 0) {
+         /**
+          * ! Prevent accidentaly navigations while confirm.
+          */
+         next(false);
+      }
+
       const modalStore = useModalStore();
       modalStore.closeAllModals();
       next();

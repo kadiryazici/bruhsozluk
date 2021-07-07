@@ -12,7 +12,6 @@ import type { EntryResponse } from '/src/api/types';
 import type { RouterLinkProps } from 'vue-router';
 
 import ModalLikes from '/src/components/Modals/Likes/index.vue';
-import ModalConfirm from '/src/components/Modals/Confirm/Confirm.vue';
 
 import { getLikesOfEntry } from '/src/api/getLikesOfEntry';
 import { useAppStore } from '/src/stores/appStore';
@@ -20,7 +19,7 @@ import { msToDateString } from '/src/helpers/app';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { deleteEntry } from '/src/api/deleteEntry';
 import { postLikeEntry, postUnLikeEntry } from '/src/api/postLikeOrUnlike';
-import axios from 'axios';
+import { useConfirm } from '/src/stores/confirmStore';
 
 interface Emits {
    (event: 'atMount', value: HTMLElement): void;
@@ -33,12 +32,13 @@ const emit = defineEmits<Emits>();
 const props = defineProps<Props>();
 const appStore = useAppStore();
 const notification = useNotificationStore();
+const confirm = useConfirm();
 
 ref: liked = props.entryData.didLike;
 ref: likeRequestLoading = false;
 ref: likesOfEntry = [] as string[];
 ref: entryWrapper = null as TemplateRef<HTMLElement>;
-ref: isModalOpen = false;
+ref: isLikeModalOpen = false;
 ref: isDeleteModalOpen = false;
 ref: canDelete = computed(
    () =>
@@ -49,20 +49,14 @@ ref: canDelete = computed(
 );
 ref: entryURL = computed(() => {
    const { id: entryID } = props.entryData;
-   const { protocol, host } = window.location;
    const { header_id, page } = props.entryData;
 
+   type To = RouterLinkProps['to'];
    return {
       name: 'Header',
-      params: {
-         id: header_id,
-         page
-      },
-      query: {
-         focus: entryID
-      }
-   } as RouterLinkProps['to'];
-   return `${protocol}//${host}/baslik/${header_id}/${page}?focus=${entryID}`;
+      query: { focus: entryID },
+      params: { id: header_id, page }
+   } as To;
 });
 
 onMounted(() => {
@@ -71,13 +65,12 @@ onMounted(() => {
    }
 });
 onBeforeUnmount(() => {
-   isModalOpen = false;
+   isLikeModalOpen = false;
+   isDeleteModalOpen = false;
 });
 
 //#region OpenModal
 async function openModal() {
-   isModalOpen = true;
-
    const [res, err] = await usePromise(
       getLikesOfEntry({
          header_id: props.entryData.header_id,
@@ -88,61 +81,10 @@ async function openModal() {
    if (res) {
       const { data } = res;
       likesOfEntry = data;
+      isLikeModalOpen = true;
    }
 }
 //#endregion
-
-//#region Copy Entry Link
-async function copyEntryLink() {
-   const notifySuccess = () =>
-      notification.Success({
-         text: 'Entry adresi panoya kopyalandı.'
-      });
-
-   const notifyError = () =>
-      notification.Error({
-         text: 'Entry adresi panoya kopyalanamadı.'
-      });
-
-   const { id: entryID } = props.entryData;
-   const { protocol, host } = window.location;
-   const { header_id, page } = props.entryData;
-
-   const url = `${protocol}//${host}/baslik/${header_id}/${page}?focus=${entryID}`;
-
-   if ('clipboard' in navigator) {
-      const [res, err] = await usePromise(navigator.clipboard.writeText(url));
-      if (err) notifyError();
-      else notifySuccess();
-      return;
-   } //
-   else if ('execCommand' in document) {
-      const _area = document.createElement('textarea');
-      _area.style.left = '0px';
-      _area.style.top = '0px';
-      _area.style.position = 'fixed';
-      _area.textContent = url;
-
-      document.body.insertAdjacentElement('afterbegin', _area);
-      _area.focus();
-      _area.select();
-
-      try {
-         document.execCommand('copy');
-         notifySuccess();
-      } catch (error) {
-         notifyError();
-      }
-      document.body.removeChild(_area);
-      return;
-   } //
-   else {
-      notifyError();
-      return;
-   }
-}
-//#endregion
-
 //#region handleEntryDelete
 async function handleEntryDelete() {
    try {
@@ -171,7 +113,6 @@ async function handleEntryDelete() {
    isDeleteModalOpen = true;
 }
 //#endregion
-
 //#region LikeDislike
 type LikeOrDislikeParam = 'like' | 'dislike';
 async function changeLike() {
@@ -237,12 +178,16 @@ async function changeLike() {
                   name: 'Profile',
                   params: { username: entryData.username }
                }"
+               v-text="entryData.username"
                class="link writer"
-               >{{ entryData.username }}</RouterLink
-            >
-            <RouterLink role="time, link" class="link date" :to="entryURL">{{
-               msToDateString(entryData.date)
-            }}</RouterLink>
+            />
+
+            <RouterLink
+               :to="entryURL"
+               v-text="msToDateString(entryData.date)"
+               role="time, link"
+               class="link date"
+            />
          </div>
          <div class="icon-section">
             <Icon
@@ -258,10 +203,15 @@ async function changeLike() {
                @click="openModal"
                role="button"
                class="count"
-               >{{ props.entryData.likeCount }}</span
-            >
+               v-text="props.entryData.likeCount"
+            />
             <Icon
-               @click="isDeleteModalOpen = true"
+               @click="
+                  confirm.create({
+                     text: 'entry silinecek, emin misiniz?',
+                     onAccept: handleEntryDelete
+                  })
+               "
                v-if="canDelete"
                aria-label="sil"
                title="sil"
@@ -272,8 +222,8 @@ async function changeLike() {
          </div>
       </div>
 
-      <Modal v-model:visible="isModalOpen">
-         <ModalLikes :users="likesOfEntry" @hide="isModalOpen = false" />
+      <Modal v-model:visible="isLikeModalOpen">
+         <ModalLikes :users="likesOfEntry" @hide="isLikeModalOpen = false" />
       </Modal>
 
       <Modal v-model:visible="isDeleteModalOpen">
@@ -342,12 +292,15 @@ async function changeLike() {
          align-items: center;
          display: flex;
          .heart-icon {
-            font-size: 20px;
+            font-size: 23px;
             color: colors.$ruby;
             margin-right: funcs.padding(1);
          }
          .count {
             color: colors.$ruby;
+            box-shadow: 0px 0px 0px 1px rgba(colors.$ruby, 0.5);
+            border-radius: vars.$radius;
+            padding: 0 funcs.padding(2);
             cursor: pointer;
             &:hover {
                text-decoration: underline;
