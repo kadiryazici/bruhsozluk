@@ -7,7 +7,7 @@ import type {
    Request,
    NextFunction
 } from '@tinyhttp/app';
-
+import type { Entry, Header, User } from '@type';
 export function defineSyncHandler(fn: SyncHandler): SyncHandler {
    return fn;
 }
@@ -174,4 +174,31 @@ export function getEntryPageOfHeader(header_id: string, entry_id: string) {
    });
    const entryPage = Math.ceil((entryIndex + 1) / Config.entry.entryPerPage);
    return entryPage;
+}
+
+interface ILikeEntryCheck {
+   auth: User;
+   header_id: Header['id'];
+   entry_id: Entry['id'];
+}
+export function checkDidUserLikeEntry({
+   auth,
+   header_id,
+   entry_id
+}: ILikeEntryCheck) {
+   const db = useDB();
+   const user = db.get('users').find({ id: auth.id });
+   const likeResponse = user
+      .get('likes')
+      .find({
+         entry_id,
+         header_id
+      })
+      .value();
+
+   if (likeResponse) {
+      return true;
+   } else {
+      return false;
+   }
 }

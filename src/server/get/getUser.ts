@@ -3,10 +3,16 @@ import {
    defineSyncHandler,
    sanitizeUserName,
    responseError,
-   getEntryPageOfHeader
+   getEntryPageOfHeader,
+   checkDidUserLikeEntry
 } from '@helpers/functions';
 import { Msg } from '@messages';
-import { EntryResponse, GetUserResponse, GetUserResponseEntries } from '@type';
+import {
+   EntryResponse,
+   GetUserResponse,
+   GetUserResponseEntries,
+   User
+} from '@type';
 import { Config } from '@config';
 /*
 AUTH NOT REQUIRED
@@ -72,10 +78,21 @@ export default defineSyncHandler((req, res) => {
 
                   const { liked_by, ...entry } = dbEntryData;
 
+                  let didUserLikeThisEntry = false;
+                  if (res.locals && res.locals.auth) {
+                     const auth = res.locals.auth as User;
+                     didUserLikeThisEntry = checkDidUserLikeEntry({
+                        auth,
+                        entry_id: entry.id,
+                        header_id: header_id
+                     });
+                  }
+
                   const entryResponse: EntryResponse = {
                      ...entry,
                      likeCount: liked_by.length,
-                     page: entryPage
+                     page: entryPage,
+                     didLike: didUserLikeThisEntry
                   };
 
                   return {

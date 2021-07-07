@@ -2,7 +2,7 @@ import { useDB } from '@db';
 import { getEntryPageOfHeader } from '@helpers/functions';
 import { defineJob } from '@jobs/index';
 import { Config } from '@server/config';
-import { Entry, HeaderResponse } from '@type';
+import { Entry, HeaderResponse, IUpdateHome, UpdateHomeHeader } from '@type';
 import _ from 'lodash';
 
 export default defineJob({
@@ -23,12 +23,12 @@ function updateHomeHandler() {
    _headers = _.shuffle(_headers);
    _headers = _headers.slice(0, 5);
 
-   const fixedHeaders: HeaderResponse[] = _headers.map(header => {
+   const fixedHeaders: IUpdateHome[] = _headers.map(header => {
       let sortedEntries = [...header.entries].sort(
          (a, b) => b.liked_by.length - a.liked_by.length
       );
-
       const { liked_by, ...entry } = sortedEntries[0];
+
       const entryPage = getEntryPageOfHeader(header.id, entry.id);
       return {
          id: header.id,

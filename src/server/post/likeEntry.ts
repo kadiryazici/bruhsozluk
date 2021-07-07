@@ -2,7 +2,7 @@ import { useDB } from '@db';
 import {
    defineSyncHandler,
    responseError,
-   responseSuccess,
+   responseSuccess
 } from '@helpers/functions';
 import { PostLikeBody } from '@type';
 import { Msg } from '@messages';
@@ -13,6 +13,10 @@ import { Msg } from '@messages';
 export default defineSyncHandler((req, res) => {
    const auth_id = req.headers.authorization!;
    const db = useDB();
+
+   console.log({
+      body: req.body
+   });
 
    //IF ALL DATA I NEED EXISTS
    if (req.body && req.body.header_id && req.body.entry_id) {
@@ -36,19 +40,19 @@ export default defineSyncHandler((req, res) => {
                   .get('likes')
                   .push({
                      entry_id,
-                     header_id,
+                     header_id
                   })
                   .write();
 
                responseSuccess(res, Msg.post_likeEntry.success.msg);
             } else {
-               responseError(res, Msg.post_likeEntry.error.msg);
+               responseError(res, Msg.post_likeEntry.error.cannotLikeAgain);
             }
          } else {
-            responseError(res, Msg.post_likeEntry.error.msg);
+            responseError(res, Msg.post_likeEntry.error.wrongEntryID);
          }
       } else {
-         responseError(res, Msg.post_likeEntry.error.msg);
+         responseError(res, Msg.post_likeEntry.error.wrongHeaderID);
       }
    } else {
       responseError(res, Msg.post_likeEntry.error.msg);

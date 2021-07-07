@@ -1,103 +1,103 @@
-export class Msg {
-   static app = {
+class Messages {
+   public app = {
       error: {
-         msg: 'Böyle bir adres bulunmuyor ya da öngörülemeyen bir hata oluştu.'
+         msg: 'Bir hata oldu ama ne oldu bilmiyoruz.'
       }
    };
 
-   static auth = {
+   public auth = {
       error: {
-         msg: 'Kullanıcı kimliği hatası.'
+         msg: 'Giriş kimliği yanlış olabilir.'
       }
    };
 
-   static add_entry = {
+   public add_entry = {
       error: {
-         headerIdNeeded: `Başlık ID'si gerekiyor.`,
-         missingData: 'Lütfen verileri doğru gönderin.',
-         bodyNeeded: 'Entry içeriği gerekiyor.',
-         wrongHeaderId: `Hatalı başlık ID'si.`,
-         bodyShouldHaveAtLeastOneLetter:
-            'Entry içeriği en az 1 karakter içermelidir.'
+         headerIdNeeded: `Başlık kimliği eşleşmiyor ki.`,
+         missingData: 'Verileri doğru gönderir misiniz?',
+         bodyNeeded: 'Neden entry içeriği girmediniz?',
+         wrongHeaderId: `Başlık kimliği hatalı gibi.`,
+         bodyShouldHaveAtLeastOneLetter: 'Hadi ama bir tane karakter gir bari.'
       },
       success: {
-         createdHeader: 'Başlık oluşturuldu.'
+         createdHeader: 'Başlık oluşturuldu oleeey.'
       }
    };
 
-   static add_header = {
+   public add_header = {
       error: {
-         nameNeeded: 'Başlık ismi gerekiyor.',
-         entryBodyNeeded: 'Entry girdisi gerekiyor',
-         headerExists: 'Bu başlık zaten var.',
-         anErrorOccured: 'Başlık açarken bir hata oluştu.'
+         nameNeeded: 'İsimsiz bir başlık açamazsın qoçum.',
+         entryBodyNeeded: 'Entry içeriği girsek mi acaba?',
+         headerExists: 'Aynı başlıktan üretemezsin.',
+         anErrorOccured: 'Bir hata oldu ama ne oldu?'
       }
    };
 
-   static delete_header = {
+   public delete_header = {
       error: {
-         missingParameters: 'Yeterli parametre gönderilmedi.',
-         headerDoesNotExist: 'Başlık bulunamadı.',
-         headerIdNeeded: `Başlık ID'si gerekiyor.`
+         missingParameters: 'Eksik bilgi geldi.',
+         headerDoesNotExist: 'Başlığı bulamadık.',
+         headerIdNeeded: `Başlık kimliği gerekiyor.`
       },
       success: {
-         msg: 'Başlık başarıyla silindi. '
+         msg: 'Başlık çöpe atıldı. '
       }
    };
 
-   static delete_entry = {
+   public delete_entry = {
       error: {
-         wrongHeaderId: `Hatalı başlık ID'si.`,
-         wrongEntryID: `Hatalı entry ID'si.`,
-         missingParameters: 'Bazı parametreler eksik.'
+         wrongHeaderId: `Hatalı başlık kimliği.`,
+         wrongEntryID: `Hatalı entry kimliği.`,
+         missingParameters: 'Bazı parametreler eksik gibi.'
       },
       success: {
-         msg: 'Entry başarıyla silindi. '
+         msg: 'Entry çöpe fırlatıldı.'
       }
    };
 
-   static login = {
+   public login = {
       error: {
          pleaseInputUsernameAndPasswordCorrectly:
-            'Lütfen kullanıcı adı ve şifreyi doğru girin.',
-         errorOccuredWhileLoggingIn: 'Giriş yapma kısmında bir hata oluştu.'
+            'Kullanıcı adı veya şifreyi yanlış girmiş gibisin.',
+         errorOccuredWhileLoggingIn:
+            'Giriş yaparken bir hata oldu ama ne oldu bilmiyoruz.'
       }
    };
 
-   static signup = {
+   public signup = {
       error: {
-         errorMessage: 'Lütfen kutucukları doğru doldurun.',
-         errorUserAlreadyExists: 'Kullanıcı zaten bulunuyor.',
+         errorMessage: 'Kutucuklara yeterli metin mi girsek?.',
+         errorUserAlreadyExists: 'Bu kullanıcı adı zaten var ki.',
          errorOccuredWhileCreatingNewUser:
-            'Kullanıcı oluştururken bir hata oluştu.',
+            'Kayıt olurken bir hata oldu ama ne oldu bilmiyoruz.',
          usernameShouldBeBetween3and20:
             'Kullanıcı adının uzunluğu 3 ila 20 karakter arasında olmalı.',
          passwordShouldBeBetween6and25:
             'Şifrenin uzunluğu 6 ila 20 karakter arasında olmalı.',
          username3_20AndPassword6_25:
-            'KUllanıcı adı 3 ila 20, şifre 6 ila 25 karakter uzunluğunda olmalı.'
+            'Kullanıcı adı 3 ila 20, şifre 6 ila 25 karakter uzunluğunda olmalı.'
       },
       success: {
          userCreatedSuccessfully: 'Kullanıcı başarıyla oluşturuldu.'
       }
    };
 
-   static get_header = {
+   public get_header = {
       error: {
          wrongHeaderID: `Başlık ID'si eşleşmiyor`,
          neededParams: 'Gerekli parametreler eksik.'
       }
    };
 
-   static get_entry = {
+   public get_entry = {
       error: {
          missingParameters: 'Gerekli parametreler eksik.',
-         headerIdDoesNotMatch: `Başlık ID'si eşleşmiyor.`,
-         entryIdDoesNotMatch: `Entry ID'si eşleşmiyor.`
+         headerIdDoesNotMatch: `Başlık kimliği eşleşmiyor.`,
+         entryIdDoesNotMatch: `Entry kimliği eşleşmiyor.`
       }
    };
 
-   static get_verification = {
+   public get_verification = {
       error: {
          msg: 'Yanlış kullanıcı kimliği ya da bir hata oluştu.'
       },
@@ -106,32 +106,35 @@ export class Msg {
       }
    };
 
-   static post_likeEntry = {
+   public post_likeEntry = {
       error: {
-         msg: 'Ya hata oldu ya eksik bilgi verdin ya da tekrar beğenmeye çalışıyorsun.'
+         msg: 'Gereken bilgilerde yanlışlık var.',
+         wrongHeaderID: 'Başlık kimliği eşleşmiyor.',
+         wrongEntryID: 'Entry kimliği eşleşmiyor.',
+         cannotLikeAgain: 'Bir entry tekrardan beğenilemez!'
       },
       success: {
          msg: 'Ayy Şimdi bunu beğendim mi ben?'
       }
    };
 
-   static post_unlikeEntry = {
+   public post_unlikeEntry = {
       error: {
-         msg: 'Ya hata oldu ya eksik bilgi verdin ya da zaten bunu beğenmedin.'
+         msg: 'Bir hata oldu ya da nefretini dağlara yazmak istiyorsun.'
       },
       success: {
          msg: 'Hıh sevmemiştim zaten!'
       }
    };
 
-   static get_liked_entries_by_user = {
+   public get_liked_entries_by_user = {
       error: {
          missingParams: 'Bazı parametreler eksik.',
-         userNotFound: `Böyle bir kullanıcı bulamadık.`
+         userNotFound: `Bu kişiyi bulamadık tüh.`
       }
    };
 
-   static post_verify_header = {
+   public post_verify_header = {
       error: {
          cannotCreate: 'Bu başlığı açamayız.',
          alreadyExists: 'Bu başlık zaten var.',
@@ -142,23 +145,25 @@ export class Msg {
       }
    };
 
-   static left_content = {
+   public left_content = {
       error: {
          headerNotFound: 'Başlık Bulunamadı.'
       },
-      success: 'Başlık başarılı bir şekilde sol kısma eklendi.'
+      success: 'Başlık sol kısma eklendi.'
    };
 
-   static Likes = {
+   public Likes = {
       error: {
-         missingParameteres: 'Bazı parametrelet eksik.'
+         missingParameteres: 'Bazı parametreler eksik.'
       }
    };
 
-   static GetUser = {
+   public GetUser = {
       error: {
-         missingParameters: 'Bazı parametrelet eksik.',
+         missingParameters: 'Bazı parametreler eksik.',
          userNotFound: 'Kullanıcı bulunamadı'
       }
    };
 }
+
+export const Msg = new Messages();

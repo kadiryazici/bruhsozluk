@@ -1,24 +1,24 @@
-export class Config {
-   static app = {
+class _Config {
+   public app = {
       port: 3000
    };
-   static entry = {
+   public entry = {
       entryPerPage: 10
    };
-   static auth = {
+   public auth = {
       usernameMax: 20,
       usernameMin: 3,
       passwordMax: 25,
       passwordMin: 6
    };
-   static add_header = {
+   public add_header = {
       headerMax: 50,
       headerMin: 1
    };
-   static get_user = {
+   public get_user = {
       pageEntryCount: 10 // her sayfa için kaç entry olacak.
    };
-   static db_defaults = {
+   public db_defaults = {
       jobDateStore: {},
       homeData: [],
       users: [],
@@ -26,3 +26,4 @@ export class Config {
       leftContent: []
    };
 }
+export const Config = new _Config();

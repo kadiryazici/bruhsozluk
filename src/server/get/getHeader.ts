@@ -1,6 +1,6 @@
-import { head } from '.pnpm/@types+lodash@4.14.170/node_modules/@types/lodash';
 import { useDB } from '@db';
 import {
+   checkDidUserLikeEntry,
    defineSyncHandler,
    getEntryPageOfHeader,
    responseError
@@ -10,7 +10,8 @@ import {
    getHeaderResponse,
    getHeaderResponsePage,
    Header,
-   HeaderResponse
+   HeaderResponse,
+   User
 } from '@type';
 import v8 from 'v8';
 
@@ -51,11 +52,23 @@ export default defineSyncHandler((req, res) => {
                id: _header.id,
                name: _header.name,
                entries: _header.entries.map(entry => {
-                  const likeCount = entry.liked_by.length;
                   const { liked_by, ...entryData } = entry;
+                  const likeCount = liked_by.length;
+
+                  let didUserLikeThisEntry = false;
+                  if (res.locals && res.locals.auth) {
+                     const auth = res.locals.auth as User;
+                     didUserLikeThisEntry = checkDidUserLikeEntry({
+                        auth,
+                        entry_id: entry.id,
+                        header_id: header.id
+                     });
+                  }
+
                   return {
                      ...entryData,
                      likeCount,
+                     didLike: didUserLikeThisEntry,
                      page: getEntryPageOfHeader(_header.id, entryData.id)
                   };
                }),

@@ -11,6 +11,7 @@ import { Config } from '@config';
 
 import middlewareAuthRequired from '@middleware/authRequired';
 import middlewareAuthRequiredAdmin from '@middleware/authRequiredAdmin';
+import middlewareAuthPassToResponse from '@middleware/authPassToResponse';
 
 import postSignup from '@post/signup';
 import postLogin from '@post/login';
@@ -55,6 +56,7 @@ async function createServer() {
       Use(cors());
       Use(express.json());
       Use(logger());
+      Use(middlewareAuthPassToResponse);
       Use(
          rateLimit({
             max: 100,

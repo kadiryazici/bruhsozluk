@@ -73,7 +73,8 @@ export default defineSyncHandler((req, res) => {
                   const entryResponse: EntryResponse = {
                      ...entry,
                      likeCount: liked_by.length,
-                     page: entryPage
+                     page: entryPage,
+                     didLike: true
                   };
 
                   return {

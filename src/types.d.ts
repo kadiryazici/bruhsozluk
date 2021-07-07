@@ -27,11 +27,18 @@ export interface Entry {
 export interface EntryResponse extends Omit<Entry, 'liked_by'> {
    likeCount: number;
    page: number;
+   didLike: boolean;
 }
 
 export interface HeaderResponse extends Omit<Header, 'entries'> {
    entries: EntryResponse[];
 }
+
+export interface IUpdateHome extends Omit<Header, 'entries'> {
+   entries: Omit<EntryResponse, 'didLike'>[];
+}
+
+export interface UpdateHomeHeader extends Header {}
 
 export interface LeftContentItem {
    id: string;
