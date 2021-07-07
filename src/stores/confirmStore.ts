@@ -19,6 +19,10 @@ export const useConfirm = defineStore({
    }),
    actions: {
       create(params: IConfirmParams) {
+         //* Preventing creation of another confirm by ENTER or SPACE to focused button.
+         const aE = document.activeElement;
+         if (aE && aE instanceof HTMLElement) aE.blur();
+
          this.activeConfirms.push({
             ...params,
             id: nanoid(),
