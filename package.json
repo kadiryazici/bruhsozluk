@@ -28,6 +28,6 @@
       "@vue/compiler-sfc": "latest",
       "autoprefixer": "^10.2.6",
       "sass": "latest",
-      "vite": "2.3.8"
+      "vite": "2.4.0"
    }
 }

@@ -2,25 +2,27 @@
 import type { Notification } from '/src/stores/notificationStore';
 import { useNotificationStore } from '/src/stores/notificationStore';
 
-const nStore = useNotificationStore();
-
-class Configs {
-   static Title = class {
-      static success = 'başarılı';
-      static error = 'hata';
-      static warning = 'uyarı';
-      static info = 'bilgi';
-   };
-   static Icon = class {
-      static success = 'check_circle';
-      static error = 'error';
-      static warning = 'warning';
-      static info = 'info';
-   };
-}
 interface Props {
    notificationData: Notification;
 }
+
+const nStore = useNotificationStore();
+
+const Configs = {
+   Title: {
+      success: 'başarılı',
+      error: 'hata',
+      warning: 'uyarı',
+      info: 'bilgi'
+   },
+   Icon: {
+      success: 'check_circle',
+      error: 'error',
+      warning: 'warning',
+      info: 'info'
+   }
+};
+
 const props = defineProps<Props>();
 
 function handleNotificationClick() {

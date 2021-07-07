@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ReqURL } from '/src/api/config';
 import type { Entry, Header, MsgResponse } from '/src/api/types.d';
+import { GetUserAuthID } from '/src/helpers/auth';
 import { useAppStore } from '/src/stores/appStore';
 
 interface Params {
@@ -12,13 +13,7 @@ interface Params {
  * @does Sends api request to api to delete entry
  */
 export async function deleteEntry(params: Params) {
-   const appStore = useAppStore();
-   const [user] = appStore.userInformation;
    const { header_id, entry_id } = params;
    const url = ReqURL(`/delete_entry/${header_id}/${entry_id}`);
-   return await axios.delete<MsgResponse>(url, {
-      headers: {
-         Authorization: user.auth_id
-      }
-   });
+   return await axios.delete<MsgResponse>(url);
 }

@@ -18,6 +18,7 @@ import { useAppStore } from '/src/stores/appStore';
 import { msToDateString } from '/src/helpers/app';
 import { useNotificationStore } from '/src/stores/notificationStore';
 import { deleteEntry } from '/src/api/deleteEntry';
+import { postLikeEntry, postUnLikeEntry } from '/src/api/changeLike';
 
 interface Emits {
    (event: 'atMount', value: HTMLElement): void;
@@ -31,7 +32,8 @@ const props = defineProps<Props>();
 const appStore = useAppStore();
 const notificationStore = useNotificationStore();
 
-ref: liked = false;
+ref: liked = props.entryData.didLike;
+ref: likeRequestLoading = false;
 ref: likesOfEntry = [] as string[];
 ref: entryWrapper = null as TemplateRef<HTMLElement>;
 ref: isModalOpen = false;
@@ -163,6 +165,61 @@ async function handleEntryDelete() {
    isDeleteModalOpen = true;
 }
 //#endregion
+
+//#region LikeDislike
+type LikeOrDislikeParam = 'like' | 'dislike';
+async function changeLike() {
+   if (likeRequestLoading) return;
+   likeRequestLoading = true;
+   const kind = liked ? 'unlike' : 'like';
+
+   const requestBody = {
+      header_id: props.entryData.header_id,
+      entry_id: props.entryData.id
+   };
+   if (kind === 'like') {
+      try {
+         const { data } = await postLikeEntry(requestBody);
+         notificationStore.createNotification({
+            kind: 'success',
+            text: data.msg
+         });
+         props.entryData.likeCount += 1;
+         liked = true;
+      } catch (_err: unknown) {
+         let text = 'İşlemde bir hata oluştu.';
+         const error = _err as AxiosError;
+         if (error.response && error.response.data && error.response.data.msg) {
+            text = error.response.data.msg as string;
+         }
+         notificationStore.createNotification({ kind: 'error', text });
+      }
+   } else {
+      try {
+         const { data } = await postUnLikeEntry(requestBody);
+         notificationStore.createNotification({
+            kind: 'success',
+            text: data.msg
+         });
+         props.entryData.likeCount -= 1;
+         liked = false;
+      } catch (_err: unknown) {
+         let text = 'İşlemde bir hata oluştu.';
+
+         const error = _err as AxiosError;
+         if (error.response && error.response.data && error.response.data.msg) {
+            text = error.response.data.msg as string;
+         }
+
+         notificationStore.createNotification({
+            kind: 'error',
+            text
+         });
+      }
+   }
+   likeRequestLoading = false;
+}
+//#endregion
 </script>
 
 <template>
@@ -190,7 +247,7 @@ async function handleEntryDelete() {
                aria-label="beğen"
                title="beğen"
                class="button heart-icon"
-               @click="liked = !liked"
+               @click="changeLike"
                :name="liked ? 'favorite' : 'favorite_border'"
             />
             <span

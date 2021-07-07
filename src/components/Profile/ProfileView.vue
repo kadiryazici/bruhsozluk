@@ -10,7 +10,11 @@ import type { GetUserResponse } from '/src/api/types';
 import Title from '/src/components/Title/Title.vue';
 import ProfileEntry from '/src/components/Profile/ProfileEntry.vue';
 
-import { fixURLUsername, sanitizeUserName } from '/src/helpers/app';
+import {
+   fixURLUsername,
+   msToDateString,
+   sanitizeUserName
+} from '/src/helpers/app';
 import { getUser } from '/src/api/getUser';
 import { useNotificationStore } from '/src/stores/notificationStore';
 
@@ -98,12 +102,16 @@ ref: loadMoreButtonProps = computed(() => ({
          <div class="user-details">
             <div
                class="detail"
-               v-for="detail in [
-                  `Toplam Entry Sayısı: ${user.totalEntry}`,
-                  ` Toplam Beğendiği Entry: ${user.totalLikes}`
+               v-for="[icon, detail] in [
+                  ['article', `Toplam Entry: ${user.totalEntry}`],
+                  ['favorite', `Toplam Beğendiği Entry: ${user.totalLikes}`],
+                  [
+                     'schedule',
+                     `Katıldığı Tarih: ${msToDateString(user.joinedAt, false)}`
+                  ]
                ]"
             >
-               <Icon class="icon" name="radio_button_checked" /> {{ detail }}
+               <Icon class="detail-icon" :name="icon" /> {{ detail }}
             </div>
          </div>
 
@@ -161,10 +169,10 @@ ref: loadMoreButtonProps = computed(() => ({
          width: 100%;
          align-items: center;
 
-         .icon {
+         .detail-icon {
             &,
             & * {
-               font-size: 10px;
+               font-size: 15px;
                color: colors.$turq;
                margin-right: funcs.padding(1);
             }

@@ -7,7 +7,7 @@ export function SetUserAuthID(auth_id: string) {
    return window.localStorage.setItem(key, auth_id);
 }
 export function GetUserAuthID() {
-   return window.localStorage.getItem(key);
+   return window.localStorage.getItem(key) || 'user not signed in';
 }
 
 /**
