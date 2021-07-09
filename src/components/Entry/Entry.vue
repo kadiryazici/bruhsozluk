@@ -225,14 +225,6 @@ async function changeLike() {
       <Modal v-model:visible="isLikeModalOpen">
          <ModalLikes :users="likesOfEntry" @hide="isLikeModalOpen = false" />
       </Modal>
-
-      <Modal v-model:visible="isDeleteModalOpen">
-         <ModalConfirm
-            @accept="handleEntryDelete"
-            @deny="isDeleteModalOpen = false"
-            text="entry silinecek, emin misiniz?"
-         />
-      </Modal>
    </div>
 </template>
 
