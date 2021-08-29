@@ -17,7 +17,7 @@ onMounted(async () => {
 });
 
 const leftItems = reactive<LeftContent>([]);
-ref: loading = false;
+let loading = $ref(false);
 async function fetchLeft() {
    if (loading) return;
 

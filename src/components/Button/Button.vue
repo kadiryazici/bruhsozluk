@@ -1,4 +1,6 @@
 <script lang="ts">
+import { computed } from 'vue';
+
 export type Colors =
    | 'turq'
    | 'ruby'
@@ -9,8 +11,6 @@ export type Colors =
    | 'sun';
 </script>
 <script lang="ts" setup>
-import { computed } from 'vue';
-
 interface Props {
    color?: Colors;
    square?: boolean;
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
    bordered: false
 });
 
-ref: buttonFontSize = computed(() => {
+const buttonFontSize = $computed(() => {
    return props.size || '20px';
 });
 </script>

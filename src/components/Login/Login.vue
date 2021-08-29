@@ -16,7 +16,7 @@ const router = useRouter();
 const appStore = useAppStore();
 const notification = useNotificationStore();
 
-ref: error = false;
+let error = $ref(false);
 const input = reactive({
    username: '',
    password: ''

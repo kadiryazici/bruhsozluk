@@ -16,10 +16,10 @@ import { useModalStore } from '/src/stores/modalStore';
 const appStore = useAppStore();
 const modalStore = useModalStore();
 
-ref: query = '';
-ref: didSearch = false;
-ref: isSearching = false;
-ref: sanitizedQuery = computed(() => sanitizeHeaderName(query));
+let query = $ref('');
+let didSearch = $ref(false);
+let isSearching = $ref(false);
+const sanitizedQuery = $computed(() => sanitizeHeaderName(query));
 const headerExisting = reactive({
    notExists: false,
    msg: ''

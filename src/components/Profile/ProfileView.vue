@@ -24,17 +24,16 @@ const router = useRouter();
 const notification = useNotificationStore();
 
 const userData: GetUserResponse[] = reactive([]);
-ref: entryPage = 0;
-ref: isLoadingNewEntries = false;
-ref: userName = computed((): string => {
+let entryPage = $ref(0);
+let isLoadingNewEntries = $ref(false);
+const userName = $computed((): string => {
    const username = route.params.username;
    if (username && typeof username === 'string') {
       return sanitizeUserName(
          userData.length > 0 ? userData[0].username : username
       );
-   } else {
-      return 'Kullanıcı Adı';
    }
+   return 'Kullanıcı Adı';
 });
 
 onMounted(async () => {
@@ -66,7 +65,7 @@ async function loadNextPage() {
    }
 }
 
-ref: loadMoreButtonProps = computed(() => ({
+const loadMoreButtonProps = $computed(() => ({
    onClick: loadNextPage,
    loading: isLoadingNewEntries,
    size: '12px',

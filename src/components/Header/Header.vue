@@ -23,19 +23,19 @@ const router = useRouter();
 const appStore = useAppStore();
 const notification = useNotificationStore();
 
-ref: loading = true;
-ref: activePage = 1;
+let loading = $ref(true);
+let activePage = $ref(1);
 
 const pageData = reactive<getHeaderResponse[]>([]);
-ref: pageTitle = computed(() => {
+const pageTitle = $computed(() => {
    const { name } = pageData[0];
    return `${name} | Bruhsozluk`;
 });
 
 const id = route.params.id as string;
 const page = route.params.page as string | undefined;
-ref: focusID = route.query.focus;
-ref: isFocusMatched = false;
+let focusID = $ref(route.query.focus);
+let isFocusMatched = $ref(false);
 
 //#region OnMounted Component
 onMounted(async () => {
@@ -92,8 +92,8 @@ function navigate(kind: 'next' | 'previous') {
 }
 //#endregion
 
-ref: entryBody = '';
-ref: entryLoading = false;
+let entryBody = $ref('');
+let entryLoading = $ref(false);
 //#region AddEntry Function
 async function addEntry() {
    if (entryLoading) return;

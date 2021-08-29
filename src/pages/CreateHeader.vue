@@ -13,11 +13,11 @@ import { postCreateHeader } from '/src/api/postCreateHeader';
 const route = useRoute();
 const router = useRouter();
 
-ref: headerName = '';
-ref: error = false;
-ref: errorMessage = 'Bu başlık açılamaz.';
-ref: entryBody = '';
-ref: loading = false;
+let headerName = $ref('');
+let error = $ref(false);
+let errorMessage = $ref('Bu başlık açılamaz.');
+let entryBody = $ref('');
+let loading = $ref(false);
 
 if (route.query.baslik && typeof route.query.baslik == 'string') {
    headerName = sanitizeHeaderName(route.query.baslik);

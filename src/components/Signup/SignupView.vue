@@ -13,7 +13,7 @@ import { useNotificationStore } from '/src/stores/notificationStore';
 const router = useRouter();
 const notification = useNotificationStore();
 
-ref: error = false;
+let error = $ref(false);
 const input = reactive({
    username: '',
    password: ''

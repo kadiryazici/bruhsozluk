@@ -4,7 +4,7 @@ import type { Colors } from '/src/components/Button/Button.vue';
 import { useConfirm } from '/src/stores/confirmStore';
 
 const confirm = useConfirm();
-ref: confirmValue = computed(
+const confirmValue = $computed(
    () => confirm.activeConfirms[confirm.activeConfirms.length - 1]
 );
 
@@ -18,13 +18,13 @@ function handleDeny() {
 }
 
 //#region Button Props
-ref: acceptButton = computed(() => ({
+const acceptButton = $computed(() => ({
    textColor: 'lime' as Colors,
    color: 'lime' as Colors,
    bordered: true,
    size: '15px'
 }));
-ref: denyButton = computed(() => ({
+const denyButton = $computed(() => ({
    textColor: 'ruby' as Colors,
    color: 'ruby' as Colors,
    bordered: true,

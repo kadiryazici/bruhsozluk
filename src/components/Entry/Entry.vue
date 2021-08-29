@@ -34,20 +34,20 @@ const appStore = useAppStore();
 const notification = useNotificationStore();
 const confirm = useConfirm();
 
-ref: liked = props.entryData.didLike;
-ref: likeRequestLoading = false;
-ref: likesOfEntry = [] as string[];
-ref: entryWrapper = null as TemplateRef<HTMLElement>;
-ref: isLikeModalOpen = false;
-ref: isDeleteModalOpen = false;
-ref: canDelete = computed(
+let liked = $ref(props.entryData.didLike);
+let likeRequestLoading = $ref(false);
+let likesOfEntry = $ref<string[]>([]);
+let entryWrapper = $ref<TemplateRef<HTMLElement>>(null);
+let isLikeModalOpen = $ref(false);
+let isDeleteModalOpen = $ref(false);
+const canDelete = $computed(
    () =>
       appStore.isLogged &&
       appStore.userInformation.length > 0 &&
       (appStore.userInformation[0].isAdmin ||
          appStore.userInformation[0].username === props.entryData.username)
 );
-ref: entryURL = computed(() => {
+const entryURL = $computed(() => {
    const { id: entryID } = props.entryData;
    const { header_id, page } = props.entryData;
 
@@ -156,9 +156,7 @@ async function changeLike() {
             text = error.response.data.msg as string;
          }
 
-         notification.Error({
-            text
-         });
+         notification.Error({ text });
       }
    }
    likeRequestLoading = false;
